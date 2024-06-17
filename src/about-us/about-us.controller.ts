@@ -5,7 +5,7 @@ import { UpdateAboutUsDto } from './dto/update-about-us.dto';
 
 @Controller('about-us')
 export class AboutUsController {
-  constructor(private readonly aboutUsService: AboutUsService) {}
+  constructor(private readonly aboutUsService: AboutUsService) { }
 
   @Post()
   create(@Body() createAboutUsDto: CreateAboutUsDto) {

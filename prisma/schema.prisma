@@ -12,3 +12,78 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model AboutUs {
+  id Int @id @default(autoincrement())
+  metaTitle_am String
+  metaTitle_en String
+  metaTitle_ru String
+  metaDescription_am String
+  metaDescription_en String
+  metaDescription_ru String
+  projects Int
+  freeCourse Int
+  employess Int
+  content_am String
+  content_en String
+  content_ru String
+}
+
+model AboutWork {
+  id Int @id @default(autoincrement())
+  work_am String
+  work_en String
+  work_ru String
+}
+
+model Applicant {
+  id Int @id @default(autoincrement())
+  fullName String
+  email String
+  phone String
+  createdAt DateTime 
+  isAgreed Boolean
+  profession String
+  level String 
+  message String
+}
+
+model Approach {
+  id Int @id @default(autoincrement()) 
+  serviceId Int
+  approach_am String
+  approach_en String
+  approach_ru String
+}
+
+model Benefits {
+  id Int @id @default(autoincrement())  
+  serviceId Int 
+  title_am String 
+  title_en String
+  title_ru String
+  description_am String
+  description_en String
+  description_ru String
+}
+
+model Blog {
+  id Int @id @default(autoincrement()) 
+  metaTitle_am String
+  metaTitle_en String
+  metaTitle_ru String
+  metaDescription_am String
+  metaDescription_en String
+  metaDescription_ru String
+  image String
+  createdAt DateTime
+  duration_am String 
+  duration_en String
+  duration_ru String
+  content_am String
+  content_en String
+  content_ru String 
+  url String 
+  big_image String 
+  alt_text String
+}
