@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-
 import { JobsModule } from './jobs/jobs.module';
 import { AboutUsModule } from './about-us/about-us.module';
 import { AboutWorkModule } from './about-work/about-work.module';
@@ -9,17 +8,9 @@ import { ApplicantModule } from './applicant/applicant.module';
 import { ApproachModule } from './approach/approach.module';
 import { BenefitsModule } from './benefits/benefits.module';
 import { BlogModule } from './blog/blog.module';
-import { CareerQualificationsModule } from './career-qualifications/career-qualifications.module';
-import { CareerResponsibilitiesModule } from './career-responsibilities/career-responsibilities.module';
-import { CareerSkillsModule } from './career-skills/career-skills.module';
 import { CareersModule } from './careers/careers.module';
 import { ContactsModule } from './contacts/contacts.module';
 import { CoreValuesModule } from './core-values/core-values.module';
-import { CourseForYouModule } from './course-for-you/course-for-you.module';
-import { CourseLessonsModule } from './course-lessons/course-lessons.module';
-import { CourseOffersModule } from './course-offers/course-offers.module';
-import { CourseResultsModule } from './course-results/course-results.module';
-import { CourseSyllabusModule } from './course-syllabus/course-syllabus.module';
 import { CoursesModule } from './courses/courses.module';
 import { EducationsModule } from './educations/educations.module';
 import { FaqModule } from './faq/faq.module';
@@ -34,12 +25,17 @@ import { StudentsReviewModule } from './students-review/students-review.module';
 import { TeamMemberModule } from './team-member/team-member.module';
 import { TechStackModule } from './tech-stack/tech-stack.module';
 import { TestimonialsModule } from './testimonials/testimonials.module';
-import { TheyTrustModule } from './they-trust/they-trust.module';
 import { UserModule } from './user/user.module';
+import { CompanyModule } from './company/company.module';
+import { EducationCategoryModule } from './education-category/education-category.module';
+import { OffersModule } from './offers/offers.module';
+import { ProjectTechStachModule } from './project-tech-stach/project-tech-stach.module';
+import { ServicesModule } from './services/services.module';
+import { TheyTrustUsModule } from './they-trust-us/they-trust-us.module';
 
 @Module({
-  imports: [AboutUsModule, JobsModule, AboutWorkModule, ApplicantModule, ApproachModule, BenefitsModule, BlogModule, CareerQualificationsModule, CareerResponsibilitiesModule, CareerSkillsModule, CareersModule, ContactsModule, CoreValuesModule, CourseForYouModule, CourseLessonsModule, CourseOffersModule, CourseResultsModule, CourseSyllabusModule, CoursesModule, EducationsModule, FaqModule, HireUsModule, PageTitlesModule, PrivacyPolicyModule, ProjectModule, ProjectCategoryModule, ProjectDetailModule, ProjectObjectiveModule, StudentsReviewModule, TeamMemberModule, TechStackModule, TestimonialsModule, TheyTrustModule, UserModule],
+  imports: [AboutUsModule, JobsModule, AboutWorkModule, ApplicantModule, ApproachModule, BenefitsModule, BlogModule, CareersModule, ContactsModule, CoreValuesModule, CoursesModule, EducationsModule, FaqModule, HireUsModule, PageTitlesModule, PrivacyPolicyModule, ProjectModule, ProjectCategoryModule, ProjectDetailModule, ProjectObjectiveModule, StudentsReviewModule, TeamMemberModule, TechStackModule, TestimonialsModule, UserModule, CompanyModule, EducationCategoryModule, OffersModule, ProjectTechStachModule, ServicesModule, TheyTrustUsModule],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }

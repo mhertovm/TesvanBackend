@@ -2,25 +2,53 @@ import { Injectable } from '@nestjs/common';
 import { CreateAboutWorkDto } from './dto/create-about-work.dto';
 import { UpdateAboutWorkDto } from './dto/update-about-work.dto';
 
+import { PrismaClient } from '@prisma/client';
+
+const prisma = new PrismaClient();
+
 @Injectable()
 export class AboutWorkService {
-  create(createAboutWorkDto: CreateAboutWorkDto) {
-    return 'This action adds a new aboutWork';
+  async create(createAboutWorkDto: CreateAboutWorkDto) {
+    const newAboutWork = await prisma.aboutWork.create({
+      data: createAboutWorkDto,
+    });
+    return newAboutWork;
   }
 
-  findAll() {
-    return `This action returns all aboutWork`;
+  async findAll() {
+    const aboutWorks = await prisma.aboutWork.findMany()
+    return aboutWorks;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} aboutWork`;
+  async findOne(id: number) {
+    const aboutWork = await prisma.aboutWork.findUnique({
+      where: {
+        id
+      },
+    })
+    return aboutWork;
   }
 
-  update(id: number, updateAboutWorkDto: UpdateAboutWorkDto) {
-    return `This action updates a #${id} aboutWork`;
+  async update(id: number, updateAboutWorkDto: UpdateAboutWorkDto) {
+    const updateAboutWork = await prisma.aboutWork.update({
+      where: {
+        id,
+      },
+      data: updateAboutWorkDto
+    })
+    return updateAboutWork;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} aboutWork`;
+  async remove(id: number) {
+    try {
+      const deleteAboutWork = await prisma.aboutWork.delete({
+        where: {
+          id,
+        },
+      })
+      return deleteAboutWork;
+    } catch (error) {
+      return `not found`
+    }
   }
 }

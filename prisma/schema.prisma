@@ -15,12 +15,12 @@ datasource db {
 
 model AboutUs {
   id Int @id @default(autoincrement())
-  metaTitle_am String
-  metaTitle_en String
-  metaTitle_ru String
-  metaDescription_am String
-  metaDescription_en String
-  metaDescription_ru String
+  metaTitle_am String @db.VarChar(255)
+  metaTitle_en String @db.VarChar(255)
+  metaTitle_ru String @db.VarChar(255)
+  metaDescription_am String @db.VarChar(255)
+  metaDescription_en String @db.VarChar(255)
+  metaDescription_ru String @db.VarChar(255)
   projects Int
   freeCourse Int
   employess Int
@@ -31,59 +31,398 @@ model AboutUs {
 
 model AboutWork {
   id Int @id @default(autoincrement())
-  work_am String
-  work_en String
-  work_ru String
+  work_am String @db.VarChar(255)
+  work_en String @db.VarChar(255)
+  work_ru String @db.VarChar(255)
 }
 
 model Applicant {
   id Int @id @default(autoincrement())
-  fullName String
-  email String
-  phone String
-  createdAt DateTime 
+  fullName String @db.VarChar(255)
+  email String @db.VarChar(255)
+  phone String @db.VarChar(255)
   isAgreed Boolean
-  profession String
-  level String 
+  profession String @db.VarChar(255)
+  level String @db.VarChar(255)
   message String
 }
 
 model Approach {
   id Int @id @default(autoincrement()) 
   serviceId Int
-  approach_am String
-  approach_en String
-  approach_ru String
+  approach_am String @db.VarChar(255)
+  approach_en String @db.VarChar(255)
+  approach_ru String @db.VarChar(255)
 }
 
 model Benefits {
   id Int @id @default(autoincrement())  
   serviceId Int 
-  title_am String 
-  title_en String
-  title_ru String
+  title_am String @db.VarChar(255)
+  title_en String @db.VarChar(255)
+  title_ru String @db.VarChar(255)
+  description_am String @db.VarChar(255)
+  description_en String @db.VarChar(255)
+  description_ru String @db.VarChar(255)
+}
+
+model Blog {
+  id Int @id @default(autoincrement()) 
+  metaTitle_am String @db.VarChar(255)
+  metaTitle_en String @db.VarChar(255)
+  metaTitle_ru String @db.VarChar(255)
+  metaDescription_am String @db.VarChar(255)
+  metaDescription_en String @db.VarChar(255)
+  metaDescription_ru String @db.VarChar(255)
+  image String @db.VarChar(255)
+  duration_am String @db.VarChar(255)
+  duration_en String @db.VarChar(255)
+  duration_ru String @db.VarChar(255)
+  content_am String 
+  content_en String 
+  content_ru String 
+  url String @db.VarChar(255)
+  bigImage String @db.VarChar(255)
+  altText String @db.VarChar(255)
+  createdAt DateTime
+}
+
+model Careers {
+  id Int @id @default(autoincrement()) 
+  metaTitle_am String @db.VarChar(255)
+  metaTitle_en String @db.VarChar(255)
+  metaTitle_ru String @db.VarChar(255)
+  metaDescription_am String @db.VarChar(255)
+  metaDescription_en String @db.VarChar(255)
+  metaDescription_ru String @db.VarChar(255)
+  url String @db.VarChar(255)
+  term String @db.VarChar(255)
+  type String @db.VarChar(255)
+  location_am String @db.VarChar(255)
+  location_en String @db.VarChar(255)
+  location_ru String @db.VarChar(255)
+  dueDate String @db.VarChar(255)
+  jobDescription_am String @db.VarChar(255)
+  jobDescription_en String @db.VarChar(255)
+  jobDescription_ru String @db.VarChar(255)
+}
+
+model Company {
+  id Int @id @default(autoincrement())
+  name_am String @db.VarChar(255)
+  name_en String @db.VarChar(255)
+  name_ru String @db.VarChar(255)
+  metaTitle_am String @db.VarChar(255)
+  metaTitle_en String @db.VarChar(255)
+  metaTitle_ru String @db.VarChar(255)
+  metaDescription_am String @db.VarChar(255)
+  metaDescription_en String @db.VarChar(255)
+  metaDescription_ru String @db.VarChar(255)
+  title_am String @db.VarChar(255)
+  title_en String @db.VarChar(255)
+  title_ru String @db.VarChar(255)
+}
+
+model Contacts {
+  id Int @id @default(autoincrement()) 
+  fullName String @db.VarChar(255)
+  email String @db.VarChar(255)
+  phone String @db.VarChar(255)
+  company String @db.VarChar(255)
+  description String
+  isAgreed Boolean
+  createdAt DateTime 
+}
+
+model CoreValues {
+  id Int @id @default(autoincrement()) 
+  title_am String @db.VarChar(255)
+  title_en String @db.VarChar(255)
+  title_ru String @db.VarChar(255)
   description_am String
   description_en String
   description_ru String
 }
 
-model Blog {
+model Courses {
   id Int @id @default(autoincrement()) 
-  metaTitle_am String
-  metaTitle_en String
-  metaTitle_ru String
-  metaDescription_am String
-  metaDescription_en String
-  metaDescription_ru String
-  image String
-  createdAt DateTime
-  duration_am String 
-  duration_en String
-  duration_ru String
-  content_am String
-  content_en String
+  metaTitle_am String @db.VarChar(255)
+  metaTitle_en String @db.VarChar(255)
+  metaTitle_ru String @db.VarChar(255)
+  metaDescription_am String  @db.VarChar(255)
+  metaDescription_en String @db.VarChar(255)
+  metaDescription_ru String @db.VarChar(255)
+  url String @db.VarChar(255)
+  start DateTime 
+  duration_am String @db.VarChar(255) 
+  duration_en String @db.VarChar(255)
+  duration_ru String @db.VarChar(255)
+  price_am String @db.VarChar(255)
+  price_en String @db.VarChar(255)
+  price_ru String @db.VarChar(255)
+  deadline DateTime 
+  description_am String 
+  description_en String
+  description_ru String
+  level_am String @db.VarChar(255)
+  level_en String @db.VarChar(255)
+  level_ru String @db.VarChar(255)
+  type_am String @db.VarChar(255)
+  type_en String @db.VarChar(255)
+  type_ru String @db.VarChar(255)
+  days_am String @db.VarChar(255)
+  days_en String @db.VarChar(255)
+  days_ru String @db.VarChar(255)
+  lessonTime_am String @db.VarChar(255)
+  lessonTime_en String @db.VarChar(255)
+  lessonTime_ru String @db.VarChar(255)
+  courseDescription_am String
+  courseDescription_en String
+  courseDescription_ru String
+  image String @db.VarChar(255)
+  altText String @db.VarChar(255)
+}
+
+model EducationCategory {
+  id Int @id @default(autoincrement())
+  educationId Int
+  category_am String @db.VarChar(255)
+  category_en String @db.VarChar(255)
+  category_ru String @db.VarChar(255)
+}
+
+model Educations {
+  id Int @id @default(autoincrement())
+  type_am String @db.VarChar(255)
+  type_en String @db.VarChar(255)
+  type_ru String @db.VarChar(255)
+  education_am String @db.VarChar(255)
+  education_en String @db.VarChar(255)
+  education_ru String @db.VarChar(255)
+  metaTitle_am String @db.VarChar(255)
+  metaTitle_en String @db.VarChar(255)
+  metaTitle_ru String @db.VarChar(255)
+  metaDescription_am String @db.VarChar(255)
+  metaDescription_en String @db.VarChar(255)
+  metaDescription_ru String @db.VarChar(255)
+  image String @db.VarChar(255)
+  url String @db.VarChar(255)
+  content_am String 
+  content_en String 
   content_ru String 
-  url String 
-  big_image String 
-  alt_text String
+}
+
+model Faq {
+  id Int @id @default(autoincrement())
+  serviceId Int
+  question_am String @db.VarChar(255)
+  question_en String @db.VarChar(255)
+  question_ru String @db.VarChar(255)
+  answer_am String @db.VarChar(255)
+  answer_en String @db.VarChar(255)
+  answer_ru String @db.VarChar(255)
+}
+
+model HireUs {
+  id Int @id @default(autoincrement())
+  hire_am String @db.VarChar(255)
+  hire_en String @db.VarChar(255)
+  hire_ru String @db.VarChar(255)
+}
+
+model Jobs {
+  id Int @id @default(autoincrement())
+  fullName String @db.VarChar(255)
+  email String @db.VarChar(255)
+  phone String @db.VarChar(255)
+  jobRole String @db.VarChar(255)
+  coverLetter String
+  image String @db.VarChar(255)
+  isAgreed String
+  createdAt DateTime
+}
+
+model Offers {
+  id Int @id @default(autoincrement())
+  serviceId Int
+  offers_am String @db.VarChar(255)
+  offers_en String @db.VarChar(255)
+  offers_ru String @db.VarChar(255)
+}
+
+model PageTitles {
+  id Int @id @default(autoincrement())
+  metaTitle_am String @db.VarChar(255)
+  metaTitle_en String @db.VarChar(255)
+  metaTitle_ru String @db.VarChar(255)
+  metaDescription_am String @db.VarChar(255)
+  metaDescription_en String @db.VarChar(255)
+  metaDescription_ru String @db.VarChar(255)
+  students Int
+  joinedOurTeam String @db.VarChar(255)
+  image String @db.VarChar(255)
+  type String @db.VarChar(255)
+}
+
+model PrivacyPolicy {
+  id Int @id @default(autoincrement())
+  metaTitle_am String @db.VarChar(255)
+  metaTitle_en String @db.VarChar(255)
+  metaTitle_ru String @db.VarChar(255)
+  metaDescription_am String @db.VarChar(255)
+  metaDescription_en String @db.VarChar(255)
+  metaDescription_ru String @db.VarChar(255)
+  content_am String 
+  content_en String 
+  content_ru String 
+}
+
+model Projects {
+  id Int @id @default(autoincrement())
+  name_am String @db.VarChar(255)
+  name_en String @db.VarChar(255)
+  name_ru String @db.VarChar(255)
+  metaTitle_am String @db.VarChar(255)
+  metaTitle_en String @db.VarChar(255)
+  metaTitle_ru String @db.VarChar(255)
+  metaDescription_am String @db.VarChar(255)
+  metaDescription_en String @db.VarChar(255)
+  metaDescription_ru String @db.VarChar(255)
+  image String @db.VarChar(255)
+  url String @db.VarChar(255)
+}
+
+model ProjectCategory {
+  id Int @id @default(autoincrement())
+  projectId Int
+  category_am String @db.VarChar(255)
+  category_en String @db.VarChar(255)
+  category_ru String @db.VarChar(255)
+}
+
+model ProjectDetail {
+  id Int @id @default(autoincrement())
+  projectId Int
+  industry_am String @db.VarChar(255)
+  industry_en String @db.VarChar(255)
+  industry_ru String @db.VarChar(255)
+  location_am String @db.VarChar(255)
+  location_en String @db.VarChar(255)
+  location_ru String @db.VarChar(255)
+  duration_am String @db.VarChar(255)
+  duration_en String @db.VarChar(255)
+  duration_ru String @db.VarChar(255)
+  team_am String @db.VarChar(255)
+  team_en String @db.VarChar(255)
+  team_ru String @db.VarChar(255)
+  overview_am String
+  overview_en String
+  overview_ru String
+  challenge_am String
+  challenge_en String
+  challenge_ru String
+  solution_am String
+  solution_en String
+  solution_ru String
+  result_am String
+  result_en String
+  result_ru String
+  image String @db.VarChar(255)
+}
+
+model ProjectObjective {
+  id Int @id @default(autoincrement())
+  projectId Int
+  objective_am String @db.VarChar(255)
+  objective_en String @db.VarChar(255)
+  objective_ru String @db.VarChar(255)
+}
+
+model ProjectTechStach {
+  id Int @id @default(autoincrement())
+  projectName_am String @db.VarChar(255)
+  projectName_en String @db.VarChar(255)
+  projectName_ru String @db.VarChar(255)
+  techStackId Int
+}
+
+model Services {
+  id Int @id @default(autoincrement())
+  type_am String @db.VarChar(255)
+  type_en String @db.VarChar(255)
+  type_ru String @db.VarChar(255)
+  service_am String @db.VarChar(255)
+  service_en String @db.VarChar(255)
+  service_ru String @db.VarChar(255)
+  metaTitle_am String @db.VarChar(255)
+  metaTitle_en String @db.VarChar(255)
+  metaTitle_ru String @db.VarChar(255)
+  metaDescription_am String @db.VarChar(255)
+  metaDescription_en String @db.VarChar(255)
+  metaDescription_ru String @db.VarChar(255)
+  image String @db.VarChar(255)
+  url String @db.VarChar(255)
+  altText String @db.VarChar(255)
+}
+
+model StudentsReview {
+  id Int @id @default(autoincrement())
+  fullName_am String @db.VarChar(255)
+  fullName_en String @db.VarChar(255)
+  fullName_ru String @db.VarChar(255)
+  info_am String @db.VarChar(255)
+  info_en String @db.VarChar(255)
+  info_ru String @db.VarChar(255)
+  review_am String
+  review_en String
+  review_ru String
+  image String @db.VarChar(255)
+}
+
+model TeamMember {
+  id Int @id @default(autoincrement())
+  order Int
+  name_am String @db.VarChar(255)
+  name_en String @db.VarChar(255)
+  name_ru String @db.VarChar(255)
+  position_am String @db.VarChar(255)
+  position_en String @db.VarChar(255)
+  position_ru String @db.VarChar(255)
+  image String @db.VarChar(255)
+}
+
+model TechStack {
+  id Int @id @default(autoincrement())
+  name_am String @db.VarChar(255)
+  name_en String @db.VarChar(255)
+  name_ru String @db.VarChar(255)
+  image String @db.VarChar(255)
+}
+
+model Testimonials {
+  id Int @id @default(autoincrement())
+  fullName_am String @db.VarChar(255)
+  fullName_en String @db.VarChar(255)
+  fullName_ru String @db.VarChar(255)
+  info_am String @db.VarChar(255)
+  info_en String @db.VarChar(255)
+  info_ru String @db.VarChar(255)
+  review_am String
+  review_en String
+  review_ru String
+  image String @db.VarChar(255)
+}
+
+model TheyTrustUs {
+  id Int @id @default(autoincrement())
+  image String @db.VarChar(255)
+}
+
+model User {
+  id Int @id @default(autoincrement())
+  name String @db.VarChar(255)
+  surname String @db.VarChar(255)
+  email String @db.VarChar(255)
+  username String @db.VarChar(255)
+  password String @db.VarChar(255)
 }
