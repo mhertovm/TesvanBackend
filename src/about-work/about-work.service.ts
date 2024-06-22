@@ -1,42 +1,61 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { CreateAboutWorkDto } from './dto/create-about-work.dto';
 import { UpdateAboutWorkDto } from './dto/update-about-work.dto';
 
 import { PrismaClient } from '@prisma/client';
-
 const prisma = new PrismaClient();
 
 @Injectable()
 export class AboutWorkService {
   async create(createAboutWorkDto: CreateAboutWorkDto) {
-    const newAboutWork = await prisma.aboutWork.create({
-      data: createAboutWorkDto,
-    });
-    return newAboutWork;
+    try {
+      const newAboutWork = await prisma.aboutWork.create({
+        data: createAboutWorkDto,
+      });
+      return newAboutWork;
+    } catch (error) {
+      console.error(error.messgae);
+      throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   async findAll() {
-    const aboutWorks = await prisma.aboutWork.findMany()
-    return aboutWorks;
+    try {
+      const aboutWorks = await prisma.aboutWork.findMany()
+      return aboutWorks;
+    } catch (error) {
+      console.error(error.message);
+      throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   async findOne(id: number) {
-    const aboutWork = await prisma.aboutWork.findUnique({
-      where: {
-        id
-      },
-    })
-    return aboutWork;
+    try {
+      const aboutWork = await prisma.aboutWork.findUnique({
+        where: {
+          id,
+        },
+      })
+      return aboutWork;
+    } catch (error) {
+      console.error(error.message);
+      throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   async update(id: number, updateAboutWorkDto: UpdateAboutWorkDto) {
-    const updateAboutWork = await prisma.aboutWork.update({
-      where: {
-        id,
-      },
-      data: updateAboutWorkDto
-    })
-    return updateAboutWork;
+    try {
+      const updateAboutWork = await prisma.aboutWork.update({
+        where: {
+          id,
+        },
+        data: updateAboutWorkDto
+      })
+      return updateAboutWork;
+    } catch (error) {
+      console.error(error.message);
+      throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   async remove(id: number) {
@@ -48,7 +67,8 @@ export class AboutWorkService {
       })
       return deleteAboutWork;
     } catch (error) {
-      return `not found`
+      console.error(error.message);
+      throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 }

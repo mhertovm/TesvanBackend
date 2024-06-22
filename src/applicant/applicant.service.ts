@@ -1,26 +1,74 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { CreateApplicantDto } from './dto/create-applicant.dto';
 import { UpdateApplicantDto } from './dto/update-applicant.dto';
 
+import { PrismaClient } from '@prisma/client';
+const prisma = new PrismaClient();
+
 @Injectable()
 export class ApplicantService {
-  create(createApplicantDto: CreateApplicantDto) {
-    return 'This action adds a new applicant';
+  async create(createApplicantDto: CreateApplicantDto) {
+    try {
+      const newApplicant = await prisma.applicant.create({
+        data: createApplicantDto,
+      });
+      return newApplicant;
+    } catch (error) {
+      console.error(error.messgae);
+      throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
-  findAll() {
-    return `This action returns all applicant`;
+  async findAll() {
+    try {
+      const applicants = await prisma.applicant.findMany()
+      return applicants;
+    } catch (error) {
+      console.error(error.message);
+      throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} applicant`;
+  async findOne(id: number) {
+    try {
+      const applicant = await prisma.applicant.findUnique({
+        where: {
+          id,
+        },
+      })
+      return applicant;
+    } catch (error) {
+      console.error(error.message);
+      throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
-  update(id: number, updateApplicantDto: UpdateApplicantDto) {
-    return `This action updates a #${id} applicant`;
+  async update(id: number, updateApplicantDto: UpdateApplicantDto) {
+    try {
+      const updateApplicant = await prisma.applicant.update({
+        where: {
+          id,
+        },
+        data: updateApplicantDto
+      })
+      return updateApplicant;
+    } catch (error) {
+      console.error(error.message);
+      throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} applicant`;
+  async remove(id: number) {
+    try {
+      const deleteApplicant = await prisma.applicant.delete({
+        where: {
+          id,
+        },
+      })
+      return deleteApplicant;
+    } catch (error) {
+      console.error(error.message);
+      throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 }

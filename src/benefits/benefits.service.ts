@@ -1,26 +1,74 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { CreateBenefitDto } from './dto/create-benefit.dto';
 import { UpdateBenefitDto } from './dto/update-benefit.dto';
 
+import { PrismaClient } from '@prisma/client';
+const prisma = new PrismaClient();
+
 @Injectable()
 export class BenefitsService {
-  create(createBenefitDto: CreateBenefitDto) {
-    return 'This action adds a new benefit';
+  async create(createBenefitDto: CreateBenefitDto) {
+    try {
+      const newBenefit = await prisma.benefits.create({
+        data: createBenefitDto,
+      });
+      return newBenefit;
+    } catch (error) {
+      console.error(error.messgae);
+      throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
-  findAll() {
-    return `This action returns all benefits`;
+  async findAll() {
+    try {
+      const benefits = await prisma.benefits.findMany()
+      return benefits;
+    } catch (error) {
+      console.error(error.message);
+      throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} benefit`;
+  async findOne(id: number) {
+    try {
+      const benefit = await prisma.benefits.findUnique({
+        where: {
+          id,
+        },
+      })
+      return benefit;
+    } catch (error) {
+      console.error(error.message);
+      throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
-  update(id: number, updateBenefitDto: UpdateBenefitDto) {
-    return `This action updates a #${id} benefit`;
+  async update(id: number, updateBenefitDto: UpdateBenefitDto) {
+    try {
+      const updateBenefit = await prisma.benefits.update({
+        where: {
+          id,
+        },
+        data: updateBenefitDto
+      })
+      return updateBenefit;
+    } catch (error) {
+      console.error(error.message);
+      throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} benefit`;
+  async remove(id: number) {
+    try {
+      const deleteBenefit = await prisma.benefits.delete({
+        where: {
+          id,
+        },
+      })
+      return deleteBenefit;
+    } catch (error) {
+      console.error(error.message);
+      throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 }
