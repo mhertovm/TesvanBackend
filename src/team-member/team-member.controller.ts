@@ -2,8 +2,10 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { TeamMemberService } from './team-member.service';
 import { CreateTeamMemberDto } from './dto/create-team-member.dto';
 import { UpdateTeamMemberDto } from './dto/update-team-member.dto';
+import { ApiTags, ApiOperation, ApiResponse, ApiBody } from '@nestjs/swagger';         //////////////
 
-@Controller('team-member')
+@ApiTags('teamMember')
+@Controller('teamMember')
 export class TeamMemberController {
   constructor(private readonly teamMemberService: TeamMemberService) {}
 

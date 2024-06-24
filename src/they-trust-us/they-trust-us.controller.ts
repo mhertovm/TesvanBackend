@@ -2,8 +2,10 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { TheyTrustUsService } from './they-trust-us.service';
 import { CreateTheyTrustUsDto } from './dto/create-they-trust-us.dto';
 import { UpdateTheyTrustUsDto } from './dto/update-they-trust-us.dto';
+import { ApiTags, ApiOperation, ApiResponse, ApiBody } from '@nestjs/swagger';         //////////////
 
-@Controller('they-trust-us')
+@ApiTags('theyTrustUs')
+@Controller('theyTrustUs')
 export class TheyTrustUsController {
   constructor(private readonly theyTrustUsService: TheyTrustUsService) {}
 

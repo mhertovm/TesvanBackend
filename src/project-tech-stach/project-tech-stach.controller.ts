@@ -2,8 +2,10 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { ProjectTechStachService } from './project-tech-stach.service';
 import { CreateProjectTechStachDto } from './dto/create-project-tech-stach.dto';
 import { UpdateProjectTechStachDto } from './dto/update-project-tech-stach.dto';
+import { ApiTags, ApiOperation, ApiResponse, ApiBody } from '@nestjs/swagger';         //////////////
 
-@Controller('project-tech-stach')
+@ApiTags('projectTechStach')
+@Controller('projectTechStach')
 export class ProjectTechStachController {
   constructor(private readonly projectTechStachService: ProjectTechStachService) {}
 

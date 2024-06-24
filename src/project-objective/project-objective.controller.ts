@@ -2,8 +2,10 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { ProjectObjectiveService } from './project-objective.service';
 import { CreateProjectObjectiveDto } from './dto/create-project-objective.dto';
 import { UpdateProjectObjectiveDto } from './dto/update-project-objective.dto';
+import { ApiTags, ApiOperation, ApiResponse, ApiBody } from '@nestjs/swagger';         //////////////
 
-@Controller('project-objective')
+@ApiTags('projectObjective')
+@Controller('projectObjective')
 export class ProjectObjectiveController {
   constructor(private readonly projectObjectiveService: ProjectObjectiveService) {}
 

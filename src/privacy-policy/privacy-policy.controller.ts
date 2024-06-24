@@ -2,8 +2,10 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { PrivacyPolicyService } from './privacy-policy.service';
 import { CreatePrivacyPolicyDto } from './dto/create-privacy-policy.dto';
 import { UpdatePrivacyPolicyDto } from './dto/update-privacy-policy.dto';
+import { ApiTags, ApiOperation, ApiResponse, ApiBody } from '@nestjs/swagger';         //////////////
 
-@Controller('privacy-policy')
+@ApiTags('privacyPolicy')
+@Controller('privacyPolicy')
 export class PrivacyPolicyController {
   constructor(private readonly privacyPolicyService: PrivacyPolicyService) {}
 

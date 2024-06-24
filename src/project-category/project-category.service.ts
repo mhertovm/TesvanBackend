@@ -1,26 +1,74 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { CreateProjectCategoryDto } from './dto/create-project-category.dto';
 import { UpdateProjectCategoryDto } from './dto/update-project-category.dto';
 
+import { PrismaClient } from '@prisma/client';
+const prisma = new PrismaClient();
+
 @Injectable()
 export class ProjectCategoryService {
-  create(createProjectCategoryDto: CreateProjectCategoryDto) {
-    return 'This action adds a new projectCategory';
+  async create(createProjectCategoryDto: CreateProjectCategoryDto) {
+    try {
+      const newProjectCategory = await prisma.projectCategory.create({
+        data: createProjectCategoryDto,
+      });
+      return newProjectCategory;
+    } catch (error) {
+      console.error(error.messgae);
+      throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
-  findAll() {
-    return `This action returns all projectCategory`;
+  async findAll() {
+    try {
+      const projectCategory = await prisma.projectCategory.findMany()
+      return projectCategory;
+    } catch (error) {
+      console.error(error.message);
+      throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} projectCategory`;
+  async findOne(id: number) {
+    try {
+      const projectCategory = await prisma.projectCategory.findUnique({
+        where: {
+          id,
+        },
+      })
+      return projectCategory;
+    } catch (error) {
+      console.error(error.message);
+      throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
-  update(id: number, updateProjectCategoryDto: UpdateProjectCategoryDto) {
-    return `This action updates a #${id} projectCategory`;
+  async update(id: number, updateProjectCategoryDto: UpdateProjectCategoryDto) {
+    try {
+      const updateProjectCategory = await prisma.projectCategory.update({
+        where: {
+          id,
+        },
+        data: updateProjectCategoryDto
+      })
+      return updateProjectCategory;
+    } catch (error) {
+      console.error(error.message);
+      throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} projectCategory`;
+  async remove(id: number) {
+    try {
+      const deleteProjectCategory = await prisma.projectCategory.delete({
+        where: {
+          id,
+        },
+      })
+      return deleteProjectCategory;
+    } catch (error) {
+      console.error(error.message);
+      throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 }

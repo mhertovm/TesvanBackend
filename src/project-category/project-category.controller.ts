@@ -2,8 +2,10 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { ProjectCategoryService } from './project-category.service';
 import { CreateProjectCategoryDto } from './dto/create-project-category.dto';
 import { UpdateProjectCategoryDto } from './dto/update-project-category.dto';
+import { ApiTags, ApiOperation, ApiResponse, ApiBody } from '@nestjs/swagger';         //////////////
 
-@Controller('project-category')
+@ApiTags('projectCategory')
+@Controller('projectCategory')
 export class ProjectCategoryController {
   constructor(private readonly projectCategoryService: ProjectCategoryService) {}
 

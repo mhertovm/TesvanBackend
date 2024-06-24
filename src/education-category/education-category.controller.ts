@@ -2,8 +2,10 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { EducationCategoryService } from './education-category.service';
 import { CreateEducationCategoryDto } from './dto/create-education-category.dto';
 import { UpdateEducationCategoryDto } from './dto/update-education-category.dto';
+import { ApiTags, ApiOperation, ApiResponse, ApiBody } from '@nestjs/swagger';         //////////////
 
-@Controller('education-category')
+@ApiTags('educationCategory')
+@Controller('educationCategory')
 export class EducationCategoryController {
   constructor(private readonly educationCategoryService: EducationCategoryService) {}
 

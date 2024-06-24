@@ -2,8 +2,10 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { TechStackService } from './tech-stack.service';
 import { CreateTechStackDto } from './dto/create-tech-stack.dto';
 import { UpdateTechStackDto } from './dto/update-tech-stack.dto';
+import { ApiTags, ApiOperation, ApiResponse, ApiBody } from '@nestjs/swagger';         //////////////
 
-@Controller('tech-stack')
+@ApiTags('techStack')
+@Controller('techStack')
 export class TechStackController {
   constructor(private readonly techStackService: TechStackService) {}
 

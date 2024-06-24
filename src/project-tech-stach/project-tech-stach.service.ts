@@ -1,26 +1,74 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { CreateProjectTechStachDto } from './dto/create-project-tech-stach.dto';
 import { UpdateProjectTechStachDto } from './dto/update-project-tech-stach.dto';
 
+import { PrismaClient } from '@prisma/client';
+const prisma = new PrismaClient();
+
 @Injectable()
 export class ProjectTechStachService {
-  create(createProjectTechStachDto: CreateProjectTechStachDto) {
-    return 'This action adds a new projectTechStach';
+  async create(createProjectTechStachDto: CreateProjectTechStachDto) {
+    try {
+      const newProjectTechStach = await prisma.projectTechStach.create({
+        data: createProjectTechStachDto,
+      });
+      return newProjectTechStach;
+    } catch (error) {
+      console.error(error.messgae);
+      throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
-  findAll() {
-    return `This action returns all projectTechStach`;
+  async findAll() {
+    try {
+      const projectTechStach = await prisma.projectTechStach.findMany()
+      return projectTechStach;
+    } catch (error) {
+      console.error(error.message);
+      throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} projectTechStach`;
+  async findOne(id: number) {
+    try {
+      const projectTechStach = await prisma.projectTechStach.findUnique({
+        where: {
+          id,
+        },
+      })
+      return projectTechStach;
+    } catch (error) {
+      console.error(error.message);
+      throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
-  update(id: number, updateProjectTechStachDto: UpdateProjectTechStachDto) {
-    return `This action updates a #${id} projectTechStach`;
+  async update(id: number, updateProjectTechStachDto: UpdateProjectTechStachDto) {
+    try {
+      const updateProjectTechStach = await prisma.projectTechStach.update({
+        where: {
+          id,
+        },
+        data: updateProjectTechStachDto
+      })
+      return updateProjectTechStach;
+    } catch (error) {
+      console.error(error.message);
+      throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} projectTechStach`;
+  async remove(id: number) {
+    try {
+      const deleteProjectTechStach = await prisma.projectTechStach.delete({
+        where: {
+          id,
+        },
+      })
+      return deleteProjectTechStach;
+    } catch (error) {
+      console.error(error.message);
+      throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 }

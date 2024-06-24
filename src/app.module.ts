@@ -17,7 +17,6 @@ import { FaqModule } from './faq/faq.module';
 import { HireUsModule } from './hire-us/hire-us.module';
 import { PageTitlesModule } from './page-titles/page-titles.module';
 import { PrivacyPolicyModule } from './privacy-policy/privacy-policy.module';
-import { ProjectModule } from './project/project.module';
 import { ProjectCategoryModule } from './project-category/project-category.module';
 import { ProjectDetailModule } from './project-detail/project-detail.module';
 import { ProjectObjectiveModule } from './project-objective/project-objective.module';
@@ -32,9 +31,10 @@ import { OffersModule } from './offers/offers.module';
 import { ProjectTechStachModule } from './project-tech-stach/project-tech-stach.module';
 import { ServicesModule } from './services/services.module';
 import { TheyTrustUsModule } from './they-trust-us/they-trust-us.module';
+import { ProjectsModule } from './projects/projects.module';
 
 @Module({
-  imports: [AboutUsModule, JobsModule, AboutWorkModule, ApplicantModule, ApproachModule, BenefitsModule, BlogModule, CareersModule, ContactsModule, CoreValuesModule, CoursesModule, EducationsModule, FaqModule, HireUsModule, PageTitlesModule, PrivacyPolicyModule, ProjectModule, ProjectCategoryModule, ProjectDetailModule, ProjectObjectiveModule, StudentsReviewModule, TeamMemberModule, TechStackModule, TestimonialsModule, UserModule, CompanyModule, EducationCategoryModule, OffersModule, ProjectTechStachModule, ServicesModule, TheyTrustUsModule ],
+  imports: [AboutUsModule, JobsModule, AboutWorkModule, ApplicantModule, ApproachModule, BenefitsModule, BlogModule, CareersModule, ContactsModule, CoreValuesModule, CoursesModule, EducationsModule, FaqModule, HireUsModule, PageTitlesModule, PrivacyPolicyModule, ProjectCategoryModule, ProjectDetailModule, ProjectObjectiveModule, StudentsReviewModule, TeamMemberModule, TechStackModule, TestimonialsModule, UserModule, CompanyModule, EducationCategoryModule, OffersModule, ProjectTechStachModule, ServicesModule, TheyTrustUsModule, ProjectsModule ],
   controllers: [AppController],
   providers: [AppService],
 })

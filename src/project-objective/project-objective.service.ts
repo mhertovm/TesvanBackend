@@ -1,26 +1,74 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { CreateProjectObjectiveDto } from './dto/create-project-objective.dto';
 import { UpdateProjectObjectiveDto } from './dto/update-project-objective.dto';
 
+import { PrismaClient } from '@prisma/client';
+const prisma = new PrismaClient();
+
 @Injectable()
 export class ProjectObjectiveService {
-  create(createProjectObjectiveDto: CreateProjectObjectiveDto) {
-    return 'This action adds a new projectObjective';
+  async create(createProjectObjectiveDto: CreateProjectObjectiveDto) {
+    try {
+      const newProjectObjective = await prisma.projectObjective.create({
+        data: createProjectObjectiveDto,
+      });
+      return newProjectObjective;
+    } catch (error) {
+      console.error(error.messgae);
+      throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
-  findAll() {
-    return `This action returns all projectObjective`;
+  async findAll() {
+    try {
+      const projectObjective = await prisma.projectObjective.findMany()
+      return projectObjective;
+    } catch (error) {
+      console.error(error.message);
+      throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} projectObjective`;
+  async findOne(id: number) {
+    try {
+      const projectObjective = await prisma.projectObjective.findUnique({
+        where: {
+          id,
+        },
+      })
+      return projectObjective;
+    } catch (error) {
+      console.error(error.message);
+      throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
-  update(id: number, updateProjectObjectiveDto: UpdateProjectObjectiveDto) {
-    return `This action updates a #${id} projectObjective`;
+  async update(id: number, updateProjectObjectiveDto: UpdateProjectObjectiveDto) {
+    try {
+      const updateProjectObjective = await prisma.projectObjective.update({
+        where: {
+          id,
+        },
+        data: updateProjectObjectiveDto
+      })
+      return updateProjectObjective;
+    } catch (error) {
+      console.error(error.message);
+      throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} projectObjective`;
+  async remove(id: number) {
+    try {
+      const deleteProjectObjective = await prisma.projectObjective.delete({
+        where: {
+          id,
+        },
+      })
+      return deleteProjectObjective;
+    } catch (error) {
+      console.error(error.message);
+      throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 }

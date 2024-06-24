@@ -2,8 +2,10 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { PageTitlesService } from './page-titles.service';
 import { CreatePageTitleDto } from './dto/create-page-title.dto';
 import { UpdatePageTitleDto } from './dto/update-page-title.dto';
+import { ApiTags, ApiOperation, ApiResponse, ApiBody } from '@nestjs/swagger';         //////////////
 
-@Controller('page-titles')
+@ApiTags('pageTitles')
+@Controller('pageTitles')
 export class PageTitlesController {
   constructor(private readonly pageTitlesService: PageTitlesService) {}
 

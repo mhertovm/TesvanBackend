@@ -1,18 +1,18 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
-import { CreateServiceDto } from './dto/create-service.dto';
-import { UpdateServiceDto } from './dto/update-service.dto';
+import { CreateProjectDto } from './dto/create-project.dto';
+import { UpdateProjectDto } from './dto/update-project.dto';
 
 import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 @Injectable()
-export class ServicesService {
-  async create(createServiceDto: CreateServiceDto) {
+export class ProjectsService {
+  async create(createProjectDto: CreateProjectDto) {
     try {
-      const newServices = await prisma.services.create({
-        data: createServiceDto,
+      const newProjects = await prisma.projects.create({
+        data: createProjectDto,
       });
-      return newServices;
+      return newProjects;
     } catch (error) {
       console.error(error.messgae);
       throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
@@ -21,8 +21,8 @@ export class ServicesService {
 
   async findAll() {
     try {
-      const services = await prisma.services.findMany()
-      return services;
+      const projects = await prisma.projects.findMany()
+      return projects;
     } catch (error) {
       console.error(error.message);
       throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
@@ -31,27 +31,27 @@ export class ServicesService {
 
   async findOne(id: number) {
     try {
-      const servic = await prisma.services.findUnique({
+      const project = await prisma.projects.findUnique({
         where: {
           id,
         },
       })
-      return servic;
+      return project;
     } catch (error) {
       console.error(error.message);
       throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
-  async update(id: number, updateServiceDto: UpdateServiceDto) {
+  async update(id: number, updateProjectDto: UpdateProjectDto) {
     try {
-      const updateServices = await prisma.services.update({
+      const updateProjects = await prisma.projects.update({
         where: {
           id,
         },
-        data: updateServiceDto
+        data: updateProjectDto
       })
-      return updateServices;
+      return updateProjects;
     } catch (error) {
       console.error(error.message);
       throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
@@ -60,12 +60,12 @@ export class ServicesService {
 
   async remove(id: number) {
     try {
-      const deleteServices = await prisma.services.delete({
+      const deleteProjects = await prisma.projects.delete({
         where: {
           id,
         },
       })
-      return deleteServices;
+      return deleteProjects;
     } catch (error) {
       console.error(error.message);
       throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);

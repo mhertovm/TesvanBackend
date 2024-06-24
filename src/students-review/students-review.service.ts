@@ -1,26 +1,74 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { CreateStudentsReviewDto } from './dto/create-students-review.dto';
 import { UpdateStudentsReviewDto } from './dto/update-students-review.dto';
 
+import { PrismaClient } from '@prisma/client';
+const prisma = new PrismaClient();
+
 @Injectable()
 export class StudentsReviewService {
-  create(createStudentsReviewDto: CreateStudentsReviewDto) {
-    return 'This action adds a new studentsReview';
+  async create(createStudentsReviewDto: CreateStudentsReviewDto) {
+    try {
+      const newStudentsReview = await prisma.studentsReview.create({
+        data: createStudentsReviewDto,
+      });
+      return newStudentsReview;
+    } catch (error) {
+      console.error(error.messgae);
+      throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
-  findAll() {
-    return `This action returns all studentsReview`;
+  async findAll() {
+    try {
+      const studentsReview = await prisma.studentsReview.findMany()
+      return studentsReview;
+    } catch (error) {
+      console.error(error.message);
+      throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} studentsReview`;
+  async findOne(id: number) {
+    try {
+      const studentsReview = await prisma.studentsReview.findUnique({
+        where: {
+          id,
+        },
+      })
+      return studentsReview;
+    } catch (error) {
+      console.error(error.message);
+      throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
-  update(id: number, updateStudentsReviewDto: UpdateStudentsReviewDto) {
-    return `This action updates a #${id} studentsReview`;
+  async update(id: number, updateStudentsReviewDto: UpdateStudentsReviewDto) {
+    try {
+      const updateStudentsReview = await prisma.studentsReview.update({
+        where: {
+          id,
+        },
+        data: updateStudentsReviewDto
+      })
+      return updateStudentsReview;
+    } catch (error) {
+      console.error(error.message);
+      throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} studentsReview`;
+  async remove(id: number) {
+    try {
+      const deleteStudentsReview = await prisma.studentsReview.delete({
+        where: {
+          id,
+        },
+      })
+      return deleteStudentsReview;
+    } catch (error) {
+      console.error(error.message);
+      throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 }

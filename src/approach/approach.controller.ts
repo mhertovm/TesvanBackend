@@ -2,7 +2,9 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { ApproachService } from './approach.service';
 import { CreateApproachDto } from './dto/create-approach.dto';
 import { UpdateApproachDto } from './dto/update-approach.dto';
+import { ApiTags, ApiOperation, ApiResponse, ApiBody } from '@nestjs/swagger';         //////////////
 
+@ApiTags('approach')
 @Controller('approach')
 export class ApproachController {
   constructor(private readonly approachService: ApproachService) {}

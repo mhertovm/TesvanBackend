@@ -1,1 +1,3 @@
-export class CreateTheyTrustUsDto {}
+export class CreateTheyTrustUsDto {
+    image: string
+}

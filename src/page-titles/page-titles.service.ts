@@ -1,26 +1,74 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { CreatePageTitleDto } from './dto/create-page-title.dto';
 import { UpdatePageTitleDto } from './dto/update-page-title.dto';
 
+import { PrismaClient } from '@prisma/client';
+const prisma = new PrismaClient();
+
 @Injectable()
 export class PageTitlesService {
-  create(createPageTitleDto: CreatePageTitleDto) {
-    return 'This action adds a new pageTitle';
+  async create(createPageTitleDto: CreatePageTitleDto) {
+    try {
+      const newAboutWork = await prisma.pageTitles.create({
+        data: createPageTitleDto,
+      });
+      return newAboutWork;
+    } catch (error) {
+      console.error(error.messgae);
+      throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
-  findAll() {
-    return `This action returns all pageTitles`;
+  async findAll() {
+    try {
+      const pageTitles = await prisma.pageTitles.findMany()
+      return pageTitles;
+    } catch (error) {
+      console.error(error.message);
+      throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} pageTitle`;
+  async findOne(id: number) {
+    try {
+      const pageTitl = await prisma.pageTitles.findUnique({
+        where: {
+          id,
+        },
+      })
+      return pageTitl;
+    } catch (error) {
+      console.error(error.message);
+      throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
-  update(id: number, updatePageTitleDto: UpdatePageTitleDto) {
-    return `This action updates a #${id} pageTitle`;
+  async update(id: number, updatePageTitleDto: UpdatePageTitleDto) {
+    try {
+      const updatePageTitles = await prisma.pageTitles.update({
+        where: {
+          id,
+        },
+        data: updatePageTitleDto
+      })
+      return updatePageTitles;
+    } catch (error) {
+      console.error(error.message);
+      throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} pageTitle`;
+  async remove(id: number) {
+    try {
+      const deletePageTitles = await prisma.pageTitles.delete({
+        where: {
+          id,
+        },
+      })
+      return deletePageTitles;
+    } catch (error) {
+      console.error(error.message);
+      throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 }

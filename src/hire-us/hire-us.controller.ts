@@ -2,7 +2,9 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { HireUsService } from './hire-us.service';
 import { CreateHireUsDto } from './dto/create-hire-us.dto';
 import { UpdateHireUsDto } from './dto/update-hire-us.dto';
+import { ApiTags, ApiOperation, ApiResponse, ApiBody } from '@nestjs/swagger';         //////////////
 
+@ApiTags('hireUs')
 @Controller('hireUs')
 export class HireUsController {
   constructor(private readonly hireUsService: HireUsService) {}

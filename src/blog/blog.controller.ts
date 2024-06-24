@@ -6,12 +6,11 @@ import { ApiTags, ApiOperation, ApiResponse, ApiBody } from '@nestjs/swagger';  
 
 @ApiTags('blog')                                                                       /////////////
 @Controller('blog')
-
 export class BlogController {
   constructor(private readonly blogService: BlogService) {}
 
   @Post()
-  @ApiOperation({ summary: 'Create a user' })                                           //////////////
+  @ApiOperation({ summary: 'Create a blog' })                                           //////////////
   @ApiResponse({ status: 201, description: 'The created user', type: CreateBlogDto })   //////////////
   @ApiBody({ type: CreateBlogDto })                                                     //////////////
   create(@Body() createBlogDto: CreateBlogDto) {
@@ -19,21 +18,25 @@ export class BlogController {
   }
 
   @Get()
+  @ApiOperation({ summary: 'Find all blogs' })
   findAll() {
     return this.blogService.findAll();
   }
 
   @Get(':id')
+  @ApiOperation({ summary: 'Find one blog' })
   findOne(@Param('id') id: string) {
     return this.blogService.findOne(+id);
   }
 
   @Patch(':id')
+  @ApiOperation({ summary: 'Update a blog' })
   update(@Param('id') id: string, @Body() updateBlogDto: UpdateBlogDto) {
     return this.blogService.update(+id, updateBlogDto);
   }
 
   @Delete(':id')
+  @ApiOperation({ summary: 'Delete a blog' })
   remove(@Param('id') id: string) {
     return this.blogService.remove(+id);
   }

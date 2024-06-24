@@ -1,26 +1,74 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { CreatePrivacyPolicyDto } from './dto/create-privacy-policy.dto';
 import { UpdatePrivacyPolicyDto } from './dto/update-privacy-policy.dto';
 
+import { PrismaClient } from '@prisma/client';
+const prisma = new PrismaClient();
+
 @Injectable()
 export class PrivacyPolicyService {
-  create(createPrivacyPolicyDto: CreatePrivacyPolicyDto) {
-    return 'This action adds a new privacyPolicy';
+  async create(createPrivacyPolicyDto: CreatePrivacyPolicyDto) {
+    try {
+      const newPrivacyPolicy = await prisma.privacyPolicy.create({
+        data: createPrivacyPolicyDto,
+      });
+      return newPrivacyPolicy;
+    } catch (error) {
+      console.error(error.messgae);
+      throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
-  findAll() {
-    return `This action returns all privacyPolicy`;
+  async findAll() {
+    try {
+      const privacyPolicy = await prisma.privacyPolicy.findMany()
+      return privacyPolicy;
+    } catch (error) {
+      console.error(error.message);
+      throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} privacyPolicy`;
+  async findOne(id: number) {
+    try {
+      const privacyPolicy = await prisma.privacyPolicy.findUnique({
+        where: {
+          id,
+        },
+      })
+      return privacyPolicy;
+    } catch (error) {
+      console.error(error.message);
+      throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
-  update(id: number, updatePrivacyPolicyDto: UpdatePrivacyPolicyDto) {
-    return `This action updates a #${id} privacyPolicy`;
+  async update(id: number, updatePrivacyPolicyDto: UpdatePrivacyPolicyDto) {
+    try {
+      const updatePrivacyPolicy = await prisma.privacyPolicy.update({
+        where: {
+          id,
+        },
+        data: updatePrivacyPolicyDto
+      })
+      return updatePrivacyPolicy;
+    } catch (error) {
+      console.error(error.message);
+      throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} privacyPolicy`;
+  async remove(id: number) {
+    try {
+      const deletePrivacyPolicy = await prisma.privacyPolicy.delete({
+        where: {
+          id,
+        },
+      })
+      return deletePrivacyPolicy;
+    } catch (error) {
+      console.error(error.message);
+      throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 }

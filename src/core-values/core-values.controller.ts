@@ -2,7 +2,9 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { CoreValuesService } from './core-values.service';
 import { CreateCoreValueDto } from './dto/create-core-value.dto';
 import { UpdateCoreValueDto } from './dto/update-core-value.dto';
+import { ApiTags, ApiOperation, ApiResponse, ApiBody } from '@nestjs/swagger';         //////////////
 
+@ApiTags('coreValues')
 @Controller('coreValues')
 export class CoreValuesController {
   constructor(private readonly coreValuesService: CoreValuesService) {}
