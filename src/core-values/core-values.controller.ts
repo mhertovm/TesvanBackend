@@ -3,7 +3,7 @@ import { CoreValuesService } from './core-values.service';
 import { CreateCoreValueDto } from './dto/create-core-value.dto';
 import { UpdateCoreValueDto } from './dto/update-core-value.dto';
 
-@Controller('core-values')
+@Controller('coreValues')
 export class CoreValuesController {
   constructor(private readonly coreValuesService: CoreValuesService) {}
 

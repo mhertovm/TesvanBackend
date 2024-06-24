@@ -3,7 +3,7 @@ import { AboutUsService } from './about-us.service';
 import { CreateAboutUsDto } from './dto/create-about-us.dto';
 import { UpdateAboutUsDto } from './dto/update-about-us.dto';
 
-@Controller('about-us')
+@Controller('aboutUs')
 export class AboutUsController {
   constructor(private readonly aboutUsService: AboutUsService) { }
 

@@ -3,7 +3,7 @@ import { HireUsService } from './hire-us.service';
 import { CreateHireUsDto } from './dto/create-hire-us.dto';
 import { UpdateHireUsDto } from './dto/update-hire-us.dto';
 
-@Controller('hire-us')
+@Controller('hireUs')
 export class HireUsController {
   constructor(private readonly hireUsService: HireUsService) {}
 

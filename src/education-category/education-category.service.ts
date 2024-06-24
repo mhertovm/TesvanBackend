@@ -1,26 +1,74 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { CreateEducationCategoryDto } from './dto/create-education-category.dto';
 import { UpdateEducationCategoryDto } from './dto/update-education-category.dto';
 
+import { PrismaClient } from '@prisma/client';
+const prisma = new PrismaClient();
+
 @Injectable()
 export class EducationCategoryService {
-  create(createEducationCategoryDto: CreateEducationCategoryDto) {
-    return 'This action adds a new educationCategory';
+  async create(createEducationCategoryDto: CreateEducationCategoryDto) {
+    try {
+      const newEducationCategory = await prisma.educationCategory.create({
+        data: createEducationCategoryDto,
+      });
+      return newEducationCategory;
+    } catch (error) {
+      console.error(error.messgae);
+      throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
-  findAll() {
-    return `This action returns all educationCategory`;
+  async findAll() {
+    try {
+      const educationCategory = await prisma.educationCategory.findMany()
+      return educationCategory;
+    } catch (error) {
+      console.error(error.message);
+      throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} educationCategory`;
+  async findOne(id: number) {
+    try {
+      const educationCategory = await prisma.educationCategory.findUnique({
+        where: {
+          id,
+        },
+      })
+      return educationCategory;
+    } catch (error) {
+      console.error(error.message);
+      throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
-  update(id: number, updateEducationCategoryDto: UpdateEducationCategoryDto) {
-    return `This action updates a #${id} educationCategory`;
+  async update(id: number, updateEducationCategoryDto: UpdateEducationCategoryDto) {
+    try {
+      const updateEducationCategory = await prisma.educationCategory.update({
+        where: {
+          id,
+        },
+        data: updateEducationCategoryDto
+      })
+      return updateEducationCategory;
+    } catch (error) {
+      console.error(error.message);
+      throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} educationCategory`;
+  async remove(id: number) {
+    try {
+      const deleteEducationCategory = await prisma.educationCategory.delete({
+        where: {
+          id,
+        },
+      })
+      return deleteEducationCategory;
+    } catch (error) {
+      console.error(error.message);
+      throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 }

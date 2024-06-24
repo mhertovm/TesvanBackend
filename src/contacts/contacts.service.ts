@@ -1,26 +1,74 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { CreateContactDto } from './dto/create-contact.dto';
 import { UpdateContactDto } from './dto/update-contact.dto';
 
+import { PrismaClient } from '@prisma/client';
+const prisma = new PrismaClient();
+
 @Injectable()
 export class ContactsService {
-  create(createContactDto: CreateContactDto) {
-    return 'This action adds a new contact';
+  async create(createContactDto: CreateContactDto) {
+    try {
+      const newContacts = await prisma.contacts.create({
+        data: createContactDto,
+      });
+      return newContacts;
+    } catch (error) {
+      console.error(error.messgae);
+      throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
-  findAll() {
-    return `This action returns all contacts`;
+  async findAll() {
+    try {
+      const contacts = await prisma.contacts.findMany()
+      return contacts;
+    } catch (error) {
+      console.error(error.message);
+      throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} contact`;
+  async findOne(id: number) {
+    try {
+      const contact = await prisma.contacts.findUnique({
+        where: {
+          id,
+        },
+      })
+      return contact;
+    } catch (error) {
+      console.error(error.message);
+      throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
-  update(id: number, updateContactDto: UpdateContactDto) {
-    return `This action updates a #${id} contact`;
+  async update(id: number, updateContactDto: UpdateContactDto) {
+    try {
+      const updateContacts = await prisma.contacts.update({
+        where: {
+          id,
+        },
+        data: updateContactDto
+      })
+      return updateContacts;
+    } catch (error) {
+      console.error(error.message);
+      throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} contact`;
+  async remove(id: number) {
+    try {
+      const deleteContacts = await prisma.contacts.delete({
+        where: {
+          id,
+        },
+      })
+      return deleteContacts;
+    } catch (error) {
+      console.error(error.message);
+      throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 }

@@ -34,7 +34,7 @@ import { ServicesModule } from './services/services.module';
 import { TheyTrustUsModule } from './they-trust-us/they-trust-us.module';
 
 @Module({
-  imports: [AboutUsModule, JobsModule, AboutWorkModule, ApplicantModule, ApproachModule, BenefitsModule, BlogModule, CareersModule, ContactsModule, CoreValuesModule, CoursesModule, EducationsModule, FaqModule, HireUsModule, PageTitlesModule, PrivacyPolicyModule, ProjectModule, ProjectCategoryModule, ProjectDetailModule, ProjectObjectiveModule, StudentsReviewModule, TeamMemberModule, TechStackModule, TestimonialsModule, UserModule, CompanyModule, EducationCategoryModule, OffersModule, ProjectTechStachModule, ServicesModule, TheyTrustUsModule],
+  imports: [AboutUsModule, JobsModule, AboutWorkModule, ApplicantModule, ApproachModule, BenefitsModule, BlogModule, CareersModule, ContactsModule, CoreValuesModule, CoursesModule, EducationsModule, FaqModule, HireUsModule, PageTitlesModule, PrivacyPolicyModule, ProjectModule, ProjectCategoryModule, ProjectDetailModule, ProjectObjectiveModule, StudentsReviewModule, TeamMemberModule, TechStackModule, TestimonialsModule, UserModule, CompanyModule, EducationCategoryModule, OffersModule, ProjectTechStachModule, ServicesModule, TheyTrustUsModule ],
   controllers: [AppController],
   providers: [AppService],
 })

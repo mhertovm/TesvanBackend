@@ -1,4 +1,7 @@
+import { ApiProperty } from '@nestjs/swagger';/////////////////
+
 export class CreateBlogDto {
+    @ApiProperty({ example: 'John Doe' })     //////////////////
     metaTitle_am: string
     metaTitle_en: string
     metaTitle_ru: string

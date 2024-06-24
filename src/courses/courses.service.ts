@@ -1,26 +1,74 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { CreateCourseDto } from './dto/create-course.dto';
 import { UpdateCourseDto } from './dto/update-course.dto';
 
+import { PrismaClient } from '@prisma/client';
+const prisma = new PrismaClient();
+
 @Injectable()
 export class CoursesService {
-  create(createCourseDto: CreateCourseDto) {
-    return 'This action adds a new course';
+  async create(createCourseDto: CreateCourseDto) {
+    try {
+      const newCourses = await prisma.courses.create({
+        data: createCourseDto,
+      });
+      return newCourses;
+    } catch (error) {
+      console.error(error.messgae);
+      throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
-  findAll() {
-    return `This action returns all courses`;
+  async findAll() {
+    try {
+      const courses = await prisma.courses.findMany()
+      return courses;
+    } catch (error) {
+      console.error(error.message);
+      throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} course`;
+  async findOne(id: number) {
+    try {
+      const course = await prisma.courses.findUnique({
+        where: {
+          id,
+        },
+      })
+      return course;
+    } catch (error) {
+      console.error(error.message);
+      throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
-  update(id: number, updateCourseDto: UpdateCourseDto) {
-    return `This action updates a #${id} course`;
+  async update(id: number, updateCourseDto: UpdateCourseDto) {
+    try {
+      const updateCourses = await prisma.courses.update({
+        where: {
+          id,
+        },
+        data: updateCourseDto
+      })
+      return updateCourses;
+    } catch (error) {
+      console.error(error.message);
+      throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} course`;
+  async remove(id: number) {
+    try {
+      const deleteCourses = await prisma.courses.delete({
+        where: {
+          id,
+        },
+      })
+      return deleteCourses;
+    } catch (error) {
+      console.error(error.message);
+      throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 }
