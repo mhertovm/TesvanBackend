@@ -18,7 +18,7 @@ export class BlogController {
   }
 
   @Get()
-  @ApiOperation({ summary: 'Find all blogs' })
+  @ApiOperation({ summary: 'Find all blog' })
   findAll() {
     return this.blogService.findAll();
   }
