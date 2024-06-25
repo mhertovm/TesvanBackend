@@ -11,8 +11,8 @@ export class BlogController {
 
   @Post()
   @ApiOperation({ summary: 'Create a blog' })                                           //////////////
-  @ApiResponse({ status: 201, description: 'The created user', type: CreateBlogDto })   //////////////
-  @ApiBody({ type: CreateBlogDto })                                                     //////////////
+  // @ApiResponse({ status: 201, description: 'The created user', type: CreateBlogDto })   //////////////
+  // @ApiBody({ type: CreateBlogDto })                                                     //////////////
   create(@Body() createBlogDto: CreateBlogDto) {
     return this.blogService.create(createBlogDto);
   }
