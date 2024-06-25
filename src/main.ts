@@ -9,10 +9,11 @@ async function bootstrap() {
     .setTitle('Prisma Examples')
     .setDescription('The prisma-examples REST API definition')
     .setVersion('1.0')
+    .addServer('https://tesvan.com/service')
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('service/api', app, document);
+  SwaggerModule.setup('api', app, document);
 
   await app.listen(4000)
 }
