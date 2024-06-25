@@ -7,7 +7,7 @@ import { ApiTags, ApiOperation, ApiResponse, ApiBody } from '@nestjs/swagger';  
 @ApiTags('blog')                                                                       /////////////
 @Controller('blog')
 export class BlogController {
-  constructor(private readonly blogService: BlogService) {}
+  constructor(private readonly blogService: BlogService) { }
 
   @Post()
   @ApiOperation({ summary: 'Create a blog' })                                           //////////////
