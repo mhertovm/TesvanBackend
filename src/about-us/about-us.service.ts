@@ -16,30 +16,20 @@ export class AboutUsService {
     } catch (error) {
       console.error(error.messgae);
       throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
+    } finally {
+      await prisma.$disconnect();
     }
   }
 
-  async findAll() {
+  async findOne() {
     try {
-      const aboutUs = await prisma.aboutUs.findMany()
+      const aboutUs = await prisma.aboutUs.findFirst()
       return aboutUs;
     } catch (error) {
       console.error(error.message);
       throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-  }
-
-  async findOne(id: number) {
-    try {
-      const aboutUs = await prisma.aboutUs.findUnique({
-        where: {
-          id,
-        },
-      })
-      return aboutUs;
-    } catch (error) {
-      console.error(error.message);
-      throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
+    } finally {
+      await prisma.$disconnect();
     }
   }
 
@@ -55,6 +45,8 @@ export class AboutUsService {
     } catch (error) {
       console.error(error.message);
       throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
+    } finally {
+      await prisma.$disconnect();
     }
   }
 
@@ -69,6 +61,8 @@ export class AboutUsService {
     } catch (error) {
       console.error(error.message);
       throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
+    } finally {
+      await prisma.$disconnect();
     }
   }
 }

@@ -4,11 +4,7 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class UpdateTechStackDto extends PartialType(CreateTechStackDto) {
     @ApiProperty()
-    name_am: string
-    @ApiProperty()
-    name_en: string
-    @ApiProperty()
-    name_ru: string
+    name: string
     @ApiProperty()
     image: string
 }

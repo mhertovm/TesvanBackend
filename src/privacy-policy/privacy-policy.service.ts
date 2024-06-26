@@ -19,23 +19,9 @@ export class PrivacyPolicyService {
     }
   }
 
-  async findAll() {
+  async findOne() {
     try {
-      const privacyPolicy = await prisma.privacyPolicy.findMany()
-      return privacyPolicy;
-    } catch (error) {
-      console.error(error.message);
-      throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-  }
-
-  async findOne(id: number) {
-    try {
-      const privacyPolicy = await prisma.privacyPolicy.findUnique({
-        where: {
-          id,
-        },
-      })
+      const privacyPolicy = await prisma.privacyPolicy.findFirst()
       return privacyPolicy;
     } catch (error) {
       console.error(error.message);

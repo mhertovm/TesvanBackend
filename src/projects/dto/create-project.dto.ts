@@ -2,11 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateProjectDto {
     @ApiProperty()
-    name_am: string
-    @ApiProperty()
-    name_en: string
-    @ApiProperty()
-    name_ru: string
+    name: string
     @ApiProperty()
     metaTitle_am: string
     @ApiProperty()

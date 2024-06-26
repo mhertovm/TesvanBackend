@@ -107,22 +107,6 @@ model Careers {
   jobDescription_ru String @db.VarChar(255)
 }
 
-model Company {
-  id Int @id @default(autoincrement())
-  name_am String @db.VarChar(255)
-  name_en String @db.VarChar(255)
-  name_ru String @db.VarChar(255)
-  metaTitle_am String @db.VarChar(255)
-  metaTitle_en String @db.VarChar(255)
-  metaTitle_ru String @db.VarChar(255)
-  metaDescription_am String @db.VarChar(255)
-  metaDescription_en String @db.VarChar(255)
-  metaDescription_ru String @db.VarChar(255)
-  title_am String @db.VarChar(255)
-  title_en String @db.VarChar(255)
-  title_ru String @db.VarChar(255)
-}
-
 model Contacts {
   id Int @id @default(autoincrement()) 
   fullName String @db.VarChar(255)
@@ -279,9 +263,7 @@ model PrivacyPolicy {
 
 model Projects {
   id Int @id @default(autoincrement())
-  name_am String @db.VarChar(255)
-  name_en String @db.VarChar(255)
-  name_ru String @db.VarChar(255)
+  name String @db.VarChar(255)
   metaTitle_am String @db.VarChar(255)
   metaTitle_en String @db.VarChar(255)
   metaTitle_ru String @db.VarChar(255)
@@ -393,9 +375,7 @@ model TeamMember {
 
 model TechStack {
   id Int @id @default(autoincrement())
-  name_am String @db.VarChar(255)
-  name_en String @db.VarChar(255)
-  name_ru String @db.VarChar(255)
+  name String @db.VarChar(255)
   image String @db.VarChar(255)
 }
 

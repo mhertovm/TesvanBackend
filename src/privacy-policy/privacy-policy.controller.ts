@@ -16,15 +16,9 @@ export class PrivacyPolicyController {
   }
 
   @Get()
-  @ApiOperation({ summary: 'Find all privacyPolicy' })
-  findAll() {
-    return this.privacyPolicyService.findAll();
-  }
-
-  @Get(':id')
   @ApiOperation({ summary: 'Find one privacyPolicy' })
-  findOne(@Param('id') id: string) {
-    return this.privacyPolicyService.findOne(+id);
+  findOne() {
+    return this.privacyPolicyService.findOne();
   }
 
   @Patch(':id')

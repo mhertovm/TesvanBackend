@@ -16,15 +16,9 @@ export class AboutUsController {
   }
 
   @Get()
-  @ApiOperation({ summary: 'Find all aboutUs' })
-  findAll() {
-    return this.aboutUsService.findAll();
-  }
-
-  @Get(':id')
   @ApiOperation({ summary: 'Find one aboutUs' })
-  findOne(@Param('id') id: string) {
-    return this.aboutUsService.findOne(+id);
+  findOne() {
+    return this.aboutUsService.findOne();
   }
 
   @Patch(':id')

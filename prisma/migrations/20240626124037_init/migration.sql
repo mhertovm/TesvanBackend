@@ -322,9 +322,7 @@ CREATE TABLE "PrivacyPolicy" (
 -- CreateTable
 CREATE TABLE "Projects" (
     "id" SERIAL NOT NULL,
-    "name_am" VARCHAR(255) NOT NULL,
-    "name_en" VARCHAR(255) NOT NULL,
-    "name_ru" VARCHAR(255) NOT NULL,
+    "name" VARCHAR(255) NOT NULL,
     "metaTitle_am" VARCHAR(255) NOT NULL,
     "metaTitle_en" VARCHAR(255) NOT NULL,
     "metaTitle_ru" VARCHAR(255) NOT NULL,
