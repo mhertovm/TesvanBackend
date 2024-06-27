@@ -16,16 +16,24 @@ export class TechStackService {
     } catch (error) {
       console.error(error.messgae);
       throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
+    } finally {
+      await prisma.$disconnect();
     }
   }
 
   async findAll() {
     try {
-      const techStack = await prisma.techStack.findMany()
+      const techStack = await prisma.techStack.findMany({
+        include: {
+          projectTechStach: true
+        }
+      })
       return techStack;
     } catch (error) {
       console.error(error.message);
       throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
+    } finally {
+      await prisma.$disconnect();
     }
   }
 
@@ -40,6 +48,8 @@ export class TechStackService {
     } catch (error) {
       console.error(error.message);
       throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
+    } finally {
+      await prisma.$disconnect();
     }
   }
 
@@ -55,6 +65,8 @@ export class TechStackService {
     } catch (error) {
       console.error(error.message);
       throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
+    } finally {
+      await prisma.$disconnect();
     }
   }
 
@@ -69,6 +81,8 @@ export class TechStackService {
     } catch (error) {
       console.error(error.message);
       throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
+    } finally {
+      await prisma.$disconnect();
     }
   }
 }

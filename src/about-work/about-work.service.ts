@@ -14,8 +14,10 @@ export class AboutWorkService {
       });
       return newAboutWork;
     } catch (error) {
-      console.error(error.messgae);
+      console.error(error);
       throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
+    } finally {
+      await prisma.$disconnect();
     }
   }
 
@@ -24,8 +26,10 @@ export class AboutWorkService {
       const aboutWorks = await prisma.aboutWork.findMany()
       return aboutWorks;
     } catch (error) {
-      console.error(error.message);
+      console.error(error);
       throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
+    } finally {
+      await prisma.$disconnect();
     }
   }
 
@@ -38,8 +42,10 @@ export class AboutWorkService {
       })
       return aboutWork;
     } catch (error) {
-      console.error(error.message);
+      console.error(error);
       throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
+    } finally {
+      await prisma.$disconnect();
     }
   }
 
@@ -53,8 +59,10 @@ export class AboutWorkService {
       })
       return updateAboutWork;
     } catch (error) {
-      console.error(error.message);
+      console.error(error);
       throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
+    } finally {
+      await prisma.$disconnect();
     }
   }
 
@@ -67,8 +75,10 @@ export class AboutWorkService {
       })
       return deleteAboutWork;
     } catch (error) {
-      console.error(error.message);
+      console.error(error);
       throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
+    } finally {
+      await prisma.$disconnect();
     }
   }
 }

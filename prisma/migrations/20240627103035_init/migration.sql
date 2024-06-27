@@ -114,25 +114,6 @@ CREATE TABLE "Careers" (
 );
 
 -- CreateTable
-CREATE TABLE "Company" (
-    "id" SERIAL NOT NULL,
-    "name_am" VARCHAR(255) NOT NULL,
-    "name_en" VARCHAR(255) NOT NULL,
-    "name_ru" VARCHAR(255) NOT NULL,
-    "metaTitle_am" VARCHAR(255) NOT NULL,
-    "metaTitle_en" VARCHAR(255) NOT NULL,
-    "metaTitle_ru" VARCHAR(255) NOT NULL,
-    "metaDescription_am" VARCHAR(255) NOT NULL,
-    "metaDescription_en" VARCHAR(255) NOT NULL,
-    "metaDescription_ru" VARCHAR(255) NOT NULL,
-    "title_am" VARCHAR(255) NOT NULL,
-    "title_en" VARCHAR(255) NOT NULL,
-    "title_ru" VARCHAR(255) NOT NULL,
-
-    CONSTRAINT "Company_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
 CREATE TABLE "Contacts" (
     "id" SERIAL NOT NULL,
     "fullName" VARCHAR(255) NOT NULL,
@@ -393,9 +374,7 @@ CREATE TABLE "ProjectObjective" (
 -- CreateTable
 CREATE TABLE "ProjectTechStach" (
     "id" SERIAL NOT NULL,
-    "projectName_am" VARCHAR(255) NOT NULL,
-    "projectName_en" VARCHAR(255) NOT NULL,
-    "projectName_ru" VARCHAR(255) NOT NULL,
+    "projectName" VARCHAR(255) NOT NULL,
     "techStackId" INTEGER NOT NULL,
 
     CONSTRAINT "ProjectTechStach_pkey" PRIMARY KEY ("id")
@@ -458,9 +437,7 @@ CREATE TABLE "TeamMember" (
 -- CreateTable
 CREATE TABLE "TechStack" (
     "id" SERIAL NOT NULL,
-    "name_am" VARCHAR(255) NOT NULL,
-    "name_en" VARCHAR(255) NOT NULL,
-    "name_ru" VARCHAR(255) NOT NULL,
+    "name" VARCHAR(255) NOT NULL,
     "image" VARCHAR(255) NOT NULL,
 
     CONSTRAINT "TechStack_pkey" PRIMARY KEY ("id")
@@ -502,3 +479,9 @@ CREATE TABLE "User" (
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );
+
+-- CreateIndex
+CREATE UNIQUE INDEX "ProjectTechStach_techStackId_key" ON "ProjectTechStach"("techStackId");
+
+-- AddForeignKey
+ALTER TABLE "ProjectTechStach" ADD CONSTRAINT "ProjectTechStach_techStackId_fkey" FOREIGN KEY ("techStackId") REFERENCES "TechStack"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

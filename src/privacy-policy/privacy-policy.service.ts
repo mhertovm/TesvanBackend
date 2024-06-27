@@ -16,6 +16,8 @@ export class PrivacyPolicyService {
     } catch (error) {
       console.error(error.messgae);
       throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
+    } finally {
+      await prisma.$disconnect();
     }
   }
 
@@ -26,6 +28,8 @@ export class PrivacyPolicyService {
     } catch (error) {
       console.error(error.message);
       throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
+    } finally {
+      await prisma.$disconnect();
     }
   }
 
@@ -41,6 +45,8 @@ export class PrivacyPolicyService {
     } catch (error) {
       console.error(error.message);
       throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
+    } finally {
+      await prisma.$disconnect();
     }
   }
 
@@ -55,6 +61,8 @@ export class PrivacyPolicyService {
     } catch (error) {
       console.error(error.message);
       throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
+    } finally {
+      await prisma.$disconnect();
     }
   }
 }

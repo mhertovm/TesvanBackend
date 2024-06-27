@@ -13,8 +13,8 @@ export class AboutUsService {
         data: createAboutUsDto
       });
       return newAboutUs;
-    } catch (error) {
-      console.error(error.messgae);
+    } catch (error) {      
+      console.error(error);
       throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
     } finally {
       await prisma.$disconnect();
@@ -26,7 +26,7 @@ export class AboutUsService {
       const aboutUs = await prisma.aboutUs.findFirst()
       return aboutUs;
     } catch (error) {
-      console.error(error.message);
+      console.error(error);
       throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
     } finally {
       await prisma.$disconnect();
@@ -43,7 +43,7 @@ export class AboutUsService {
       })
       return updateAboutUs;
     } catch (error) {
-      console.error(error.message);
+      console.error(error);
       throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
     } finally {
       await prisma.$disconnect();
@@ -59,7 +59,7 @@ export class AboutUsService {
       })
       return deleteAboutUs;
     } catch (error) {
-      console.error(error.message);
+      console.error(error);
       throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
     } finally {
       await prisma.$disconnect();

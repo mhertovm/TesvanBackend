@@ -322,10 +322,9 @@ model ProjectObjective {
 
 model ProjectTechStach {
   id Int @id @default(autoincrement())
-  projectName_am String @db.VarChar(255)
-  projectName_en String @db.VarChar(255)
-  projectName_ru String @db.VarChar(255)
-  techStackId Int
+  projectName String @db.VarChar(255)
+  techStackId Int @unique
+  tachStach TechStack @relation(fields: [techStackId], references: [id])
 }
 
 model Services {
@@ -377,6 +376,7 @@ model TechStack {
   id Int @id @default(autoincrement())
   name String @db.VarChar(255)
   image String @db.VarChar(255)
+  projectTechStach ProjectTechStach?
 }
 
 model Testimonials {
