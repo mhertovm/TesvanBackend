@@ -14,7 +14,7 @@ export class OffersService {
       });
       return newOffers;
     } catch (error) {
-      console.error(error.messgae);
+      console.error(error);
       throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
     } finally {
       await prisma.$disconnect();
@@ -26,7 +26,7 @@ export class OffersService {
       const offers = await prisma.offers.findMany()
       return offers;
     } catch (error) {
-      console.error(error.message);
+      console.error(error);
       throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
     } finally {
       await prisma.$disconnect();
@@ -42,7 +42,7 @@ export class OffersService {
       })
       return offer;
     } catch (error) {
-      console.error(error.message);
+      console.error(error);
       throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
     } finally {
       await prisma.$disconnect();
@@ -59,7 +59,7 @@ export class OffersService {
       })
       return updateOffers;
     } catch (error) {
-      console.error(error.message);
+      console.error(error);
       throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
     } finally {
       await prisma.$disconnect();
@@ -75,7 +75,7 @@ export class OffersService {
       })
       return deleteOffers;
     } catch (error) {
-      console.error(error.message);
+      console.error(error);
       throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
     } finally {
       await prisma.$disconnect();

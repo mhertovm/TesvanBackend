@@ -14,7 +14,7 @@ export class CoursesService {
       });
       return newCourses;
     } catch (error) {
-      console.error(error.messgae);
+      console.error(error);
       throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
     } finally {
       await prisma.$disconnect();
@@ -26,7 +26,7 @@ export class CoursesService {
       const courses = await prisma.courses.findMany()
       return courses;
     } catch (error) {
-      console.error(error.message);
+      console.error(error);
       throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
     } finally {
       await prisma.$disconnect();
@@ -42,7 +42,7 @@ export class CoursesService {
       })
       return course;
     } catch (error) {
-      console.error(error.message);
+      console.error(error);
       throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
     } finally {
       await prisma.$disconnect();
@@ -59,7 +59,7 @@ export class CoursesService {
       })
       return updateCourses;
     } catch (error) {
-      console.error(error.message);
+      console.error(error);
       throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
     } finally {
       await prisma.$disconnect();
@@ -75,7 +75,7 @@ export class CoursesService {
       })
       return deleteCourses;
     } catch (error) {
-      console.error(error.message);
+      console.error(error);
       throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
     } finally {
       await prisma.$disconnect();

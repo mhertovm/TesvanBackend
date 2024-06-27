@@ -14,7 +14,7 @@ export class TestimonialsService {
       });
       return newTestimonials;
     } catch (error) {
-      console.error(error.messgae);
+      console.error(error);
       throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
     } finally {
       await prisma.$disconnect();
@@ -26,7 +26,7 @@ export class TestimonialsService {
       const testimonials = await prisma.testimonials.findMany()
       return testimonials;
     } catch (error) {
-      console.error(error.message);
+      console.error(error);
       throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
     } finally {
       await prisma.$disconnect();
@@ -42,7 +42,7 @@ export class TestimonialsService {
       })
       return testimonial;
     } catch (error) {
-      console.error(error.message);
+      console.error(error);
       throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
     } finally {
       await prisma.$disconnect();
@@ -59,7 +59,7 @@ export class TestimonialsService {
       })
       return updateTestimonials;
     } catch (error) {
-      console.error(error.message);
+      console.error(error);
       throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
     } finally {
       await prisma.$disconnect();
@@ -75,7 +75,7 @@ export class TestimonialsService {
       })
       return deleteTestimonials;
     } catch (error) {
-      console.error(error.message);
+      console.error(error);
       throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
     } finally {
       await prisma.$disconnect();
