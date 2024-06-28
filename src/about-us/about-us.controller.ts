@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { AboutUsService } from './about-us.service';
 import { CreateAboutUsDto } from './dto/create-about-us.dto';
 import { UpdateAboutUsDto } from './dto/update-about-us.dto';
@@ -10,15 +10,15 @@ export class AboutUsController {
   constructor(private readonly aboutUsService: AboutUsService) { }
 
   @Post()
-  @ApiOperation({ summary: 'Create a aboutUs' }) 
+  @ApiOperation({ summary: 'Create a aboutUs' })
   create(@Body() createAboutUsDto: CreateAboutUsDto) {
     return this.aboutUsService.create(createAboutUsDto);
   }
 
   @Get()
   @ApiOperation({ summary: 'Find one aboutUs' })
-  findOne() {
-    return this.aboutUsService.findOne();
+  findOne(@Query('language') language: string) {
+    return this.aboutUsService.findOne(language);
   }
 
   @Patch(':id')

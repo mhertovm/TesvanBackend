@@ -10,7 +10,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url      = "postgresql://postgres:mt91164159@localhost:5432/tesvan?schema=public"
 }
 
 model AboutUs {
@@ -68,19 +68,19 @@ model Benefits {
 
 model Blog {
   id Int @id @default(autoincrement()) 
-  metaTitle_am String @db.VarChar(255)
-  metaTitle_en String @db.VarChar(255)
-  metaTitle_ru String @db.VarChar(255)
-  metaDescription_am String @db.VarChar(255)
-  metaDescription_en String @db.VarChar(255)
-  metaDescription_ru String @db.VarChar(255)
+  metaTitle_am String? @db.VarChar(255)
+  metaTitle_en String? @db.VarChar(255)
+  metaTitle_ru String? @db.VarChar(255)
+  metaDescription_am String? @db.VarChar(255)
+  metaDescription_en String? @db.VarChar(255)
+  metaDescription_ru String? @db.VarChar(255)
   image String @db.VarChar(255)
-  duration_am String @db.VarChar(255)
-  duration_en String @db.VarChar(255)
-  duration_ru String @db.VarChar(255)
-  content_am String 
-  content_en String 
-  content_ru String 
+  duration_am String? @db.VarChar(255)
+  duration_en String? @db.VarChar(255)
+  duration_ru String? @db.VarChar(255)
+  content_am String? 
+  content_en String?
+  content_ru String? 
   url String @db.VarChar(255)
   bigImage String @db.VarChar(255)
   altText String @db.VarChar(255)

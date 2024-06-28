@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { BlogService } from './blog.service';
 import { CreateBlogDto } from './dto/create-blog.dto';
 import { UpdateBlogDto } from './dto/update-blog.dto';
@@ -19,14 +19,14 @@ export class BlogController {
 
   @Get()
   @ApiOperation({ summary: 'Find all blog' })
-  findAll() {
-    return this.blogService.findAll();
+  findAll(@Query('language') language: string) {
+    return this.blogService.findAll(language);
   }
 
   @Get(':id')
   @ApiOperation({ summary: 'Find one blog' })
-  findOne(@Param('id') id: string) {
-    return this.blogService.findOne(+id);
+  findOne(@Param('id') id: string, @Query('language') language: string) {
+    return this.blogService.findOne(+id, language);
   }
 
   @Patch(':id')
