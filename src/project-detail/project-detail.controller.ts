@@ -1,8 +1,9 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
 import { ProjectDetailService } from './project-detail.service';
 import { CreateProjectDetailDto } from './dto/create-project-detail.dto';
 import { UpdateProjectDetailDto } from './dto/update-project-detail.dto';
-import { ApiTags, ApiOperation, ApiResponse, ApiBody } from '@nestjs/swagger';         //////////////
+import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';  
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';    
 
 @ApiTags('projectDetail')
 @Controller('projectDetail')
@@ -10,6 +11,7 @@ export class ProjectDetailController {
   constructor(private readonly projectDetailService: ProjectDetailService) {}
 
   @Post()
+  @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Create a projectDetail' })
   create(@Body() createProjectDetailDto: CreateProjectDetailDto) {
     return this.projectDetailService.create(createProjectDetailDto);
@@ -28,12 +30,14 @@ export class ProjectDetailController {
   }
 
   @Patch(':id')
+  @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Update a projectDetail' })
   update(@Param('id') id: string, @Body() updateProjectDetailDto: UpdateProjectDetailDto) {
     return this.projectDetailService.update(+id, updateProjectDetailDto);
   }
 
   @Delete(':id')
+  @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Delete a projectDetail' })
   remove(@Param('id') id: string) {
     return this.projectDetailService.remove(+id);

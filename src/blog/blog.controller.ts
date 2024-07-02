@@ -1,8 +1,9 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query, UseGuards } from '@nestjs/common';
 import { BlogService } from './blog.service';
 import { CreateBlogDto } from './dto/create-blog.dto';
 import { UpdateBlogDto } from './dto/update-blog.dto';
-import { ApiTags, ApiOperation, ApiResponse, ApiBody } from '@nestjs/swagger';     
+import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger'; 
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';   
 
 @ApiTags('blog')                                                                   
 @Controller('blog')
@@ -10,6 +11,7 @@ export class BlogController {
   constructor(private readonly blogService: BlogService) { }
 
   @Post()
+  @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Create a blog' })                                 
   create(@Body() createBlogDto: CreateBlogDto) {
     return this.blogService.create(createBlogDto);
@@ -28,12 +30,14 @@ export class BlogController {
   }
 
   @Patch(':id')
+  @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Update a blog' })
   update(@Param('id') id: string, @Body() updateBlogDto: UpdateBlogDto) {
     return this.blogService.update(+id, updateBlogDto);
   }
 
   @Delete(':id')
+  @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Delete a blog' })
   remove(@Param('id') id: string) {
     return this.blogService.remove(+id);

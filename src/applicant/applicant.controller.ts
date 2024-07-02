@@ -1,8 +1,9 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
 import { ApplicantService } from './applicant.service';
 import { CreateApplicantDto } from './dto/create-applicant.dto';
 import { UpdateApplicantDto } from './dto/update-applicant.dto';
-import { ApiTags, ApiOperation, ApiResponse, ApiBody } from '@nestjs/swagger';         //////////////
+import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';  
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';  
 
 @ApiTags('applicant')
 @Controller('applicant')
@@ -10,6 +11,7 @@ export class ApplicantController {
   constructor(private readonly applicantService: ApplicantService) {}
 
   @Post()
+  @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Create a applicant' }) 
   create(@Body() createApplicantDto: CreateApplicantDto) {
     return this.applicantService.create(createApplicantDto);
@@ -28,12 +30,14 @@ export class ApplicantController {
   }
 
   @Patch(':id')
+  @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Update a applicant' })
   update(@Param('id') id: string, @Body() updateApplicantDto: UpdateApplicantDto) {
     return this.applicantService.update(+id, updateApplicantDto);
   }
 
   @Delete(':id')
+  @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Delete a applicant' })
   remove(@Param('id') id: string) {
     return this.applicantService.remove(+id);
