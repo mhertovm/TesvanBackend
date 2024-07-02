@@ -2,17 +2,15 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestj
 import { BlogService } from './blog.service';
 import { CreateBlogDto } from './dto/create-blog.dto';
 import { UpdateBlogDto } from './dto/update-blog.dto';
-import { ApiTags, ApiOperation, ApiResponse, ApiBody } from '@nestjs/swagger';         //////////////
+import { ApiTags, ApiOperation, ApiResponse, ApiBody } from '@nestjs/swagger';     
 
-@ApiTags('blog')                                                                       /////////////
+@ApiTags('blog')                                                                   
 @Controller('blog')
 export class BlogController {
   constructor(private readonly blogService: BlogService) { }
 
   @Post()
-  @ApiOperation({ summary: 'Create a blog' })                                           //////////////
-  // @ApiResponse({ status: 201, description: 'The created user', type: CreateBlogDto })   //////////////
-  // @ApiBody({ type: CreateBlogDto })                                                     //////////////
+  @ApiOperation({ summary: 'Create a blog' })                                 
   create(@Body() createBlogDto: CreateBlogDto) {
     return this.blogService.create(createBlogDto);
   }

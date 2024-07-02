@@ -1,15 +1,17 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query, UseGuards } from '@nestjs/common';
 import { AboutUsService } from './about-us.service';
 import { CreateAboutUsDto } from './dto/create-about-us.dto';
 import { UpdateAboutUsDto } from './dto/update-about-us.dto';
-import { ApiTags, ApiOperation, ApiResponse, ApiBody } from '@nestjs/swagger';         //////////////
+import { ApiTags, ApiOperation, ApiResponse, ApiBody } from '@nestjs/swagger';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';     
 
 @ApiTags('aboutUs')
 @Controller('aboutUs')
 export class AboutUsController {
   constructor(private readonly aboutUsService: AboutUsService) { }
-
+  
   @Post()
+  @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Create a aboutUs' })
   create(@Body() createAboutUsDto: CreateAboutUsDto) {
     return this.aboutUsService.create(createAboutUsDto);
@@ -22,12 +24,14 @@ export class AboutUsController {
   }
 
   @Patch(':id')
+  @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Update a aboutUs' })
   update(@Param('id') id: string, @Body() updateAboutUsDto: UpdateAboutUsDto) {
     return this.aboutUsService.update(+id, updateAboutUsDto);
   }
 
   @Delete(':id')
+  @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Delete a aboutUs' })
   remove(@Param('id') id: string) {
     return this.aboutUsService.remove(+id);

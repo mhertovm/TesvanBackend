@@ -4,11 +4,7 @@ import { UpdateBlogDto } from './dto/update-blog.dto';
 
 import { PrismaClient } from '@prisma/client';
 function myPrisma(language?: string) {
-
-  if (!language) {
-    language = "en"
-  }
-
+  language? language : language = "en";
   const prisma = new PrismaClient()
     .$extends({
       result: {
@@ -40,7 +36,6 @@ function myPrisma(language?: string) {
         }
       }
     })
-
   return prisma
 }
 
