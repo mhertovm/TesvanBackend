@@ -1,8 +1,8 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query } from '@nestjs/common';
 import { ProjectTechStachService } from './project-tech-stach.service';
 import { CreateProjectTechStachDto } from './dto/create-project-tech-stach.dto';
 import { UpdateProjectTechStachDto } from './dto/update-project-tech-stach.dto';
-import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';    
+import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';    
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard'; 
 
 @ApiTags('projectTechStach')
@@ -11,6 +11,7 @@ export class ProjectTechStachController {
   constructor(private readonly projectTechStachService: ProjectTechStachService) {}
 
   @Post()
+  @ApiBearerAuth('access-token')
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Create a projectTechStach' })
   create(@Body() createProjectTechStachDto: CreateProjectTechStachDto) {
@@ -30,6 +31,7 @@ export class ProjectTechStachController {
   }
 
   @Patch(':id')
+  @ApiBearerAuth('access-token')
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Update a projectTechStach' })
   update(@Param('id') id: string, @Body() updateProjectTechStachDto: UpdateProjectTechStachDto) {
@@ -37,6 +39,7 @@ export class ProjectTechStachController {
   }
 
   @Delete(':id')
+  @ApiBearerAuth('access-token')
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Delete a projectTechStach' })
   remove(@Param('id') id: string) {

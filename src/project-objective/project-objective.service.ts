@@ -3,13 +3,29 @@ import { CreateProjectObjectiveDto } from './dto/create-project-objective.dto';
 import { UpdateProjectObjectiveDto } from './dto/update-project-objective.dto';
 
 import { PrismaClient } from '@prisma/client';
-const prisma = new PrismaClient();
+function myPrisma(language?: string) {
+  language ? language : language = "en";
+  const prisma = new PrismaClient()
+    .$extends({
+      result: {
+        projectObjective: {
+          objective: {
+            needs: { objective_am: true, objective_en: true, objective_ru: true },
+            compute(projectObjective) {
+              return projectObjective[`objective_${language}`]
+            }
+          }
+        }
+      }
+    })
+  return prisma
+}
 
 @Injectable()
 export class ProjectObjectiveService {
   async create(createProjectObjectiveDto: CreateProjectObjectiveDto) {
     try {
-      const newProjectObjective = await prisma.projectObjective.create({
+      const newProjectObjective = await myPrisma().projectObjective.create({
         data: createProjectObjectiveDto,
       });
       return newProjectObjective;
@@ -17,41 +33,52 @@ export class ProjectObjectiveService {
       console.error(error);
       throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
     } finally {
-      await prisma.$disconnect();
+      await myPrisma().$disconnect();
     }
   }
 
-  async findAll() {
+  async findAll(language: string) {
     try {
-      const projectObjective = await prisma.projectObjective.findMany()
-      return projectObjective;
-    } catch (error) {
-      console.error(error);
-      throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
-    } finally {
-      await prisma.$disconnect();
-    }
-  }
-
-  async findOne(id: number) {
-    try {
-      const projectObjective = await prisma.projectObjective.findUnique({
-        where: {
-          id,
-        },
+      const projectObjective = await myPrisma(language).projectObjective.findMany({
+        select: {
+          id: true,
+          projectId: true,
+          objective: true
+        }
       })
       return projectObjective;
     } catch (error) {
       console.error(error);
       throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
     } finally {
-      await prisma.$disconnect();
+      await myPrisma().$disconnect();
+    }
+  }
+
+  async findOne(id: number, language: string) {
+    try {
+      const projectObjective = await myPrisma(language).projectObjective.findUnique({
+        where: {
+          id,
+        },
+        select: {
+          id: true,
+          projectId: true,
+          objective: true
+        }
+      })
+      return projectObjective;
+    } catch (error) {
+      console.error(error);
+      throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
+    } finally {
+      await myPrisma().$disconnect();
     }
   }
 
   async update(id: number, updateProjectObjectiveDto: UpdateProjectObjectiveDto) {
     try {
-      const updateProjectObjective = await prisma.projectObjective.update({
+      const updateProjectObjective = await myPrisma().projectObjective.update({
         where: {
           id,
         },
@@ -62,13 +89,13 @@ export class ProjectObjectiveService {
       console.error(error);
       throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
     } finally {
-      await prisma.$disconnect();
+      await myPrisma().$disconnect();
     }
   }
 
   async remove(id: number) {
     try {
-      const deleteProjectObjective = await prisma.projectObjective.delete({
+      const deleteProjectObjective = await myPrisma().projectObjective.delete({
         where: {
           id,
         },
@@ -78,7 +105,7 @@ export class ProjectObjectiveService {
       console.error(error);
       throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
     } finally {
-      await prisma.$disconnect();
+      await myPrisma().$disconnect();
     }
   }
 }

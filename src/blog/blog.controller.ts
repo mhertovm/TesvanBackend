@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Query, UseGuards } f
 import { BlogService } from './blog.service';
 import { CreateBlogDto } from './dto/create-blog.dto';
 import { UpdateBlogDto } from './dto/update-blog.dto';
-import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger'; 
+import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger'; 
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';   
 
 @ApiTags('blog')                                                                   
@@ -11,6 +11,7 @@ export class BlogController {
   constructor(private readonly blogService: BlogService) { }
 
   @Post()
+  @ApiBearerAuth('access-token')
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Create a blog' })                                 
   create(@Body() createBlogDto: CreateBlogDto) {
@@ -30,6 +31,7 @@ export class BlogController {
   }
 
   @Patch(':id')
+  @ApiBearerAuth('access-token')
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Update a blog' })
   update(@Param('id') id: string, @Body() updateBlogDto: UpdateBlogDto) {
@@ -37,6 +39,7 @@ export class BlogController {
   }
 
   @Delete(':id')
+  @ApiBearerAuth('access-token')
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Delete a blog' })
   remove(@Param('id') id: string) {

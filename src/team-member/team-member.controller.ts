@@ -1,8 +1,8 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query } from '@nestjs/common';
 import { TeamMemberService } from './team-member.service';
 import { CreateTeamMemberDto } from './dto/create-team-member.dto';
 import { UpdateTeamMemberDto } from './dto/update-team-member.dto';
-import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';   
+import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';   
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard'; 
 
 @ApiTags('teamMember')
@@ -11,6 +11,7 @@ export class TeamMemberController {
   constructor(private readonly teamMemberService: TeamMemberService) {}
 
   @Post()
+  @ApiBearerAuth('access-token')
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Create a teamMember' })
   create(@Body() createTeamMemberDto: CreateTeamMemberDto) {
@@ -19,17 +20,18 @@ export class TeamMemberController {
 
   @Get()
   @ApiOperation({ summary: 'Find all teamMember' })
-  findAll() {
-    return this.teamMemberService.findAll();
+  findAll(@Query('language') language: string) {
+    return this.teamMemberService.findAll(language);
   }
 
   @Get(':id')
   @ApiOperation({ summary: 'Find one teamMember' })
-  findOne(@Param('id') id: string) {
-    return this.teamMemberService.findOne(+id);
+  findOne(@Param('id') id: string, @Query('language') language: string) {
+    return this.teamMemberService.findOne(+id, language);
   }
 
   @Patch(':id')
+  @ApiBearerAuth('access-token')
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Update a teamMember' })
   update(@Param('id') id: string, @Body() updateTeamMemberDto: UpdateTeamMemberDto) {
@@ -37,6 +39,7 @@ export class TeamMemberController {
   }
 
   @Delete(':id')
+  @ApiBearerAuth('access-token')
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Delete a teamMember' })
   remove(@Param('id') id: string) {

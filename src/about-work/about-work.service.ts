@@ -3,13 +3,30 @@ import { CreateAboutWorkDto } from './dto/create-about-work.dto';
 import { UpdateAboutWorkDto } from './dto/update-about-work.dto';
 
 import { PrismaClient } from '@prisma/client';
-const prisma = new PrismaClient();
+function myPrisma(language?: string) {
+  language ? language : language = "en";
+  const prisma = new PrismaClient()
+    .$extends({
+      result: {
+        aboutWork: {
+          work: {
+            needs: { work_am: true, work_en: true, work_ru: true },
+            compute(aboutWork) {
+              return aboutWork[`work_${language}`]
+            }
+          },
+        }
+      }
+    })
+  return prisma
+}
+
 
 @Injectable()
 export class AboutWorkService {
   async create(createAboutWorkDto: CreateAboutWorkDto) {
     try {
-      const newAboutWork = await prisma.aboutWork.create({
+      const newAboutWork = await myPrisma().aboutWork.create({
         data: createAboutWorkDto,
       });
       return newAboutWork;
@@ -17,41 +34,50 @@ export class AboutWorkService {
       console.error(error);
       throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
     } finally {
-      await prisma.$disconnect();
+      await myPrisma().$disconnect();
     }
   }
 
-  async findAll() {
+  async findAll(language: string) {
     try {
-      const aboutWorks = await prisma.aboutWork.findMany()
+      const aboutWorks = await myPrisma(language).aboutWork.findMany({
+        select: {
+          id: true,
+          work: true,
+        }
+      })
       return aboutWorks;
     } catch (error) {
       console.error(error);
       throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
     } finally {
-      await prisma.$disconnect();
+      await myPrisma().$disconnect();
     }
   }
 
-  async findOne(id: number) {
+  async findOne(id: number, language: string) {
     try {
-      const aboutWork = await prisma.aboutWork.findUnique({
+      const aboutWork = await myPrisma(language).aboutWork.findUnique({
         where: {
           id,
         },
+        select: {
+          id: true,
+          work: true,
+        }
       })
       return aboutWork;
     } catch (error) {
       console.error(error);
       throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
     } finally {
-      await prisma.$disconnect();
+      await myPrisma().$disconnect();
     }
   }
 
   async update(id: number, updateAboutWorkDto: UpdateAboutWorkDto) {
     try {
-      const updateAboutWork = await prisma.aboutWork.update({
+      const updateAboutWork = await myPrisma().aboutWork.update({
         where: {
           id,
         },
@@ -62,13 +88,13 @@ export class AboutWorkService {
       console.error(error);
       throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
     } finally {
-      await prisma.$disconnect();
+      await myPrisma().$disconnect();
     }
   }
 
   async remove(id: number) {
     try {
-      const deleteAboutWork = await prisma.aboutWork.delete({
+      const deleteAboutWork = await myPrisma().aboutWork.delete({
         where: {
           id,
         },
@@ -78,7 +104,7 @@ export class AboutWorkService {
       console.error(error);
       throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
     } finally {
-      await prisma.$disconnect();
+      await myPrisma().$disconnect();
     }
   }
 }

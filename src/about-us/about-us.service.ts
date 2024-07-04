@@ -4,7 +4,7 @@ import { UpdateAboutUsDto } from './dto/update-about-us.dto';
 
 import { PrismaClient } from '@prisma/client';
 function myPrisma(language?: string) {
-  !language? language : language = "en";
+  language ? language : language = "en";
   const prisma = new PrismaClient()
     .$extends({
       result: {

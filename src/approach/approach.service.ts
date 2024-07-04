@@ -3,13 +3,30 @@ import { CreateApproachDto } from './dto/create-approach.dto';
 import { UpdateApproachDto } from './dto/update-approach.dto';
 
 import { PrismaClient } from '@prisma/client';
-const prisma = new PrismaClient();
+function myPrisma(language?: string) {
+  language ? language : language = "en";
+  const prisma = new PrismaClient()
+    .$extends({
+      result: {
+        approach: {
+          approach: {
+            needs: { approach_am: true, approach_en: true, approach_ru: true },
+            compute(approach) {
+              return approach[`approach_${language}`]
+            }
+          },
+        }
+      }
+    })
+  return prisma
+
+}
 
 @Injectable()
 export class ApproachService {
   async create(createApproachDto: CreateApproachDto) {
     try {
-      const newApproach = await prisma.approach.create({
+      const newApproach = await myPrisma().approach.create({
         data: createApproachDto,
       });
       return newApproach;
@@ -17,27 +34,38 @@ export class ApproachService {
       console.error(error);
       throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
     } finally {
-      await prisma.$disconnect();
+      await myPrisma().$disconnect();
     }
   }
 
-  async findAll() {
+  async findAll(language: string) {
     try {
-      const approaches = await prisma.approach.findMany()
+      const approaches = await myPrisma(language).approach.findMany({
+        select: {
+          id: true,
+          serviceId: true,
+          approach: true
+        }
+      })
       return approaches;
     } catch (error) {
       console.error(error);
       throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
     } finally {
-      await prisma.$disconnect();
+      await myPrisma().$disconnect();
     }
   }
 
-  async findOne(id: number) {
+  async findOne(id: number, language: string) {
     try {
-      const approach = await prisma.approach.findUnique({
+      const approach = await myPrisma(language).approach.findUnique({
         where: {
           id,
+        },
+        select: {
+          id: true,
+          serviceId: true,
+          approach: true
         },
       })
       return approach;
@@ -45,13 +73,13 @@ export class ApproachService {
       console.error(error);
       throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
     } finally {
-      await prisma.$disconnect();
+      await myPrisma().$disconnect();
     }
   }
 
   async update(id: number, updateApproachDto: UpdateApproachDto) {
     try {
-      const updateApproach = await prisma.approach.update({
+      const updateApproach = await myPrisma().approach.update({
         where: {
           id,
         },
@@ -62,13 +90,13 @@ export class ApproachService {
       console.error(error);
       throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
     } finally {
-      await prisma.$disconnect();
+      await myPrisma().$disconnect();
     }
   }
 
   async remove(id: number) {
     try {
-      const deleteApproach = await prisma.approach.delete({
+      const deleteApproach = await myPrisma().approach.delete({
         where: {
           id,
         },
@@ -78,7 +106,7 @@ export class ApproachService {
       console.error(error);
       throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
     } finally {
-      await prisma.$disconnect();
+      await myPrisma().$disconnect();
     }
   }
 }

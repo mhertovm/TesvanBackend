@@ -1,8 +1,8 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query } from '@nestjs/common';
 import { PageTitlesService } from './page-titles.service';
 import { CreatePageTitleDto } from './dto/create-page-title.dto';
 import { UpdatePageTitleDto } from './dto/update-page-title.dto';
-import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';    
+import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';    
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard'; 
 
 @ApiTags('pageTitles')
@@ -11,6 +11,7 @@ export class PageTitlesController {
   constructor(private readonly pageTitlesService: PageTitlesService) {}
 
   @Post()
+  @ApiBearerAuth('access-token')
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Create a pageTitles' })
   create(@Body() createPageTitleDto: CreatePageTitleDto) {
@@ -19,17 +20,18 @@ export class PageTitlesController {
 
   @Get()
   @ApiOperation({ summary: 'Find all pageTitles' })
-  findAll() {
-    return this.pageTitlesService.findAll();
+  findAll(@Query('language') language: string) {
+    return this.pageTitlesService.findAll(language);
   }
 
   @Get(':id')
   @ApiOperation({ summary: 'Find one pageTitles' })
-  findOne(@Param('id') id: string) {
-    return this.pageTitlesService.findOne(+id);
+  findOne(@Param('id') id: string, @Query('language') language: string) {
+    return this.pageTitlesService.findOne(+id, language);
   }
 
   @Patch(':id')
+  @ApiBearerAuth('access-token')
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Update a pageTitles' })
   update(@Param('id') id: string, @Body() updatePageTitleDto: UpdatePageTitleDto) {
@@ -37,6 +39,7 @@ export class PageTitlesController {
   }
 
   @Delete(':id')
+  @ApiBearerAuth('access-token')
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Delete a pageTitles' })
   remove(@Param('id') id: string) {

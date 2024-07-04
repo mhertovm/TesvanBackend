@@ -376,7 +376,7 @@ model TechStack {
   id Int @id @default(autoincrement())
   name String @db.VarChar(255)
   image String @db.VarChar(255)
-  projectTechStach ProjectTechStach?
+  projectTechStach ProjectTechStach[]
 }
 
 model Testimonials {

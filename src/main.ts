@@ -21,6 +21,14 @@ async function bootstrap() {
     .setVersion('1.0')
     .addServer('https://tesvan.com/service', 'public development server')
     .addServer('http://localhost:4000', 'local development server')
+    .addBearerAuth(
+      {
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'JWT', // Optional, just to clarify the token type
+      },
+      'access-token', // This name is used to reference the bearer token in Swagger
+    )
     .build();
 
   const document = SwaggerModule.createDocument(app, config);

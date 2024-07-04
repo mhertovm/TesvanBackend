@@ -1,8 +1,8 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query } from '@nestjs/common';
 import { ServicesService } from './services.service';
 import { CreateServiceDto } from './dto/create-service.dto';
 import { UpdateServiceDto } from './dto/update-service.dto';
-import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';     
+import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';     
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard'; 
 
 @ApiTags('services')
@@ -11,6 +11,7 @@ export class ServicesController {
   constructor(private readonly servicesService: ServicesService) {}
 
   @Post()
+  @ApiBearerAuth('access-token')
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Create a services' })
   create(@Body() createServiceDto: CreateServiceDto) {
@@ -19,17 +20,18 @@ export class ServicesController {
 
   @Get()
   @ApiOperation({ summary: 'Find all services' })
-  findAll() {
-    return this.servicesService.findAll();
+  findAll(@Query('language') language: string) {
+    return this.servicesService.findAll(language);
   }
 
   @Get(':id')
   @ApiOperation({ summary: 'Find one services' })
-  findOne(@Param('id') id: string) {
-    return this.servicesService.findOne(+id);
+  findOne(@Param('id') id: string, @Query('language') language: string) {
+    return this.servicesService.findOne(+id, language);
   }
 
   @Patch(':id')
+  @ApiBearerAuth('access-token')
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Update a services' })
   update(@Param('id') id: string, @Body() updateServiceDto: UpdateServiceDto) {
@@ -37,6 +39,7 @@ export class ServicesController {
   }
 
   @Delete(':id')
+  @ApiBearerAuth('access-token')
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Delete a services' })
   remove(@Param('id') id: string) {

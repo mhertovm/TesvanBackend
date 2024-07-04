@@ -1,8 +1,8 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query } from '@nestjs/common';
 import { ProjectCategoryService } from './project-category.service';
 import { CreateProjectCategoryDto } from './dto/create-project-category.dto';
 import { UpdateProjectCategoryDto } from './dto/update-project-category.dto';
-import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';        
+import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';        
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard'; 
 
 @ApiTags('projectCategory')
@@ -11,6 +11,7 @@ export class ProjectCategoryController {
   constructor(private readonly projectCategoryService: ProjectCategoryService) {}
 
   @Post()
+  @ApiBearerAuth('access-token')
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Create a projectCategory' })
   create(@Body() createProjectCategoryDto: CreateProjectCategoryDto) {
@@ -19,17 +20,18 @@ export class ProjectCategoryController {
 
   @Get()
   @ApiOperation({ summary: 'Find all projectCategory' })
-  findAll() {
-    return this.projectCategoryService.findAll();
+  findAll(@Query('language') language: string) {
+    return this.projectCategoryService.findAll(language);
   }
 
   @Get(':id')
   @ApiOperation({ summary: 'Find one projectCategory' })
-  findOne(@Param('id') id: string) {
-    return this.projectCategoryService.findOne(+id);
+  findOne(@Param('id') id: string, @Query('language') language: string) {
+    return this.projectCategoryService.findOne(+id, language);
   }
 
   @Patch(':id')
+  @ApiBearerAuth('access-token')
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Update a projectCategory' })
   update(@Param('id') id: string, @Body() updateProjectCategoryDto: UpdateProjectCategoryDto) {
@@ -37,6 +39,7 @@ export class ProjectCategoryController {
   }
 
   @Delete(':id')
+  @ApiBearerAuth('access-token')
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Delete a projectCategory' })
   remove(@Param('id') id: string) {

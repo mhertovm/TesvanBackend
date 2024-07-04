@@ -1,8 +1,8 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query } from '@nestjs/common';
 import { JobsService } from './jobs.service';
 import { CreateJobDto } from './dto/create-job.dto';
 import { UpdateJobDto } from './dto/update-job.dto';
-import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';      
+import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';      
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard'; 
 
 
@@ -12,6 +12,7 @@ export class JobsController {
   constructor(private readonly jobsService: JobsService) {}
 
   @Post()
+  @ApiBearerAuth('access-token')
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Create a jobs' })
   create(@Body() createJobDto: CreateJobDto) {
@@ -31,6 +32,7 @@ export class JobsController {
   }
 
   @Patch(':id')
+  @ApiBearerAuth('access-token')
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Update a jobs' })
   update(@Param('id') id: string, @Body() updateJobDto: UpdateJobDto) {
@@ -38,6 +40,7 @@ export class JobsController {
   }
 
   @Delete(':id')
+  @ApiBearerAuth('access-token')
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Delete a jobs' })
   remove(@Param('id') id: string) {

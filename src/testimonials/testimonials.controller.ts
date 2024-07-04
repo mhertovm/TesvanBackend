@@ -1,8 +1,8 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query } from '@nestjs/common';
 import { TestimonialsService } from './testimonials.service';
 import { CreateTestimonialDto } from './dto/create-testimonial.dto';
 import { UpdateTestimonialDto } from './dto/update-testimonial.dto';
-import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard'; 
 
 @ApiTags('testimonials')
@@ -11,6 +11,7 @@ export class TestimonialsController {
   constructor(private readonly testimonialsService: TestimonialsService) {}
 
   @Post()
+  @ApiBearerAuth('access-token')
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Create a testimonials' })
   create(@Body() createTestimonialDto: CreateTestimonialDto) {
@@ -19,17 +20,18 @@ export class TestimonialsController {
 
   @Get()
   @ApiOperation({ summary: 'Find all testimonials' })
-  findAll() {
-    return this.testimonialsService.findAll();
+  findAll(@Query('language') language: string) {
+    return this.testimonialsService.findAll(language);
   }
 
   @Get(':id')
   @ApiOperation({ summary: 'Find one testimonials' })
-  findOne(@Param('id') id: string) {
-    return this.testimonialsService.findOne(+id);
+  findOne(@Param('id') id: string, @Query('language') language: string) {
+    return this.testimonialsService.findOne(+id, language);
   }
 
   @Patch(':id')
+  @ApiBearerAuth('access-token')
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Update a testimonials' })
   update(@Param('id') id: string, @Body() updateTestimonialDto: UpdateTestimonialDto) {
@@ -37,6 +39,7 @@ export class TestimonialsController {
   }
 
   @Delete(':id')
+  @ApiBearerAuth('access-token')
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Delete a testimonials' })
   remove(@Param('id') id: string) {

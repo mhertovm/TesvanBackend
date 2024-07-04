@@ -1,8 +1,8 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query } from '@nestjs/common';
 import { ProjectsService } from './projects.service';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
-import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger'; 
+import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger'; 
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';       
 
 @ApiTags('projects')
@@ -11,6 +11,7 @@ export class ProjectsController {
   constructor(private readonly projectsService: ProjectsService) {}
 
   @Post()
+  @ApiBearerAuth('access-token')
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Create a projects' })
   create(@Body() createProjectDto: CreateProjectDto) {
@@ -19,17 +20,18 @@ export class ProjectsController {
 
   @Get()
   @ApiOperation({ summary: 'Find all projects' })
-  findAll() {
-    return this.projectsService.findAll();
+  findAll(@Query('language') language: string) {
+    return this.projectsService.findAll(language);
   }
 
   @Get(':id')
   @ApiOperation({ summary: 'Find one projects' })
-  findOne(@Param('id') id: string) {
-    return this.projectsService.findOne(+id);
+  findOne(@Param('id') id: string, @Query('language') language: string) {
+    return this.projectsService.findOne(+id, language);
   }
 
   @Patch(':id')
+  @ApiBearerAuth('access-token')
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Update a projects' })
   update(@Param('id') id: string, @Body() updateProjectDto: UpdateProjectDto) {
@@ -37,6 +39,7 @@ export class ProjectsController {
   }
 
   @Delete(':id')
+  @ApiBearerAuth('access-token')
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Delete a projects' })
   remove(@Param('id') id: string) {

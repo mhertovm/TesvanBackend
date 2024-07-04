@@ -1,8 +1,8 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query } from '@nestjs/common';
 import { PrivacyPolicyService } from './privacy-policy.service';
 import { CreatePrivacyPolicyDto } from './dto/create-privacy-policy.dto';
 import { UpdatePrivacyPolicyDto } from './dto/update-privacy-policy.dto';
-import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger'; 
+import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger'; 
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';   
 
 @ApiTags('privacyPolicy')
@@ -11,6 +11,7 @@ export class PrivacyPolicyController {
   constructor(private readonly privacyPolicyService: PrivacyPolicyService) {}
 
   @Post()
+  @ApiBearerAuth('access-token')
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Create a privacyPolicy' })
   create(@Body() createPrivacyPolicyDto: CreatePrivacyPolicyDto) {
@@ -19,11 +20,12 @@ export class PrivacyPolicyController {
 
   @Get()
   @ApiOperation({ summary: 'Find one privacyPolicy' })
-  findOne() {
-    return this.privacyPolicyService.findOne();
+  findOne(@Query('language') language: string) {
+    return this.privacyPolicyService.findOne(language);
   }
 
   @Patch(':id')
+  @ApiBearerAuth('access-token')
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Update a privacyPolicy' })
   update(@Param('id') id: string, @Body() updatePrivacyPolicyDto: UpdatePrivacyPolicyDto) {
@@ -31,6 +33,7 @@ export class PrivacyPolicyController {
   }
 
   @Delete(':id')
+  @ApiBearerAuth('access-token')
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Delete a privacyPolicy' })
   remove(@Param('id') id: string) {

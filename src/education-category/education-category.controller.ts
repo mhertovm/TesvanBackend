@@ -1,8 +1,8 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query } from '@nestjs/common';
 import { EducationCategoryService } from './education-category.service';
 import { CreateEducationCategoryDto } from './dto/create-education-category.dto';
 import { UpdateEducationCategoryDto } from './dto/update-education-category.dto';
-import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';      
+import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';      
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';    
 
 @ApiTags('educationCategory')
@@ -11,6 +11,7 @@ export class EducationCategoryController {
   constructor(private readonly educationCategoryService: EducationCategoryService) {}
 
   @Post()
+  @ApiBearerAuth('access-token')
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Create a educationCategory' })
   create(@Body() createEducationCategoryDto: CreateEducationCategoryDto) {
@@ -19,17 +20,18 @@ export class EducationCategoryController {
 
   @Get()
   @ApiOperation({ summary: 'Find all educationCategory' })
-  findAll() {
-    return this.educationCategoryService.findAll();
+  findAll(@Query('language') language: string) {
+    return this.educationCategoryService.findAll(language);
   }
 
   @Get(':id')
   @ApiOperation({ summary: 'Find one educationCategory' })
-  findOne(@Param('id') id: string) {
-    return this.educationCategoryService.findOne(+id);
+  findOne(@Param('id') id: string, language) {
+    return this.educationCategoryService.findOne(+id, language);
   }
 
   @Patch(':id')
+  @ApiBearerAuth('access-token')
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Update a educationCategory' })
   update(@Param('id') id: string, @Body() updateEducationCategoryDto: UpdateEducationCategoryDto) {
@@ -37,6 +39,7 @@ export class EducationCategoryController {
   }
 
   @Delete(':id')
+  @ApiBearerAuth('access-token')
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Delete a educationCategory' })
   remove(@Param('id') id: string) {

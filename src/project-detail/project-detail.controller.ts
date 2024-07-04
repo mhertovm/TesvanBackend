@@ -1,8 +1,8 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query } from '@nestjs/common';
 import { ProjectDetailService } from './project-detail.service';
 import { CreateProjectDetailDto } from './dto/create-project-detail.dto';
 import { UpdateProjectDetailDto } from './dto/update-project-detail.dto';
-import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';  
+import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';  
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';    
 
 @ApiTags('projectDetail')
@@ -11,6 +11,7 @@ export class ProjectDetailController {
   constructor(private readonly projectDetailService: ProjectDetailService) {}
 
   @Post()
+  @ApiBearerAuth('access-token')
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Create a projectDetail' })
   create(@Body() createProjectDetailDto: CreateProjectDetailDto) {
@@ -19,17 +20,18 @@ export class ProjectDetailController {
 
   @Get()
   @ApiOperation({ summary: 'Find all projectDetail' })
-  findAll() {
-    return this.projectDetailService.findAll();
+  findAll(@Query('language') language: string) {
+    return this.projectDetailService.findAll(language);
   }
 
   @Get(':id')
   @ApiOperation({ summary: 'Find one projectDetail' })
-  findOne(@Param('id') id: string) {
-    return this.projectDetailService.findOne(+id);
+  findOne(@Param('id') id: string, @Query('language') language: string) {
+    return this.projectDetailService.findOne(+id, language);
   }
 
   @Patch(':id')
+  @ApiBearerAuth('access-token')
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Update a projectDetail' })
   update(@Param('id') id: string, @Body() updateProjectDetailDto: UpdateProjectDetailDto) {
@@ -37,6 +39,7 @@ export class ProjectDetailController {
   }
 
   @Delete(':id')
+  @ApiBearerAuth('access-token')
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Delete a projectDetail' })
   remove(@Param('id') id: string) {
