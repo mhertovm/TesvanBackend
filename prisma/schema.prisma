@@ -272,6 +272,7 @@ model Projects {
   metaDescription_ru String @db.VarChar(255)
   image String @db.VarChar(255)
   url String @db.VarChar(255)
+  projectCategores ProjectCategory[]
 }
 
 model ProjectCategory {
@@ -280,6 +281,7 @@ model ProjectCategory {
   category_am String @db.VarChar(255)
   category_en String @db.VarChar(255)
   category_ru String @db.VarChar(255)
+  project Projects @relation(fields: [projectId], references: [id])
 }
 
 model ProjectDetail {
@@ -323,7 +325,7 @@ model ProjectObjective {
 model ProjectTechStach {
   id Int @id @default(autoincrement())
   projectName String @db.VarChar(255)
-  techStackId Int @unique
+  techStackId Int
   tachStach TechStack @relation(fields: [techStackId], references: [id])
 }
 

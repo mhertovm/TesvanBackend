@@ -15,6 +15,20 @@ function myPrisma(language?: string) {
               return projectCategory[`category_${language}`]
             }
           }
+        },
+        projects: {
+          metaTitle: {
+            needs: { metaTitle_am: true, metaTitle_en: true, metaTitle_ru: true },
+            compute(projects) {
+              return projects[`metaTitle_${language}`]
+            }
+          },
+          metaDescription: {
+            needs: { metaDescription_am: true, metaDescription_en: true, metaDescription_ru: true },
+            compute(projects) {
+              return projects[`metaDescription_${language}`]
+            }
+          }
         }
       }
     })
@@ -43,8 +57,18 @@ export class ProjectCategoryService {
         select: {
           id: true,
           projectId: true,
-          category: true
-        }
+          category: true,
+          project: {
+            select: {
+              id: true,
+              name: true,
+              metaTitle: true,
+              metaDescription: true,
+              image: true,
+              url: true
+            }
+          }
+        },
       })
       return projectCategory;
     } catch (error) {
@@ -64,8 +88,18 @@ export class ProjectCategoryService {
         select: {
           id: true,
           projectId: true,
-          category: true
-        }
+          category: true,
+          project: {
+            select: {
+              id: true,
+              name: true,
+              metaTitle: true,
+              metaDescription: true,
+              image: true,
+              url: true
+            }
+          }
+        },
       })
       return projectCategory;
     } catch (error) {
