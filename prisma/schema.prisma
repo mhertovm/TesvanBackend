@@ -49,21 +49,23 @@ model Applicant {
 
 model Approach {
   id Int @id @default(autoincrement()) 
-  serviceId Int
+  serviceId Int @unique
   approach_am String @db.VarChar(255)
   approach_en String @db.VarChar(255)
   approach_ru String @db.VarChar(255)
+  service Services @relation(fields: [serviceId], references: [id])
 }
 
 model Benefits {
   id Int @id @default(autoincrement())  
-  serviceId Int 
+  serviceId Int
   title_am String @db.VarChar(255)
   title_en String @db.VarChar(255)
   title_ru String @db.VarChar(255)
   description_am String @db.VarChar(255)
   description_en String @db.VarChar(255)
   description_ru String @db.VarChar(255)
+  service Services @relation(fields: [serviceId], references: [id])
 }
 
 model Blog {
@@ -198,13 +200,14 @@ model Educations {
 
 model Faq {
   id Int @id @default(autoincrement())
-  serviceId Int
+  serviceId Int @unique
   question_am String @db.VarChar(255)
   question_en String @db.VarChar(255)
   question_ru String @db.VarChar(255)
   answer_am String @db.VarChar(255)
   answer_en String @db.VarChar(255)
   answer_ru String @db.VarChar(255)
+  service Services @relation(fields: [serviceId], references: [id])
 }
 
 model HireUs {
@@ -232,6 +235,7 @@ model Offers {
   offers_am String @db.VarChar(255)
   offers_en String @db.VarChar(255)
   offers_ru String @db.VarChar(255)
+  service Services @relation(fields: [serviceId], references: [id])
 }
 
 model PageTitles {
@@ -272,12 +276,15 @@ model Projects {
   metaDescription_ru String @db.VarChar(255)
   image String @db.VarChar(255)
   url String @db.VarChar(255)
-  projectCategores ProjectCategory[]
+  projectCategory ProjectCategory?
+  projectDetail ProjectDetail?
+  projectObjective ProjectObjective?
+  projectTechStack ProjectTechStack?
 }
 
 model ProjectCategory {
   id Int @id @default(autoincrement())
-  projectId Int
+  projectId Int @unique
   category_am String @db.VarChar(255)
   category_en String @db.VarChar(255)
   category_ru String @db.VarChar(255)
@@ -286,7 +293,7 @@ model ProjectCategory {
 
 model ProjectDetail {
   id Int @id @default(autoincrement())
-  projectId Int
+  projectId Int @unique
   industry_am String @db.VarChar(255)
   industry_en String @db.VarChar(255)
   industry_ru String @db.VarChar(255)
@@ -312,21 +319,30 @@ model ProjectDetail {
   result_en String
   result_ru String
   image String @db.VarChar(255)
+  project Projects @relation(fields: [projectId], references: [id])
 }
 
 model ProjectObjective {
   id Int @id @default(autoincrement())
-  projectId Int
+  projectId Int @unique
   objective_am String @db.VarChar(255)
   objective_en String @db.VarChar(255)
   objective_ru String @db.VarChar(255)
+  project Projects @relation(fields: [projectId], references: [id])
 }
 
-model ProjectTechStach {
+// model TechStach {
+//   id Int @id @default(autoincrement())
+//   name String @db.VarChar(255)
+//   image String @db.VarChar(255)
+// }
+
+model ProjectTechStack {
   id Int @id @default(autoincrement())
-  projectName String @db.VarChar(255)
-  techStackId Int
-  tachStach TechStack @relation(fields: [techStackId], references: [id])
+  projectId Int @unique
+  name String @db.VarChar(255)
+  image String @db.VarChar(255)
+  project Projects @relation(fields: [projectId], references: [id])
 }
 
 model Services {
@@ -346,6 +362,10 @@ model Services {
   image String @db.VarChar(255)
   url String @db.VarChar(255)
   altText String @db.VarChar(255)
+  approach Approach?
+  benefits Benefits[]
+  faq Faq?
+  offers Offers[]
 }
 
 model StudentsReview {
@@ -372,13 +392,6 @@ model TeamMember {
   position_en String @db.VarChar(255)
   position_ru String @db.VarChar(255)
   image String @db.VarChar(255)
-}
-
-model TechStack {
-  id Int @id @default(autoincrement())
-  name String @db.VarChar(255)
-  image String @db.VarChar(255)
-  projectTechStach ProjectTechStach[]
 }
 
 model Testimonials {

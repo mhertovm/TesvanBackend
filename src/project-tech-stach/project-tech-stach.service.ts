@@ -9,7 +9,7 @@ const prisma = new PrismaClient();
 export class ProjectTechStachService {
   async create(createProjectTechStachDto: CreateProjectTechStachDto) {
     try {
-      const newProjectTechStach = await prisma.projectTechStach.create({
+      const newProjectTechStach = await prisma.projectTechStack.create({
         data: createProjectTechStachDto,
       });
       return newProjectTechStach;
@@ -23,7 +23,7 @@ export class ProjectTechStachService {
 
   async findAll() {
     try {
-      const projectTechStach = await prisma.projectTechStach.findMany()
+      const projectTechStach = await prisma.projectTechStack.findMany()
       return projectTechStach;
     } catch (error) {
       console.error(error);
@@ -35,7 +35,7 @@ export class ProjectTechStachService {
 
   async findOne(id: number) {
     try {
-      const projectTechStach = await prisma.projectTechStach.findUnique({
+      const projectTechStach = await prisma.projectTechStack.findUnique({
         where: {
           id,
         },
@@ -51,7 +51,7 @@ export class ProjectTechStachService {
 
   async update(id: number, updateProjectTechStachDto: UpdateProjectTechStachDto) {
     try {
-      const updateProjectTechStach = await prisma.projectTechStach.update({
+      const updateProjectTechStach = await prisma.projectTechStack.update({
         where: {
           id,
         },
@@ -68,7 +68,7 @@ export class ProjectTechStachService {
 
   async remove(id: number) {
     try {
-      const deleteProjectTechStach = await prisma.projectTechStach.delete({
+      const deleteProjectTechStach = await prisma.projectTechStack.delete({
         where: {
           id,
         },

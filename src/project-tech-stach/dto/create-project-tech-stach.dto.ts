@@ -2,7 +2,9 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateProjectTechStachDto {
     @ApiProperty()
-    projectName: string
+    projectId: number
     @ApiProperty()
-    techStackId: number
+    name: string
+    @ApiProperty()
+    image: string
 }

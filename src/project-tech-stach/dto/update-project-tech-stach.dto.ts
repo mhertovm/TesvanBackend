@@ -4,7 +4,9 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class UpdateProjectTechStachDto extends PartialType(CreateProjectTechStachDto) {
     @ApiProperty()
-    projectName: string
+    projectId: number
     @ApiProperty()
-    techStackId: number
+    name: string
+    @ApiProperty()
+    image: string
 }

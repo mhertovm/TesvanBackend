@@ -372,12 +372,13 @@ CREATE TABLE "ProjectObjective" (
 );
 
 -- CreateTable
-CREATE TABLE "ProjectTechStach" (
+CREATE TABLE "ProjectTechStack" (
     "id" SERIAL NOT NULL,
-    "projectName" VARCHAR(255) NOT NULL,
-    "techStackId" INTEGER NOT NULL,
+    "projectId" INTEGER NOT NULL,
+    "name" VARCHAR(255) NOT NULL,
+    "image" VARCHAR(255) NOT NULL,
 
-    CONSTRAINT "ProjectTechStach_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "ProjectTechStack_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -435,15 +436,6 @@ CREATE TABLE "TeamMember" (
 );
 
 -- CreateTable
-CREATE TABLE "TechStack" (
-    "id" SERIAL NOT NULL,
-    "name" VARCHAR(255) NOT NULL,
-    "image" VARCHAR(255) NOT NULL,
-
-    CONSTRAINT "TechStack_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
 CREATE TABLE "Testimonials" (
     "id" SERIAL NOT NULL,
     "fullName_am" VARCHAR(255) NOT NULL,
@@ -481,13 +473,49 @@ CREATE TABLE "User" (
 );
 
 -- CreateIndex
+CREATE UNIQUE INDEX "Approach_serviceId_key" ON "Approach"("serviceId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Faq_serviceId_key" ON "Faq"("serviceId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "ProjectCategory_projectId_key" ON "ProjectCategory"("projectId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "ProjectDetail_projectId_key" ON "ProjectDetail"("projectId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "ProjectObjective_projectId_key" ON "ProjectObjective"("projectId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "ProjectTechStack_projectId_key" ON "ProjectTechStack"("projectId");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "User_username_key" ON "User"("username");
 
 -- AddForeignKey
+ALTER TABLE "Approach" ADD CONSTRAINT "Approach_serviceId_fkey" FOREIGN KEY ("serviceId") REFERENCES "Services"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Benefits" ADD CONSTRAINT "Benefits_serviceId_fkey" FOREIGN KEY ("serviceId") REFERENCES "Services"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Faq" ADD CONSTRAINT "Faq_serviceId_fkey" FOREIGN KEY ("serviceId") REFERENCES "Services"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Offers" ADD CONSTRAINT "Offers_serviceId_fkey" FOREIGN KEY ("serviceId") REFERENCES "Services"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "ProjectCategory" ADD CONSTRAINT "ProjectCategory_projectId_fkey" FOREIGN KEY ("projectId") REFERENCES "Projects"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "ProjectTechStach" ADD CONSTRAINT "ProjectTechStach_techStackId_fkey" FOREIGN KEY ("techStackId") REFERENCES "TechStack"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "ProjectDetail" ADD CONSTRAINT "ProjectDetail_projectId_fkey" FOREIGN KEY ("projectId") REFERENCES "Projects"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "ProjectObjective" ADD CONSTRAINT "ProjectObjective_projectId_fkey" FOREIGN KEY ("projectId") REFERENCES "Projects"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "ProjectTechStack" ADD CONSTRAINT "ProjectTechStack_projectId_fkey" FOREIGN KEY ("projectId") REFERENCES "Projects"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

@@ -22,7 +22,6 @@ import { ProjectDetailModule } from './project-detail/project-detail.module';
 import { ProjectObjectiveModule } from './project-objective/project-objective.module';
 import { StudentsReviewModule } from './students-review/students-review.module';
 import { TeamMemberModule } from './team-member/team-member.module';
-import { TechStackModule } from './tech-stack/tech-stack.module';
 import { TestimonialsModule } from './testimonials/testimonials.module';
 import { UserModule } from './user/user.module';
 import { EducationCategoryModule } from './education-category/education-category.module';
@@ -34,7 +33,7 @@ import { ProjectsModule } from './projects/projects.module';
 import { AuthModule } from './auth/auth.module';
 
 @Module({
-  imports: [AboutUsModule, JobsModule, AboutWorkModule, ApplicantModule, ApproachModule, BenefitsModule, BlogModule, CareersModule, ContactsModule, CoreValuesModule, CoursesModule, EducationsModule, FaqModule, HireUsModule, PageTitlesModule, PrivacyPolicyModule, ProjectCategoryModule, ProjectDetailModule, ProjectObjectiveModule, StudentsReviewModule, TeamMemberModule, TechStackModule, TestimonialsModule, UserModule, EducationCategoryModule, OffersModule, ProjectTechStachModule, ServicesModule, TheyTrustUsModule, ProjectsModule, AuthModule ],
+  imports: [AboutUsModule, JobsModule, AboutWorkModule, ApplicantModule, ApproachModule, BenefitsModule, BlogModule, CareersModule, ContactsModule, CoreValuesModule, CoursesModule, EducationsModule, FaqModule, HireUsModule, PageTitlesModule, PrivacyPolicyModule, ProjectCategoryModule, ProjectDetailModule, ProjectObjectiveModule, StudentsReviewModule, TeamMemberModule, TestimonialsModule, UserModule, EducationCategoryModule, OffersModule, ProjectTechStachModule, ServicesModule, TheyTrustUsModule, ProjectsModule, AuthModule ],
   controllers: [AppController],
   providers: [AppService],
 })
