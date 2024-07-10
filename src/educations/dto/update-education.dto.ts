@@ -4,6 +4,8 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class UpdateEducationDto extends PartialType(CreateEducationDto) {
     @ApiProperty()
+    educationCategoryId: number
+    @ApiProperty()
     type_am: string
     @ApiProperty()
     type_en: string

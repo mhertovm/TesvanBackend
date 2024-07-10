@@ -2,6 +2,8 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateEducationDto {
     @ApiProperty()
+    educationCategoryId: number
+    @ApiProperty()
     type_am: string
     @ApiProperty()
     type_en: string

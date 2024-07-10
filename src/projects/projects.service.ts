@@ -21,6 +21,64 @@ function myPrisma(language?: string) {
               return projects[`metaDescription_${language}`]
             }
           }
+        },
+        projectDetail: {
+          industry: {
+            needs: { industry_am: true, industry_en: true, industry_ru: true },
+            compute(projectDetail) {
+              return projectDetail[`industry_${language}`]
+            }
+          },
+          location: {
+            needs: { location_am: true, location_en: true, location_ru: true },
+            compute(projectDetail) {
+              return projectDetail[`location_${language}`]
+            }
+          },
+          duration: {
+            needs: { duration_am: true, duration_en: true, duration_ru: true },
+            compute(projectDetail) {
+              return projectDetail[`duration_${language}`]
+            }
+          },
+          team: {
+            needs: { team_am: true, team_en: true, team_ru: true },
+            compute(projectDetail) {
+              return projectDetail[`team_${language}`]
+            }
+          },
+          overview: {
+            needs: { overview_am: true, overview_en: true, overview_ru: true },
+            compute(projectDetail) {
+              return projectDetail[`overview_${language}`]
+            }
+          },
+          challenge: {
+            needs: { challenge_am: true, challenge_en: true, challenge_ru: true },
+            compute(projectDetail) {
+              return projectDetail[`challenge_${language}`]
+            }
+          },
+          solution: {
+            needs: { solution_am: true, solution_en: true, solution_ru: true },
+            compute(projectDetail) {
+              return projectDetail[`solution_${language}`]
+            }
+          },
+          result: {
+            needs: { result_am: true, result_en: true, result_ru: true },
+            compute(projectDetail) {
+              return projectDetail[`result_${language}`]
+            }
+          }
+        },
+        projectObjective: {
+          objective: {
+            needs: { objective_am: true, objective_en: true, objective_ru: true },
+            compute(projectObjective) {
+              return projectObjective[`objective_${language}`]
+            }
+          }
         }
       }
     })
@@ -52,7 +110,30 @@ export class ProjectsService {
           metaTitle: true,
           metaDescription: true,
           image: true,
-          url: true
+          url: true,
+          projectTechStack :true,
+          projectDetail: {
+            select: {
+              id: true,
+              projectId: true,
+              industry: true,
+              location: true,
+              duration: true,
+              team: true,
+              overview: true,
+              challenge: true,
+              solution: true,
+              result: true,
+              image: true
+            }
+          },
+          projectObjective: {
+            select: {
+              id: true,
+              projectId: true,
+              objective: true
+            }
+          }
         }
       })
       return projects;
@@ -76,7 +157,30 @@ export class ProjectsService {
           metaTitle: true,
           metaDescription: true,
           image: true,
-          url: true
+          url: true,
+          projectTechStack :true,
+          projectDetail: {
+            select: {
+              id: true,
+              projectId: true,
+              industry: true,
+              location: true,
+              duration: true,
+              team: true,
+              overview: true,
+              challenge: true,
+              solution: true,
+              result: true,
+              image: true
+            }
+          },
+          projectObjective: {
+            select: {
+              id: true,
+              projectId: true,
+              objective: true
+            }
+          }
         }
       })
       return project;

@@ -185,7 +185,6 @@ CREATE TABLE "Courses" (
 -- CreateTable
 CREATE TABLE "EducationCategory" (
     "id" SERIAL NOT NULL,
-    "educationId" INTEGER NOT NULL,
     "category_am" VARCHAR(255) NOT NULL,
     "category_en" VARCHAR(255) NOT NULL,
     "category_ru" VARCHAR(255) NOT NULL,
@@ -196,6 +195,7 @@ CREATE TABLE "EducationCategory" (
 -- CreateTable
 CREATE TABLE "Educations" (
     "id" SERIAL NOT NULL,
+    "educationCategoryId" INTEGER NOT NULL,
     "type_am" VARCHAR(255) NOT NULL,
     "type_en" VARCHAR(255) NOT NULL,
     "type_ru" VARCHAR(255) NOT NULL,
@@ -303,6 +303,7 @@ CREATE TABLE "PrivacyPolicy" (
 -- CreateTable
 CREATE TABLE "Projects" (
     "id" SERIAL NOT NULL,
+    "projectCategoryId" INTEGER NOT NULL,
     "name" VARCHAR(255) NOT NULL,
     "metaTitle_am" VARCHAR(255) NOT NULL,
     "metaTitle_en" VARCHAR(255) NOT NULL,
@@ -319,7 +320,6 @@ CREATE TABLE "Projects" (
 -- CreateTable
 CREATE TABLE "ProjectCategory" (
     "id" SERIAL NOT NULL,
-    "projectId" INTEGER NOT NULL,
     "category_am" VARCHAR(255) NOT NULL,
     "category_en" VARCHAR(255) NOT NULL,
     "category_ru" VARCHAR(255) NOT NULL,
@@ -473,22 +473,7 @@ CREATE TABLE "User" (
 );
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Approach_serviceId_key" ON "Approach"("serviceId");
-
--- CreateIndex
-CREATE UNIQUE INDEX "Faq_serviceId_key" ON "Faq"("serviceId");
-
--- CreateIndex
-CREATE UNIQUE INDEX "ProjectCategory_projectId_key" ON "ProjectCategory"("projectId");
-
--- CreateIndex
 CREATE UNIQUE INDEX "ProjectDetail_projectId_key" ON "ProjectDetail"("projectId");
-
--- CreateIndex
-CREATE UNIQUE INDEX "ProjectObjective_projectId_key" ON "ProjectObjective"("projectId");
-
--- CreateIndex
-CREATE UNIQUE INDEX "ProjectTechStack_projectId_key" ON "ProjectTechStack"("projectId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
@@ -503,13 +488,16 @@ ALTER TABLE "Approach" ADD CONSTRAINT "Approach_serviceId_fkey" FOREIGN KEY ("se
 ALTER TABLE "Benefits" ADD CONSTRAINT "Benefits_serviceId_fkey" FOREIGN KEY ("serviceId") REFERENCES "Services"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE "Educations" ADD CONSTRAINT "Educations_educationCategoryId_fkey" FOREIGN KEY ("educationCategoryId") REFERENCES "EducationCategory"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "Faq" ADD CONSTRAINT "Faq_serviceId_fkey" FOREIGN KEY ("serviceId") REFERENCES "Services"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Offers" ADD CONSTRAINT "Offers_serviceId_fkey" FOREIGN KEY ("serviceId") REFERENCES "Services"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "ProjectCategory" ADD CONSTRAINT "ProjectCategory_projectId_fkey" FOREIGN KEY ("projectId") REFERENCES "Projects"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Projects" ADD CONSTRAINT "Projects_projectCategoryId_fkey" FOREIGN KEY ("projectCategoryId") REFERENCES "ProjectCategory"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "ProjectDetail" ADD CONSTRAINT "ProjectDetail_projectId_fkey" FOREIGN KEY ("projectId") REFERENCES "Projects"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

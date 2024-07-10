@@ -49,7 +49,7 @@ model Applicant {
 
 model Approach {
   id Int @id @default(autoincrement()) 
-  serviceId Int @unique
+  serviceId Int
   approach_am String @db.VarChar(255)
   approach_en String @db.VarChar(255)
   approach_ru String @db.VarChar(255)
@@ -171,14 +171,15 @@ model Courses {
 
 model EducationCategory {
   id Int @id @default(autoincrement())
-  educationId Int
   category_am String @db.VarChar(255)
   category_en String @db.VarChar(255)
   category_ru String @db.VarChar(255)
+  educations Educations[]
 }
 
 model Educations {
   id Int @id @default(autoincrement())
+  educationCategoryId Int
   type_am String @db.VarChar(255)
   type_en String @db.VarChar(255)
   type_ru String @db.VarChar(255)
@@ -196,11 +197,12 @@ model Educations {
   content_am String 
   content_en String 
   content_ru String 
+  educationCategory EducationCategory @relation(fields: [educationCategoryId], references: [id])
 }
 
 model Faq {
   id Int @id @default(autoincrement())
-  serviceId Int @unique
+  serviceId Int
   question_am String @db.VarChar(255)
   question_en String @db.VarChar(255)
   question_ru String @db.VarChar(255)
@@ -267,6 +269,7 @@ model PrivacyPolicy {
 
 model Projects {
   id Int @id @default(autoincrement())
+  projectCategoryId Int
   name String @db.VarChar(255)
   metaTitle_am String @db.VarChar(255)
   metaTitle_en String @db.VarChar(255)
@@ -276,22 +279,21 @@ model Projects {
   metaDescription_ru String @db.VarChar(255)
   image String @db.VarChar(255)
   url String @db.VarChar(255)
-  projectCategory ProjectCategory?
   projectDetail ProjectDetail?
-  projectObjective ProjectObjective?
-  projectTechStack ProjectTechStack?
+  projectObjective ProjectObjective[]
+  projectTechStack ProjectTechStack[]
+  projectCategory ProjectCategory @relation(fields: [projectCategoryId], references: [id])
 }
 
-model ProjectCategory {
+model ProjectCategory { // one to many 
   id Int @id @default(autoincrement())
-  projectId Int @unique
   category_am String @db.VarChar(255)
   category_en String @db.VarChar(255)
   category_ru String @db.VarChar(255)
-  project Projects @relation(fields: [projectId], references: [id])
+  projects Projects[]
 }
 
-model ProjectDetail {
+model ProjectDetail { // one to one
   id Int @id @default(autoincrement())
   projectId Int @unique
   industry_am String @db.VarChar(255)
@@ -322,24 +324,18 @@ model ProjectDetail {
   project Projects @relation(fields: [projectId], references: [id])
 }
 
-model ProjectObjective {
+model ProjectObjective { //one to many
   id Int @id @default(autoincrement())
-  projectId Int @unique
+  projectId Int
   objective_am String @db.VarChar(255)
   objective_en String @db.VarChar(255)
   objective_ru String @db.VarChar(255)
   project Projects @relation(fields: [projectId], references: [id])
 }
 
-// model TechStach {
-//   id Int @id @default(autoincrement())
-//   name String @db.VarChar(255)
-//   image String @db.VarChar(255)
-// }
-
-model ProjectTechStack {
+model ProjectTechStack { //one to many
   id Int @id @default(autoincrement())
-  projectId Int @unique
+  projectId Int
   name String @db.VarChar(255)
   image String @db.VarChar(255)
   project Projects @relation(fields: [projectId], references: [id])
@@ -362,10 +358,10 @@ model Services {
   image String @db.VarChar(255)
   url String @db.VarChar(255)
   altText String @db.VarChar(255)
-  approach Approach?
-  benefits Benefits[]
-  faq Faq?
-  offers Offers[]
+  approach Approach[] //one to many
+  benefits Benefits[] //one to many
+  faq Faq[] //one to many
+  offers Offers[] //one to many
 }
 
 model StudentsReview {

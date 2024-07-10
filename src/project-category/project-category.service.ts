@@ -56,9 +56,8 @@ export class ProjectCategoryService {
       const projectCategory = await myPrisma(language).projectCategory.findMany({
         select: {
           id: true,
-          projectId: true,
           category: true,
-          project: {
+          projects: {
             select: {
               id: true,
               name: true,
@@ -87,9 +86,8 @@ export class ProjectCategoryService {
         },
         select: {
           id: true,
-          projectId: true,
           category: true,
-          project: {
+          projects: {
             select: {
               id: true,
               name: true,

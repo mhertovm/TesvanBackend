@@ -33,6 +33,50 @@ function myPrisma(language?: string) {
               return services[`metaDescription_${language}`]
             }
           }
+        },
+        approach: {
+          approach: {
+            needs: { approach_am: true, approach_en: true, approach_ru: true },
+            compute(approach) {
+              return approach[`approach_${language}`]
+            }
+          },
+        },
+        benefits: {
+          title: {
+            needs: { title_am: true, title_en: true, title_ru: true },
+            compute(benefit) {
+              return benefit[`title_${language}`]
+            }
+          },
+          description: {
+            needs: { description_am: true, description_en: true, description_ru: true },
+            compute(benefit) {
+              return benefit[`description_${language}`]
+            }
+          },
+        },
+        faq: {
+          question: {
+            needs: { question_am: true, question_en: true, question_ru: true },
+            compute(faq) {
+              return faq[`question_${language}`]
+            }
+          },
+          answer: {
+            needs: { answer_am: true, answer_en: true, answer_ru: true },
+            compute(faq) {
+              return faq[`answer_${language}`]
+            }
+          },
+        },
+        offers: {
+          offers: {
+            needs: { offers_am: true, offers_en: true, offers_ru: true },
+            compute(offers) {
+              return offers[`offers_${language}`]
+            }
+          }
         }
       }
     })
@@ -66,7 +110,37 @@ export class ServicesService {
           metaDescription: true,
           image: true,
           url: true,
-          altText: true
+          altText: true,
+          approach: {
+            select: {
+              id: true,
+              serviceId: true,
+              approach: true
+            }
+          },
+          benefits: {
+            select: {
+              id: true,
+              serviceId: true,
+              title: true,
+              description: true
+            }
+          },
+          faq: {
+            select: {
+              id: true,
+              serviceId: true,
+              question: true,
+              answer: true
+            }
+          },
+          offers: {
+            select: {
+              id: true,
+              serviceId: true,
+              offers: true
+            }
+          }
         }
       })
       return services;
@@ -92,7 +166,37 @@ export class ServicesService {
           metaDescription: true,
           image: true,
           url: true,
-          altText: true
+          altText: true,
+          approach: {
+            select: {
+              id: true,
+              serviceId: true,
+              approach: true
+            }
+          },
+          benefits: {
+            select: {
+              id: true,
+              serviceId: true,
+              title: true,
+              description: true
+            }
+          },
+          faq: {
+            select: {
+              id: true,
+              serviceId: true,
+              question: true,
+              answer: true
+            }
+          },
+          offers: {
+            select: {
+              id: true,
+              serviceId: true,
+              offers: true
+            }
+          }
         }
       })
       return servic;

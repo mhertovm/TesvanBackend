@@ -4,6 +4,8 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class UpdateProjectDto extends PartialType(CreateProjectDto) {
     @ApiProperty()
+    projectCategoryId: number
+    @ApiProperty()
     name: string
     @ApiProperty()
     metaTitle_am: string

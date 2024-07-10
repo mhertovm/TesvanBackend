@@ -15,6 +15,38 @@ function myPrisma(language?: string) {
               return educationCategory[`category_${language}`]
             }
           }
+        },
+        educations: {
+          type: {
+            needs: { type_am: true, type_en: true, type_ru: true },
+            compute(educations) {
+              return educations[`type_${language}`]
+            }
+          },
+          education: {
+            needs: { education_am: true, education_en: true, education_ru: true },
+            compute(educations) {
+              return educations[`education_${language}`]
+            }
+          },
+          metaTitle: {
+            needs: { metaTitle_am: true, metaTitle_en: true, metaTitle_ru: true },
+            compute(educations) {
+              return educations[`metaTitle_${language}`]
+            }
+          },
+          metaDescription: {
+            needs: { metaDescription_am: true, metaDescription_en: true, metaDescription_ru: true },
+            compute(educations) {
+              return educations[`metaDescription_${language}`]
+            }
+          },
+          content: {
+            needs: { content_am: true, content_en: true, content_ru: true },
+            compute(educations) {
+              return educations[`content_${language}`]
+            }
+          },
         }
       }
     })
@@ -42,8 +74,19 @@ export class EducationCategoryService {
       const educationCategory = await myPrisma(language).educationCategory.findMany({
         select: {
           id: true,
-          educationId: true,
-          category: true
+          category: true,
+          educations: {
+            select: {
+              id: true,
+              type: true,
+              education: true,
+              metaTitle: true,
+              metaDescription: true,
+              image: true,
+              url: true,
+              content: true
+            }
+          }
         }
       })
       return educationCategory;
@@ -63,8 +106,19 @@ export class EducationCategoryService {
         },
         select: {
           id: true,
-          educationId: true,
-          category: true
+          category: true,
+          educations: {
+            select: {
+              id: true,
+              type: true,
+              education: true,
+              metaTitle: true,
+              metaDescription: true,
+              image: true,
+              url: true,
+              content: true
+            }
+          }
         }
       })
       return educationCategory;
