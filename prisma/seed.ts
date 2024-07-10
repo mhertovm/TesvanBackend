@@ -10,8 +10,36 @@ async function main() {
       username: 'admin',
       password: '$2b$10$Gldd2TFEZCS6uKvAT8FcM.d9heiwxovBuTyJhK7EEmdCcMP0nTx02'
     },
-  })
-  console.log(`Created user with id: ${user.id}`)
+  });
+  const privacyPolicy = await prisma.privacyPolicy.create({
+    data: {
+      metaTitle_am: 'metaTitle_am',
+      metaTitle_en: 'metaTitle_en',
+      metaTitle_ru: 'metaTitle_ru',
+      metaDescription_am: 'metaDescription_am',
+      metaDescription_en: 'metaDescription_en',
+      metaDescription_ru: 'metaDescription_ru',
+      content_am: 'content_am',
+      content_en: 'content_en',
+      content_ru: 'content_ru',
+    }
+  });
+  const aboutUs = await prisma.aboutUs.create({
+    data: {
+      metaTitle_am: 'metaTitle_am',  
+      metaTitle_en: 'metaTitle_en',  
+      metaTitle_ru: 'metaTitle_ru', 
+      metaDescription_am: 'metaDescription_am', 
+      metaDescription_en: 'metaDescription_en', 
+      metaDescription_ru: 'metaDescription_ru', 
+      projects: 0, 
+      freeCourse: 0, 
+      employess: 0, 
+      content_am: 'content_am', 
+      content_en: 'content_en',  
+      content_ru: 'content_ru',
+    }
+  });
 }
 
 main()

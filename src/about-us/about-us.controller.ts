@@ -9,14 +9,6 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 @Controller('aboutUs')
 export class AboutUsController {
   constructor(private readonly aboutUsService: AboutUsService) { }
-  
-  @Post()
-  @ApiBearerAuth('access-token') 
-  @UseGuards(JwtAuthGuard)
-  @ApiOperation({ summary: 'Create a aboutUs' })
-  create(@Body() createAboutUsDto: CreateAboutUsDto) {
-    return this.aboutUsService.create(createAboutUsDto);
-  }
 
   @Get()
   @ApiOperation({ summary: 'Find one aboutUs' })
@@ -30,13 +22,5 @@ export class AboutUsController {
   @ApiOperation({ summary: 'Update a aboutUs' })
   update(@Param('id') id: string, @Body() updateAboutUsDto: UpdateAboutUsDto) {
     return this.aboutUsService.update(+id, updateAboutUsDto);
-  }
-
-  @Delete(':id')
-  @ApiBearerAuth('access-token') 
-  @UseGuards(JwtAuthGuard)
-  @ApiOperation({ summary: 'Delete a aboutUs' })
-  remove(@Param('id') id: string) {
-    return this.aboutUsService.remove(+id);
   }
 }
