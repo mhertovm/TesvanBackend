@@ -40,6 +40,8 @@ async function main() {
       content_ru: 'content_ru',
     }
   });
+  console.log("db seed success");
+  
 }
 
 main()

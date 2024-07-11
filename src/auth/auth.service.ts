@@ -20,7 +20,7 @@ export class AuthService {
         },
       })
       if (!user) {
-        return new HttpException('Invalid email or password1', HttpStatus.FORBIDDEN);
+        return new HttpException('Invalid email or password', HttpStatus.FORBIDDEN);
       }
       const isMatch = await bcrypt.compare(loginDto.password, user.password);
 
