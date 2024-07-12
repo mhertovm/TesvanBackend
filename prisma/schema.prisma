@@ -10,7 +10,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = "postgresql://postgres:mt91164159@localhost:5432/tesvan?schema=public"
+  url      = env("DATABASE_URL")
 }
 
 model AboutUs {
