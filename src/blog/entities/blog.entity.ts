@@ -1,5 +1,5 @@
 export class Blog {
-    metaTitle_am: string
+    metaTitle_am: "mk"
     metaTitle_en: string
     metaTitle_ru: string
     metaDescription_am: string

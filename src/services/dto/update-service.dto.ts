@@ -3,34 +3,34 @@ import { CreateServiceDto } from './create-service.dto';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class UpdateServiceDto extends PartialType(CreateServiceDto) {
-    @ApiProperty()
+    @ApiProperty({ required: false })
     type_am: string
-    @ApiProperty()
+    @ApiProperty({ required: false })
     type_en: string
-    @ApiProperty()
+    @ApiProperty({ required: false })
     type_ru: string
-    @ApiProperty()
+    @ApiProperty({ required: false })
     service_am: string
-    @ApiProperty()
+    @ApiProperty({ required: false })
     service_en: string
-    @ApiProperty()
+    @ApiProperty({ required: false })
     service_ru: string
-    @ApiProperty()
+    @ApiProperty({ required: false })
     metaTitle_am: string
-    @ApiProperty()
+    @ApiProperty({ required: false })
     metaTitle_en: string
-    @ApiProperty()
+    @ApiProperty({ required: false })
     metaTitle_ru: string
-    @ApiProperty()
+    @ApiProperty({ required: false })
     metaDescription_am: string
-    @ApiProperty()
+    @ApiProperty({ required: false })
     metaDescription_en: string
-    @ApiProperty()
+    @ApiProperty({ required: false })
     metaDescription_ru: string
-    @ApiProperty()
+    @ApiProperty({ type: 'string', format: 'binary', description: 'File to upload', required: false })
     image: string
-    @ApiProperty()
+    @ApiProperty({ required: false })
     url: string
-    @ApiProperty()
+    @ApiProperty({ required: false })
     altText: string
 }

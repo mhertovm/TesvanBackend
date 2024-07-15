@@ -11,10 +11,8 @@ export class CreateJobDto {
     jobRole: string
     @ApiProperty()
     coverLetter: string
-    @ApiProperty()
+    @ApiProperty({ type: 'string', format: 'binary', description: 'File to upload' })
     image: string
     @ApiProperty()
     isAgreed: string
-    @ApiProperty()
-    createdAt: Date
 }

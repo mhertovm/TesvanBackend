@@ -3,10 +3,10 @@ import { CreateHireUsDto } from './create-hire-us.dto';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class UpdateHireUsDto extends PartialType(CreateHireUsDto) {
-    @ApiProperty()
+    @ApiProperty({ required: false })
     hire_am: string
-    @ApiProperty()
+    @ApiProperty({ required: false })
     hire_en: string
-    @ApiProperty()
+    @ApiProperty({ required: false })
     hire_ru: string
 }

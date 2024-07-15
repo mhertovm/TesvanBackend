@@ -3,10 +3,10 @@ import { CreateEducationCategoryDto } from './create-education-category.dto';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class UpdateEducationCategoryDto extends PartialType(CreateEducationCategoryDto) {
-    @ApiProperty()
+    @ApiProperty({ required: false })
     category_am: string
-    @ApiProperty()
+    @ApiProperty({ required: false })
     category_en: string
-    @ApiProperty()
+    @ApiProperty({ required: false })
     category_ru: string
 }

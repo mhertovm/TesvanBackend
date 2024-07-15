@@ -19,6 +19,6 @@ export class CreateStudentsReviewDto {
     review_en: string
     @ApiProperty()
     review_ru: string
-    @ApiProperty()
+    @ApiProperty({ type: 'string', format: 'binary', description: 'File to upload' })
     image: string
 }

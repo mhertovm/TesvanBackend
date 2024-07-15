@@ -67,7 +67,7 @@ export class CreateCourseDto {
     courseDescription_en: string
     @ApiProperty()
     courseDescription_ru: string
-    @ApiProperty()
+    @ApiProperty({ type: 'string', format: 'binary', description: 'File to upload' })
     image: string
     @ApiProperty()
     altText: string

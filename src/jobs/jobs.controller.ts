@@ -1,21 +1,26 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query, UseInterceptors } from '@nestjs/common';
 import { JobsService } from './jobs.service';
 import { CreateJobDto } from './dto/create-job.dto';
 import { UpdateJobDto } from './dto/update-job.dto';
-import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';      
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard'; 
+import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiConsumes } from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { UploadService } from 'src/upload/upload.service';
 
 
 @ApiTags('jobs')
 @Controller('jobs')
 export class JobsController {
-  constructor(private readonly jobsService: JobsService) {}
+  constructor(private readonly jobsService: JobsService, private readonly uploadService: UploadService) { }
 
   @Post()
   @ApiBearerAuth('access-token')
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Create a jobs' })
-  create(@Body() createJobDto: CreateJobDto) {
+  @ApiConsumes('multipart/form-data')
+  @UseInterceptors(FileInterceptor('file'))
+  create(@Body() createJobDto: CreateJobDto, file: Express.Multer.File) {
+    createJobDto.image = this.uploadService.uploadFile(file).filename
     return this.jobsService.create(createJobDto);
   }
 
@@ -35,7 +40,12 @@ export class JobsController {
   @ApiBearerAuth('access-token')
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Update a jobs' })
-  update(@Param('id') id: string, @Body() updateJobDto: UpdateJobDto) {
+  @ApiConsumes('multipart/form-data')
+  @UseInterceptors(FileInterceptor('file'))
+  update(@Param('id') id: string, @Body() updateJobDto: UpdateJobDto, file: Express.Multer.File) {
+    if(file){
+      updateJobDto.image = this.uploadService.uploadFile(file).filename
+    }
     return this.jobsService.update(+id, updateJobDto);
   }
 

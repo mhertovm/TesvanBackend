@@ -3,12 +3,12 @@ import { CreateOfferDto } from './create-offer.dto';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class UpdateOfferDto extends PartialType(CreateOfferDto) {
-    @ApiProperty()
+    @ApiProperty({ required: false })
     serviceId: number
-    @ApiProperty()
+    @ApiProperty({ required: false })
     offers_am: string
-    @ApiProperty()
+    @ApiProperty({ required: false })
     offers_en: string
-    @ApiProperty()
+    @ApiProperty({ required: false })
     offers_ru: string
 }

@@ -5,6 +5,6 @@ export class CreateProjectTechStachDto {
     projectId: number
     @ApiProperty()
     name: string
-    @ApiProperty()
+    @ApiProperty({ type: 'string', format: 'binary', description: 'File to upload' })
     image: string
 }

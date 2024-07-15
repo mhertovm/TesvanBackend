@@ -86,7 +86,7 @@ model Blog {
   url String @db.VarChar(255)
   bigImage String @db.VarChar(255)
   altText String @db.VarChar(255)
-  createdAt DateTime
+  createdAt DateTime @default(now())
 }
 
 model Careers {
@@ -117,7 +117,7 @@ model Contacts {
   company String @db.VarChar(255)
   description String
   isAgreed Boolean
-  createdAt DateTime 
+  createdAt DateTime @default(now())
 }
 
 model CoreValues {
@@ -228,7 +228,7 @@ model Jobs {
   coverLetter String
   image String @db.VarChar(255)
   isAgreed String
-  createdAt DateTime
+  createdAt DateTime @default(now())
 }
 
 model Offers {

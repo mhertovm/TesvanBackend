@@ -1,20 +1,25 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query, UseInterceptors } from '@nestjs/common';
 import { ProjectsService } from './projects.service';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
-import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger'; 
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';       
+import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiConsumes } from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { UploadService } from 'src/upload/upload.service';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @ApiTags('projects')
 @Controller('projects')
 export class ProjectsController {
-  constructor(private readonly projectsService: ProjectsService) {}
+  constructor(private readonly projectsService: ProjectsService, private readonly uploadService: UploadService) { }
 
   @Post()
   @ApiBearerAuth('access-token')
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Create a projects' })
-  create(@Body() createProjectDto: CreateProjectDto) {
+  @ApiConsumes('multipart/form-data')
+  @UseInterceptors(FileInterceptor('file'))
+  create(@Body() createProjectDto: CreateProjectDto, file: Express.Multer.File) {
+    createProjectDto.image = this.uploadService.uploadFile(file).filename
     return this.projectsService.create(createProjectDto);
   }
 
@@ -34,7 +39,12 @@ export class ProjectsController {
   @ApiBearerAuth('access-token')
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Update a projects' })
-  update(@Param('id') id: string, @Body() updateProjectDto: UpdateProjectDto) {
+  @ApiConsumes('multipart/form-data')
+  @UseInterceptors(FileInterceptor('file'))
+  update(@Param('id') id: string, @Body() updateProjectDto: UpdateProjectDto, file: Express.Multer.File) {
+    if (file) {
+      updateProjectDto.image = this.uploadService.uploadFile(file).filename
+    }
     return this.projectsService.update(+id, updateProjectDto);
   }
 

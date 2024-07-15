@@ -3,18 +3,18 @@ import { CreateFaqDto } from './create-faq.dto';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class UpdateFaqDto extends PartialType(CreateFaqDto) {
-    @ApiProperty()
+    @ApiProperty({ required: false })
     serviceId: number
-    @ApiProperty()
+    @ApiProperty({ required: false })
     question_am: string
-    @ApiProperty()
+    @ApiProperty({ required: false })
     question_en: string
-    @ApiProperty()
+    @ApiProperty({ required: false })
     question_ru: string
-    @ApiProperty()
+    @ApiProperty({ required: false })
     answer_am: string
-    @ApiProperty()
+    @ApiProperty({ required: false })
     answer_en: string
-    @ApiProperty()
+    @ApiProperty({ required: false })
     answer_ru: string
 }

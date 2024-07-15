@@ -13,6 +13,4 @@ export class CreateContactDto {
     description: string
     @ApiProperty()
     isAgreed: boolean
-    @ApiProperty()
-    createdAt: Date
 }

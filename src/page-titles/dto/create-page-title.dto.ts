@@ -17,7 +17,7 @@ export class CreatePageTitleDto {
     students: number
     @ApiProperty()
     joinedOurTeam: string
-    @ApiProperty()
+    @ApiProperty({ type: 'string', format: 'binary', description: 'File to upload' })
     image: string
     @ApiProperty()
     type: string

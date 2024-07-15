@@ -15,6 +15,6 @@ export class CreateTeamMemberDto {
     position_en: string
     @ApiProperty()
     position_ru: string
-    @ApiProperty()
+    @ApiProperty({ type: 'string', format: 'binary', description: 'File to upload' })
     image: string
 }

@@ -3,18 +3,18 @@ import { CreateBenefitDto } from './create-benefit.dto';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class UpdateBenefitDto extends PartialType(CreateBenefitDto) {
-    @ApiProperty()
+    @ApiProperty({ required: false })
     serviceId: number
-    @ApiProperty()
+    @ApiProperty({ required: false })
     title_am: string
-    @ApiProperty()
+    @ApiProperty({ required: false })
     title_en: string
-    @ApiProperty()
+    @ApiProperty({ required: false })
     title_ru: string
-    @ApiProperty()
+    @ApiProperty({ required: false })
     description_am: string
-    @ApiProperty()
+    @ApiProperty({ required: false })
     description_en: string
-    @ApiProperty()
+    @ApiProperty({ required: false })
     description_ru: string
 }

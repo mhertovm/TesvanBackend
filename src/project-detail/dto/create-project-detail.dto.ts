@@ -51,6 +51,6 @@ export class CreateProjectDetailDto {
     result_en: string
     @ApiProperty()
     result_ru: string
-    @ApiProperty()
+    @ApiProperty({ type: 'string', format: 'binary', description: 'File to upload' })
     image: string
 }

@@ -1,20 +1,25 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query, UseInterceptors } from '@nestjs/common';
 import { ServicesService } from './services.service';
 import { CreateServiceDto } from './dto/create-service.dto';
 import { UpdateServiceDto } from './dto/update-service.dto';
-import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';     
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard'; 
+import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiConsumes } from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { UploadService } from 'src/upload/upload.service';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @ApiTags('services')
 @Controller('services')
 export class ServicesController {
-  constructor(private readonly servicesService: ServicesService) {}
+  constructor(private readonly servicesService: ServicesService, private readonly uploadService: UploadService) { }
 
   @Post()
   @ApiBearerAuth('access-token')
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Create a services' })
-  create(@Body() createServiceDto: CreateServiceDto) {
+  @ApiConsumes('multipart/form-data')
+  @UseInterceptors(FileInterceptor('file'))
+  create(@Body() createServiceDto: CreateServiceDto, file: Express.Multer.File) {
+    createServiceDto.image = this.uploadService.uploadFile(file).filename
     return this.servicesService.create(createServiceDto);
   }
 
@@ -34,7 +39,12 @@ export class ServicesController {
   @ApiBearerAuth('access-token')
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Update a services' })
-  update(@Param('id') id: string, @Body() updateServiceDto: UpdateServiceDto) {
+  @ApiConsumes('multipart/form-data')
+  @UseInterceptors(FileInterceptor('file'))
+  update(@Param('id') id: string, @Body() updateServiceDto: UpdateServiceDto, file: Express.Multer.File) {
+    if (file) {
+      updateServiceDto.image = this.uploadService.uploadFile(file).filename
+    }
     return this.servicesService.update(+id, updateServiceDto);
   }
 

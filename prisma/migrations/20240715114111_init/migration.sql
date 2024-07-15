@@ -85,7 +85,7 @@ CREATE TABLE "Blog" (
     "url" VARCHAR(255) NOT NULL,
     "bigImage" VARCHAR(255) NOT NULL,
     "altText" VARCHAR(255) NOT NULL,
-    "createdAt" TIMESTAMP(3) NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "Blog_pkey" PRIMARY KEY ("id")
 );
@@ -122,7 +122,7 @@ CREATE TABLE "Contacts" (
     "company" VARCHAR(255) NOT NULL,
     "description" TEXT NOT NULL,
     "isAgreed" BOOLEAN NOT NULL,
-    "createdAt" TIMESTAMP(3) NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "Contacts_pkey" PRIMARY KEY ("id")
 );
@@ -251,7 +251,7 @@ CREATE TABLE "Jobs" (
     "coverLetter" TEXT NOT NULL,
     "image" VARCHAR(255) NOT NULL,
     "isAgreed" TEXT NOT NULL,
-    "createdAt" TIMESTAMP(3) NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "Jobs_pkey" PRIMARY KEY ("id")
 );

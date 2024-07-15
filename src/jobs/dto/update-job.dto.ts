@@ -3,20 +3,18 @@ import { CreateJobDto } from './create-job.dto';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class UpdateJobDto extends PartialType(CreateJobDto) {
-    @ApiProperty()
+    @ApiProperty({ required: false })
     fullName: string
-    @ApiProperty()
+    @ApiProperty({ required: false })
     email: string
-    @ApiProperty()
+    @ApiProperty({ required: false })
     phone: string
-    @ApiProperty()
+    @ApiProperty({ required: false })
     jobRole: string
-    @ApiProperty()
+    @ApiProperty({ required: false })
     coverLetter: string
-    @ApiProperty()
+    @ApiProperty({ type: 'string', format: 'binary', description: 'File to upload', required: false })
     image: string
-    @ApiProperty()
+    @ApiProperty({ required: false })
     isAgreed: string
-    @ApiProperty()
-    createdAt: Date
 }

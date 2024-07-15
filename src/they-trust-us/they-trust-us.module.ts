@@ -2,9 +2,10 @@ import { Module } from '@nestjs/common';
 import { TheyTrustUsService } from './they-trust-us.service';
 import { TheyTrustUsController } from './they-trust-us.controller';
 import { AuthModule } from 'src/auth/auth.module';
+import { UploadModule } from 'src/upload/upload.module';
 
 @Module({
-  imports: [AuthModule],
+  imports: [AuthModule, UploadModule],
   controllers: [TheyTrustUsController],
   providers: [TheyTrustUsService],
 })

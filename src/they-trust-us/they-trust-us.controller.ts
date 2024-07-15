@@ -1,20 +1,25 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query, UseInterceptors } from '@nestjs/common';
 import { TheyTrustUsService } from './they-trust-us.service';
 import { CreateTheyTrustUsDto } from './dto/create-they-trust-us.dto';
 import { UpdateTheyTrustUsDto } from './dto/update-they-trust-us.dto';
-import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiConsumes } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { UploadService } from 'src/upload/upload.service';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @ApiTags('theyTrustUs')
 @Controller('theyTrustUs')
 export class TheyTrustUsController {
-  constructor(private readonly theyTrustUsService: TheyTrustUsService) { }
+  constructor(private readonly theyTrustUsService: TheyTrustUsService, private readonly uploadService: UploadService) { }
 
   @Post()
   @ApiBearerAuth('access-token')
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Create a theyTrustUs' })
-  create(@Body() createTheyTrustUsDto: CreateTheyTrustUsDto) {
+  @ApiConsumes('multipart/form-data')
+  @UseInterceptors(FileInterceptor('file'))
+  create(@Body() createTheyTrustUsDto: CreateTheyTrustUsDto, file: Express.Multer.File) {
+    createTheyTrustUsDto.image = this.uploadService.uploadFile(file).filename
     return this.theyTrustUsService.create(createTheyTrustUsDto);
   }
 
@@ -34,7 +39,12 @@ export class TheyTrustUsController {
   @ApiBearerAuth('access-token')
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Update a theyTrustUs' })
-  update(@Param('id') id: string, @Body() updateTheyTrustUsDto: UpdateTheyTrustUsDto) {
+  @ApiConsumes('multipart/form-data')
+  @UseInterceptors(FileInterceptor('file'))
+  update(@Param('id') id: string, @Body() updateTheyTrustUsDto: UpdateTheyTrustUsDto, file: Express.Multer.File) {
+    if (file) {
+      updateTheyTrustUsDto.image = this.uploadService.uploadFile(file).filename
+    }
     return this.theyTrustUsService.update(+id, updateTheyTrustUsDto);
   }
 

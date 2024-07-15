@@ -1,20 +1,25 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query, UseInterceptors } from '@nestjs/common';
 import { EducationsService } from './educations.service';
 import { CreateEducationDto } from './dto/create-education.dto';
 import { UpdateEducationDto } from './dto/update-education.dto';
-import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';         
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard'; 
+import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiConsumes } from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { UploadService } from 'src/upload/upload.service';
 
 @ApiTags('educations')
 @Controller('educations')
 export class EducationsController {
-  constructor(private readonly educationsService: EducationsService) {}
+  constructor(private readonly educationsService: EducationsService, private readonly uploadService: UploadService) { }
 
   @Post()
   @ApiBearerAuth('access-token')
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Create a educations' })
-  create(@Body() createEducationDto: CreateEducationDto) {
+  @ApiConsumes('multipart/form-data')
+  @UseInterceptors(FileInterceptor('file'))
+  create(@Body() createEducationDto: CreateEducationDto, file: Express.Multer.File) {
+    createEducationDto.image = this.uploadService.uploadFile(file).filename
     return this.educationsService.create(createEducationDto);
   }
 
@@ -34,7 +39,12 @@ export class EducationsController {
   @ApiBearerAuth('access-token')
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Update a educations' })
-  update(@Param('id') id: string, @Body() updateEducationDto: UpdateEducationDto) {
+  @ApiConsumes('multipart/form-data')
+  @UseInterceptors(FileInterceptor('file'))
+  update(@Param('id') id: string, @Body() updateEducationDto: UpdateEducationDto, file: Express.Multer.File) {
+    if (file) {
+      updateEducationDto.image = this.uploadService.uploadFile(file).filename
+    }
     return this.educationsService.update(+id, updateEducationDto);
   }
 

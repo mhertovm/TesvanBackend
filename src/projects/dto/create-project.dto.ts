@@ -17,7 +17,7 @@ export class CreateProjectDto {
     metaDescription_en: string
     @ApiProperty()
     metaDescription_ru: string
-    @ApiProperty()
+    @ApiProperty({ type: 'string', format: 'binary', description: 'File to upload' })
     image: string
     @ApiProperty()
     url: string

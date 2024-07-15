@@ -3,10 +3,10 @@ import { CreateProjectCategoryDto } from './create-project-category.dto';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class UpdateProjectCategoryDto extends PartialType(CreateProjectCategoryDto) {
-    @ApiProperty()
+    @ApiProperty({ required: false })
     category_am: string
-    @ApiProperty()
+    @ApiProperty({ required: false })
     category_en: string
-    @ApiProperty()
+    @ApiProperty({ required: false })
     category_ru: string
 }

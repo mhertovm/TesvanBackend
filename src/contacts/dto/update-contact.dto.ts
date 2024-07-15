@@ -3,18 +3,16 @@ import { CreateContactDto } from './create-contact.dto';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class UpdateContactDto extends PartialType(CreateContactDto) {
-    @ApiProperty()
+    @ApiProperty({ required: false })
     fullName: string
-    @ApiProperty()
+    @ApiProperty({ required: false })
     email: string
-    @ApiProperty()
+    @ApiProperty({ required: false })
     phone: string
-    @ApiProperty()
+    @ApiProperty({ required: false })
     company: string
-    @ApiProperty()
+    @ApiProperty({ required: false })
     description: string
-    @ApiProperty()
+    @ApiProperty({ required: false })
     isAgreed: boolean
-    @ApiProperty()
-    createdAt: Date
 }

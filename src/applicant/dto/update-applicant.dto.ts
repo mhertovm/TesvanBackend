@@ -3,18 +3,18 @@ import { CreateApplicantDto } from './create-applicant.dto';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class UpdateApplicantDto extends PartialType(CreateApplicantDto) {
-    @ApiProperty()
+    @ApiProperty({ required: false })
     fullName: string
-    @ApiProperty()
+    @ApiProperty({ required: false })
     email: string
-    @ApiProperty()
+    @ApiProperty({ required: false })
     phone: string
-    @ApiProperty()
+    @ApiProperty({ required: false })
     isAgreed: boolean
-    @ApiProperty()
+    @ApiProperty({ required: false })
     profession: string
-    @ApiProperty()
+    @ApiProperty({ required: false })
     level: string
-    @ApiProperty()
+    @ApiProperty({ required: false })
     message: string
 }

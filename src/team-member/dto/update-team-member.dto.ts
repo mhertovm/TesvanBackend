@@ -3,20 +3,20 @@ import { CreateTeamMemberDto } from './create-team-member.dto';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class UpdateTeamMemberDto extends PartialType(CreateTeamMemberDto) {
-    @ApiProperty()
+    @ApiProperty({ required: false })
     order: number
-    @ApiProperty()
+    @ApiProperty({ required: false })
     name_am: string
-    @ApiProperty()
+    @ApiProperty({ required: false })
     name_en: string
-    @ApiProperty()
+    @ApiProperty({ required: false })
     name_ru: string
-    @ApiProperty()
+    @ApiProperty({ required: false })
     position_am: string
-    @ApiProperty()
+    @ApiProperty({ required: false })
     position_en: string
-    @ApiProperty()
+    @ApiProperty({ required: false })
     position_ru: string
-    @ApiProperty()
+    @ApiProperty({ type: 'string', format: 'binary', description: 'File to upload', required: false })
     image: string
 }

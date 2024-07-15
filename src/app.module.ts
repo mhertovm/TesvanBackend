@@ -31,9 +31,45 @@ import { ServicesModule } from './services/services.module';
 import { TheyTrustUsModule } from './they-trust-us/they-trust-us.module';
 import { ProjectsModule } from './projects/projects.module';
 import { AuthModule } from './auth/auth.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 @Module({
-  imports: [AboutUsModule, JobsModule, AboutWorkModule, ApplicantModule, ApproachModule, BenefitsModule, BlogModule, CareersModule, ContactsModule, CoreValuesModule, CoursesModule, EducationsModule, FaqModule, HireUsModule, PageTitlesModule, PrivacyPolicyModule, ProjectCategoryModule, ProjectDetailModule, ProjectObjectiveModule, StudentsReviewModule, TeamMemberModule, TestimonialsModule, UserModule, EducationCategoryModule, OffersModule, ProjectTechStachModule, ServicesModule, TheyTrustUsModule, ProjectsModule, AuthModule ],
+  imports: [
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'static'), // Specify the path to your static folder
+    }),
+    AboutUsModule,
+    JobsModule,
+    AboutWorkModule,
+    ApplicantModule,
+    ApproachModule,
+    BenefitsModule,
+    BlogModule,
+    CareersModule,
+    ContactsModule,
+    CoreValuesModule,
+    CoursesModule,
+    EducationsModule,
+    FaqModule,
+    HireUsModule,
+    PageTitlesModule,
+    PrivacyPolicyModule,
+    ProjectCategoryModule,
+    ProjectDetailModule,
+    ProjectObjectiveModule,
+    StudentsReviewModule,
+    TeamMemberModule,
+    TestimonialsModule,
+    UserModule,
+    EducationCategoryModule,
+    OffersModule,
+    ProjectTechStachModule,
+    ServicesModule,
+    TheyTrustUsModule,
+    ProjectsModule,
+    AuthModule
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
