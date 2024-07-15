@@ -4,11 +4,11 @@ const prisma = new PrismaClient()
 
 async function registerUser() {
 //////////////////////////////
-    const name = "gg"
-    const surname = "gg"
-    const email = "gg"
-    const username = "gg"
-    const password = "gg"
+    const name = ""
+    const surname = ""
+    const email = ""
+    const username = ""
+    const password = ""
 ////////////////////////////// npm run register
 
 
