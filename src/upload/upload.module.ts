@@ -35,4 +35,4 @@ import { extname } from 'path';
   providers: [UploadService],
   exports: [UploadService, MulterModule],
 })
-export class UploadModule {}
+export class UploadModule { }
