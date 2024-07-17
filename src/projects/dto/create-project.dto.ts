@@ -1,24 +1,28 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateProjectDto {
-    @ApiProperty()
-    projectCategoryId: number
-    @ApiProperty()
-    name: string
-    @ApiProperty()
-    metaTitle_am: string
-    @ApiProperty()
-    metaTitle_en: string
-    @ApiProperty()
-    metaTitle_ru: string
-    @ApiProperty()
-    metaDescription_am: string
-    @ApiProperty()
-    metaDescription_en: string
-    @ApiProperty()
-    metaDescription_ru: string
-    @ApiProperty({ type: 'string', format: 'binary', description: 'File to upload' })
-    image: string
-    @ApiProperty()
-    url: string
+  @ApiProperty()
+  projectCategoryId: number;
+  @ApiProperty()
+  name: string;
+  @ApiProperty()
+  metaTitle_am: string;
+  @ApiProperty()
+  metaTitle_en: string;
+  @ApiProperty()
+  metaTitle_ru: string;
+  @ApiProperty()
+  metaDescription_am: string;
+  @ApiProperty()
+  metaDescription_en: string;
+  @ApiProperty()
+  metaDescription_ru: string;
+  @ApiProperty({
+    type: 'string',
+    format: 'binary',
+    description: 'File to upload',
+  })
+  image: string;
+  @ApiProperty()
+  url: string;
 }

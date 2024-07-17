@@ -7,11 +7,11 @@ import { extname } from 'path';
 @Module({
   imports: [
     MulterModule.register({
-
       storage: diskStorage({
         destination: './static',
         filename: (req, file, callback) => {
-          const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+          const uniqueSuffix =
+            Date.now() + '-' + Math.round(Math.random() * 1e9);
           const ext = extname(file.originalname);
           callback(null, `${file.fieldname}-${uniqueSuffix}${ext}`);
         },
@@ -31,9 +31,8 @@ import { extname } from 'path';
       //   fileSize: 1024 * 1024, // 1 MB limit
       // },
     }),
-
   ],
   providers: [UploadService],
   exports: [UploadService, MulterModule],
 })
-export class UploadModule { }
+export class UploadModule {}

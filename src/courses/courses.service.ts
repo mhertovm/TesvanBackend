@@ -1,99 +1,119 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { CreateCourseDto } from './dto/create-course.dto';
 import { UpdateCourseDto } from './dto/update-course.dto';
+import { PrismaService } from 'src/prisma/prisma.service';
 
-import { PrismaClient } from '@prisma/client';
-function myPrisma(language?: string) {
-  language ? language : language = "en"
-  const prisma = new PrismaClient()
-    .$extends({
+@Injectable()
+export class CoursesService {
+  constructor(private prisma: PrismaService) {}
+
+  myPrisma(language?: string) {
+    language ? language : (language = 'en');
+    return this.prisma.$extends({
       result: {
         courses: {
           metaTitle: {
-            needs: { metaTitle_am: true, metaTitle_en: true, metaTitle_ru: true },
+            needs: {
+              metaTitle_am: true,
+              metaTitle_en: true,
+              metaTitle_ru: true,
+            },
             compute(courses) {
-              return courses[`metaTitle_${language}`]
-            }
+              return courses[`metaTitle_${language}`];
+            },
           },
           metaDescription: {
-            needs: { metaDescription_am: true, metaDescription_en: true, metaDescription_ru: true },
+            needs: {
+              metaDescription_am: true,
+              metaDescription_en: true,
+              metaDescription_ru: true,
+            },
             compute(courses) {
-              return courses[`metaDescription_${language}`]
-            }
+              return courses[`metaDescription_${language}`];
+            },
           },
           duration: {
             needs: { duration_am: true, duration_en: true, duration_ru: true },
             compute(courses) {
-              return courses[`duration_${language}`]
-            }
+              return courses[`duration_${language}`];
+            },
           },
           price: {
             needs: { price_am: true, price_en: true, price_ru: true },
             compute(courses) {
-              return courses[`price_${language}`]
-            }
+              return courses[`price_${language}`];
+            },
           },
           description: {
-            needs: { description_am: true, description_en: true, description_ru: true },
+            needs: {
+              description_am: true,
+              description_en: true,
+              description_ru: true,
+            },
             compute(courses) {
-              return courses[`description_${language}`]
-            }
+              return courses[`description_${language}`];
+            },
           },
           level: {
             needs: { level_am: true, level_en: true, level_ru: true },
             compute(courses) {
-              return courses[`level_${language}`]
-            }
+              return courses[`level_${language}`];
+            },
           },
           type: {
             needs: { type_am: true, type_en: true, type_ru: true },
             compute(courses) {
-              return courses[`type_${language}`]
-            }
+              return courses[`type_${language}`];
+            },
           },
           days: {
             needs: { days_am: true, days_en: true, days_ru: true },
             compute(courses) {
-              return courses[`days_${language}`]
-            }
+              return courses[`days_${language}`];
+            },
           },
           lessonTime: {
-            needs: { lessonTime_am: true, lessonTime_en: true, lessonTime_ru: true },
+            needs: {
+              lessonTime_am: true,
+              lessonTime_en: true,
+              lessonTime_ru: true,
+            },
             compute(courses) {
-              return courses[`lessonTime_${language}`]
-            }
+              return courses[`lessonTime_${language}`];
+            },
           },
           courseDescription: {
-            needs: { courseDescription_am: true, courseDescription_en: true, courseDescription_ru: true },
+            needs: {
+              courseDescription_am: true,
+              courseDescription_en: true,
+              courseDescription_ru: true,
+            },
             compute(courses) {
-              return courses[`courseDescription_${language}`]
-            }
-          }
-        }
-      }
-    })
-  return prisma
-}
-
-@Injectable()
-export class CoursesService {
+              return courses[`courseDescription_${language}`];
+            },
+          },
+        },
+      },
+    });
+  }
   async create(createCourseDto: CreateCourseDto) {
     try {
-      const newCourses = await myPrisma().courses.create({
+      const newCourses = this.myPrisma().courses.create({
         data: createCourseDto,
       });
       return newCourses;
     } catch (error) {
       console.error(error);
-      throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
-    } finally {
-      await myPrisma().$disconnect();
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
   async findAll(language: string) {
     try {
-      const courses = await myPrisma(language).courses.findMany({
+      const courses = this.myPrisma(language).courses.findMany({
         select: {
           id: true,
           metaTitle: true,
@@ -110,21 +130,22 @@ export class CoursesService {
           lessonTime: true,
           courseDescription: true,
           image: true,
-          altText: true
-        }
-      })
+          altText: true,
+        },
+      });
       return courses;
     } catch (error) {
       console.error(error);
-      throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
-    } finally {
-      await myPrisma().$disconnect();
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
   async findOne(id: number, language: string) {
     try {
-      const course = await myPrisma(language).courses.findUnique({
+      const course = this.myPrisma(language).courses.findUnique({
         where: {
           id,
         },
@@ -144,48 +165,51 @@ export class CoursesService {
           lessonTime: true,
           courseDescription: true,
           image: true,
-          altText: true
-        }
-      })
+          altText: true,
+        },
+      });
       return course;
     } catch (error) {
       console.error(error);
-      throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
-    } finally {
-      await myPrisma().$disconnect();
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
   async update(id: number, updateCourseDto: UpdateCourseDto) {
     try {
-      const updateCourses = await myPrisma().courses.update({
+      const updateCourses = this.myPrisma().courses.update({
         where: {
           id,
         },
-        data: updateCourseDto
-      })
+        data: updateCourseDto,
+      });
       return updateCourses;
     } catch (error) {
       console.error(error);
-      throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
-    } finally {
-      await myPrisma().$disconnect();
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
   async remove(id: number) {
     try {
-      const deleteCourses = await myPrisma().courses.delete({
+      const deleteCourses = this.myPrisma().courses.delete({
         where: {
           id,
         },
-      })
+      });
       return deleteCourses;
     } catch (error) {
       console.error(error);
-      throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
-    } finally {
-      await myPrisma().$disconnect();
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 }

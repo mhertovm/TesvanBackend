@@ -1,8 +1,23 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query, UseInterceptors } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseGuards,
+  UseInterceptors,
+} from '@nestjs/common';
 import { ProjectTechStachService } from './project-tech-stach.service';
 import { CreateProjectTechStachDto } from './dto/create-project-tech-stach.dto';
 import { UpdateProjectTechStachDto } from './dto/update-project-tech-stach.dto';
-import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiConsumes } from '@nestjs/swagger';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiBearerAuth,
+  ApiConsumes,
+} from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { UploadService } from 'src/upload/upload.service';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -10,7 +25,10 @@ import { FileInterceptor } from '@nestjs/platform-express';
 @ApiTags('projectTechStach')
 @Controller('projectTechStach')
 export class ProjectTechStachController {
-  constructor(private readonly projectTechStachService: ProjectTechStachService, private readonly uploadService: UploadService) { }
+  constructor(
+    private readonly projectTechStachService: ProjectTechStachService,
+    private readonly uploadService: UploadService,
+  ) {}
 
   @Post()
   @ApiBearerAuth('access-token')
@@ -18,8 +36,12 @@ export class ProjectTechStachController {
   @ApiOperation({ summary: 'Create a projectTechStach' })
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(FileInterceptor('file'))
-  create(@Body() createProjectTechStachDto: CreateProjectTechStachDto, file: Express.Multer.File) {
-    createProjectTechStachDto.image = this.uploadService.uploadFile(file).filename
+  create(
+    @Body() createProjectTechStachDto: CreateProjectTechStachDto,
+    file: Express.Multer.File,
+  ) {
+    createProjectTechStachDto.image =
+      this.uploadService.uploadFile(file).filename;
     return this.projectTechStachService.create(createProjectTechStachDto);
   }
 
@@ -41,9 +63,14 @@ export class ProjectTechStachController {
   @ApiOperation({ summary: 'Update a projectTechStach' })
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(FileInterceptor('file'))
-  update(@Param('id') id: string, @Body() updateProjectTechStachDto: UpdateProjectTechStachDto, file: Express.Multer.File) {
+  update(
+    @Param('id') id: string,
+    @Body() updateProjectTechStachDto: UpdateProjectTechStachDto,
+    file: Express.Multer.File,
+  ) {
     if (file) {
-      updateProjectTechStachDto.image = this.uploadService.uploadFile(file).filename
+      updateProjectTechStachDto.image =
+        this.uploadService.uploadFile(file).filename;
     }
     return this.projectTechStachService.update(+id, updateProjectTechStachDto);
   }

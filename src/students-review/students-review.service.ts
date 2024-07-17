@@ -1,77 +1,78 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { CreateStudentsReviewDto } from './dto/create-students-review.dto';
 import { UpdateStudentsReviewDto } from './dto/update-students-review.dto';
+import { PrismaService } from 'src/prisma/prisma.service';
 
-import { PrismaClient } from '@prisma/client';
-function myPrisma(language?: string) {
-  language ? language : language = "en";
-  const prisma = new PrismaClient()
-    .$extends({
+@Injectable()
+export class StudentsReviewService {
+  constructor(private prisma: PrismaService) {}
+
+  myPrisma(language?: string) {
+    language ? language : (language = 'en');
+    return this.prisma.$extends({
       result: {
         studentsReview: {
           fullName: {
             needs: { fullName_am: true, fullName_en: true, fullName_ru: true },
             compute(studentsReview) {
-              return studentsReview[`fullName_${language}`]
-            }
+              return studentsReview[`fullName_${language}`];
+            },
           },
           info: {
             needs: { info_am: true, info_en: true, info_ru: true },
             compute(studentsReview) {
-              return studentsReview[`info_${language}`]
-            }
+              return studentsReview[`info_${language}`];
+            },
           },
           review: {
             needs: { review_am: true, review_en: true, review_ru: true },
             compute(studentsReview) {
-              return studentsReview[`review_${language}`]
-            }
-          }
-        }
-      }
-    })
-  return prisma
-}
-
-@Injectable()
-export class StudentsReviewService {
+              return studentsReview[`review_${language}`];
+            },
+          },
+        },
+      },
+    });
+  }
   async create(createStudentsReviewDto: CreateStudentsReviewDto) {
     try {
-      const newStudentsReview = await myPrisma().studentsReview.create({
+      const newStudentsReview = this.myPrisma().studentsReview.create({
         data: createStudentsReviewDto,
       });
       return newStudentsReview;
     } catch (error) {
       console.error(error);
-      throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
-    } finally {
-      await myPrisma().$disconnect();
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
   async findAll(language: string) {
     try {
-      const studentsReview = await myPrisma(language).studentsReview.findMany({
+      const studentsReview = this.myPrisma(language).studentsReview.findMany({
         select: {
           id: true,
           fullName: true,
           info: true,
           review: true,
-          image: true
-        }
-      })
+          image: true,
+        },
+      });
       return studentsReview;
     } catch (error) {
       console.error(error);
-      throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
-    } finally {
-      await myPrisma().$disconnect();
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
   async findOne(id: number, language: string) {
     try {
-      const studentsReview = await myPrisma(language).studentsReview.findUnique({
+      const studentsReview = this.myPrisma(language).studentsReview.findUnique({
         where: {
           id,
         },
@@ -80,48 +81,51 @@ export class StudentsReviewService {
           fullName: true,
           info: true,
           review: true,
-          image: true
-        }
-      })
+          image: true,
+        },
+      });
       return studentsReview;
     } catch (error) {
       console.error(error);
-      throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
-    } finally {
-      await myPrisma().$disconnect();
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
   async update(id: number, updateStudentsReviewDto: UpdateStudentsReviewDto) {
     try {
-      const updateStudentsReview = await myPrisma().studentsReview.update({
+      const updateStudentsReview = this.myPrisma().studentsReview.update({
         where: {
           id,
         },
-        data: updateStudentsReviewDto
-      })
+        data: updateStudentsReviewDto,
+      });
       return updateStudentsReview;
     } catch (error) {
       console.error(error);
-      throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
-    } finally {
-      await myPrisma().$disconnect();
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
   async remove(id: number) {
     try {
-      const deleteStudentsReview = await myPrisma().studentsReview.delete({
+      const deleteStudentsReview = this.myPrisma().studentsReview.delete({
         where: {
           id,
         },
-      })
+      });
       return deleteStudentsReview;
     } catch (error) {
       console.error(error);
-      throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
-    } finally {
-      await myPrisma().$disconnect();
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 }

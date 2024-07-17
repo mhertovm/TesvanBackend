@@ -1,14 +1,26 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseGuards,
+  Query,
+} from '@nestjs/common';
 import { ProjectCategoryService } from './project-category.service';
 import { CreateProjectCategoryDto } from './dto/create-project-category.dto';
 import { UpdateProjectCategoryDto } from './dto/update-project-category.dto';
-import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';        
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard'; 
+import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @ApiTags('projectCategory')
 @Controller('projectCategory')
 export class ProjectCategoryController {
-  constructor(private readonly projectCategoryService: ProjectCategoryService) {}
+  constructor(
+    private readonly projectCategoryService: ProjectCategoryService,
+  ) {}
 
   @Post()
   @ApiBearerAuth('access-token')
@@ -34,7 +46,10 @@ export class ProjectCategoryController {
   @ApiBearerAuth('access-token')
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Update a projectCategory' })
-  update(@Param('id') id: string, @Body() updateProjectCategoryDto: UpdateProjectCategoryDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updateProjectCategoryDto: UpdateProjectCategoryDto,
+  ) {
     return this.projectCategoryService.update(+id, updateProjectCategoryDto);
   }
 

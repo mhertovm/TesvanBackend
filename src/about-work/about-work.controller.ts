@@ -1,8 +1,18 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseGuards,
+  Query,
+} from '@nestjs/common';
 import { AboutWorkService } from './about-work.service';
 import { CreateAboutWorkDto } from './dto/create-about-work.dto';
 import { UpdateAboutWorkDto } from './dto/update-about-work.dto';
-import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger'; 
+import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @ApiTags('aboutWork')
@@ -13,7 +23,7 @@ export class AboutWorkController {
   @Post()
   @ApiBearerAuth('access-token')
   @UseGuards(JwtAuthGuard)
-  @ApiOperation({ summary: 'Create a aboutWork' }) 
+  @ApiOperation({ summary: 'Create a aboutWork' })
   create(@Body() createAboutWorkDto: CreateAboutWorkDto) {
     return this.aboutWorkService.create(createAboutWorkDto);
   }
@@ -34,7 +44,10 @@ export class AboutWorkController {
   @ApiBearerAuth('access-token')
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Update a aboutWork' })
-  update(@Param('id') id: string, @Body() updateAboutWorkDto: UpdateAboutWorkDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updateAboutWorkDto: UpdateAboutWorkDto,
+  ) {
     return this.aboutWorkService.update(+id, updateAboutWorkDto);
   }
 

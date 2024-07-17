@@ -1,9 +1,7 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Post, Body } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
-import { UpdateAuthDto } from './dto/update-auth.dto';
-import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
-import { Auth } from './entities/auth.entity';
+import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
 
 @ApiTags('auth/login')
 @Controller('auth')
@@ -11,9 +9,9 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('login')
-  @ApiBearerAuth('access-token') 
+  @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'Login a user' })
   login(@Body() loginDto: LoginDto) {
-    return this.authService.generateToken(loginDto)
+    return this.authService.generateToken(loginDto);
   }
 }

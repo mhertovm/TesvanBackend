@@ -1,9 +1,18 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseGuards,
+} from '@nestjs/common';
 import { ApplicantService } from './applicant.service';
 import { CreateApplicantDto } from './dto/create-applicant.dto';
 import { UpdateApplicantDto } from './dto/update-applicant.dto';
-import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';  
-import { JwtAuthGuard } from '../auth/jwt-auth.guard';  
+import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @ApiTags('applicant')
 @Controller('applicant')
@@ -13,7 +22,7 @@ export class ApplicantController {
   @Post()
   @ApiBearerAuth('access-token')
   @UseGuards(JwtAuthGuard)
-  @ApiOperation({ summary: 'Create a applicant' }) 
+  @ApiOperation({ summary: 'Create a applicant' })
   create(@Body() createApplicantDto: CreateApplicantDto) {
     return this.applicantService.create(createApplicantDto);
   }
@@ -34,7 +43,10 @@ export class ApplicantController {
   @ApiBearerAuth('access-token')
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Update a applicant' })
-  update(@Param('id') id: string, @Body() updateApplicantDto: UpdateApplicantDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updateApplicantDto: UpdateApplicantDto,
+  ) {
     return this.applicantService.update(+id, updateApplicantDto);
   }
 

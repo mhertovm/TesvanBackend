@@ -1,8 +1,24 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query, UseInterceptors } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseGuards,
+  Query,
+  UseInterceptors,
+} from '@nestjs/common';
 import { ProjectsService } from './projects.service';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
-import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiConsumes } from '@nestjs/swagger';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiBearerAuth,
+  ApiConsumes,
+} from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { UploadService } from 'src/upload/upload.service';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -10,7 +26,10 @@ import { FileInterceptor } from '@nestjs/platform-express';
 @ApiTags('projects')
 @Controller('projects')
 export class ProjectsController {
-  constructor(private readonly projectsService: ProjectsService, private readonly uploadService: UploadService) { }
+  constructor(
+    private readonly projectsService: ProjectsService,
+    private readonly uploadService: UploadService,
+  ) {}
 
   @Post()
   @ApiBearerAuth('access-token')
@@ -18,8 +37,11 @@ export class ProjectsController {
   @ApiOperation({ summary: 'Create a projects' })
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(FileInterceptor('file'))
-  create(@Body() createProjectDto: CreateProjectDto, file: Express.Multer.File) {
-    createProjectDto.image = this.uploadService.uploadFile(file).filename
+  create(
+    @Body() createProjectDto: CreateProjectDto,
+    file: Express.Multer.File,
+  ) {
+    createProjectDto.image = this.uploadService.uploadFile(file).filename;
     return this.projectsService.create(createProjectDto);
   }
 
@@ -41,9 +63,13 @@ export class ProjectsController {
   @ApiOperation({ summary: 'Update a projects' })
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(FileInterceptor('file'))
-  update(@Param('id') id: string, @Body() updateProjectDto: UpdateProjectDto, file: Express.Multer.File) {
+  update(
+    @Param('id') id: string,
+    @Body() updateProjectDto: UpdateProjectDto,
+    file: Express.Multer.File,
+  ) {
     if (file) {
-      updateProjectDto.image = this.uploadService.uploadFile(file).filename
+      updateProjectDto.image = this.uploadService.uploadFile(file).filename;
     }
     return this.projectsService.update(+id, updateProjectDto);
   }

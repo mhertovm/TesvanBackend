@@ -1,16 +1,35 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query, UseInterceptors } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseGuards,
+  Query,
+  UseInterceptors,
+} from '@nestjs/common';
 import { TestimonialsService } from './testimonials.service';
 import { CreateTestimonialDto } from './dto/create-testimonial.dto';
 import { UpdateTestimonialDto } from './dto/update-testimonial.dto';
-import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiConsumes } from '@nestjs/swagger';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard'; 
+import {
+  ApiTags,
+  ApiOperation,
+  ApiBearerAuth,
+  ApiConsumes,
+} from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { UploadService } from 'src/upload/upload.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 
 @ApiTags('testimonials')
 @Controller('testimonials')
 export class TestimonialsController {
-  constructor(private readonly testimonialsService: TestimonialsService, private readonly uploadService: UploadService) {}
+  constructor(
+    private readonly testimonialsService: TestimonialsService,
+    private readonly uploadService: UploadService,
+  ) {}
 
   @Post()
   @ApiBearerAuth('access-token')
@@ -18,8 +37,11 @@ export class TestimonialsController {
   @ApiOperation({ summary: 'Create a testimonials' })
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(FileInterceptor('file'))
-  create(@Body() createTestimonialDto: CreateTestimonialDto, file: Express.Multer.File) {
-    createTestimonialDto.image = this.uploadService.uploadFile(file).filename
+  create(
+    @Body() createTestimonialDto: CreateTestimonialDto,
+    file: Express.Multer.File,
+  ) {
+    createTestimonialDto.image = this.uploadService.uploadFile(file).filename;
     return this.testimonialsService.create(createTestimonialDto);
   }
 
@@ -41,9 +63,13 @@ export class TestimonialsController {
   @ApiOperation({ summary: 'Update a testimonials' })
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(FileInterceptor('file'))
-  update(@Param('id') id: string, @Body() updateTestimonialDto: UpdateTestimonialDto, file: Express.Multer.File) {
-    if(file){
-      updateTestimonialDto.image = this.uploadService.uploadFile(file).filename
+  update(
+    @Param('id') id: string,
+    @Body() updateTestimonialDto: UpdateTestimonialDto,
+    file: Express.Multer.File,
+  ) {
+    if (file) {
+      updateTestimonialDto.image = this.uploadService.uploadFile(file).filename;
     }
     return this.testimonialsService.update(+id, updateTestimonialDto);
   }

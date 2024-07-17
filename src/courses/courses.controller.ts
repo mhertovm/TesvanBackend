@@ -1,8 +1,24 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query, UseInterceptors } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseGuards,
+  Query,
+  UseInterceptors,
+} from '@nestjs/common';
 import { CoursesService } from './courses.service';
 import { CreateCourseDto } from './dto/create-course.dto';
 import { UpdateCourseDto } from './dto/update-course.dto';
-import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiConsumes } from '@nestjs/swagger';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiBearerAuth,
+  ApiConsumes,
+} from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { UploadService } from 'src/upload/upload.service';
@@ -10,7 +26,10 @@ import { UploadService } from 'src/upload/upload.service';
 @ApiTags('courses')
 @Controller('courses')
 export class CoursesController {
-  constructor(private readonly coursesService: CoursesService, private readonly uploadService: UploadService) { }
+  constructor(
+    private readonly coursesService: CoursesService,
+    private readonly uploadService: UploadService,
+  ) {}
 
   @Post()
   @ApiBearerAuth('access-token')
@@ -19,7 +38,7 @@ export class CoursesController {
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(FileInterceptor('file'))
   create(@Body() createCourseDto: CreateCourseDto, file: Express.Multer.File) {
-    createCourseDto.image = this.uploadService.uploadFile(file).filename
+    createCourseDto.image = this.uploadService.uploadFile(file).filename;
     return this.coursesService.create(createCourseDto);
   }
 
@@ -41,9 +60,13 @@ export class CoursesController {
   @ApiOperation({ summary: 'Update a courses' })
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(FileInterceptor('file'))
-  update(@Param('id') id: string, @Body() updateCourseDto: UpdateCourseDto, file: Express.Multer.File) {
+  update(
+    @Param('id') id: string,
+    @Body() updateCourseDto: UpdateCourseDto,
+    file: Express.Multer.File,
+  ) {
     if (file) {
-      updateCourseDto.image = this.uploadService.uploadFile(file).filename
+      updateCourseDto.image = this.uploadService.uploadFile(file).filename;
     }
     return this.coursesService.update(+id, updateCourseDto);
   }

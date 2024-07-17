@@ -1,9 +1,19 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseGuards,
+  Query,
+} from '@nestjs/common';
 import { CoreValuesService } from './core-values.service';
 import { CreateCoreValueDto } from './dto/create-core-value.dto';
 import { UpdateCoreValueDto } from './dto/update-core-value.dto';
-import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';         
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard'; 
+import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @ApiTags('coreValues')
 @Controller('coreValues')
@@ -34,7 +44,10 @@ export class CoreValuesController {
   @ApiBearerAuth('access-token')
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Update a coreValues' })
-  update(@Param('id') id: string, @Body() updateCoreValueDto: UpdateCoreValueDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updateCoreValueDto: UpdateCoreValueDto,
+  ) {
     return this.coreValuesService.update(+id, updateCoreValueDto);
   }
 

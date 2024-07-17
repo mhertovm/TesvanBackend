@@ -1,103 +1,114 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { CreatePrivacyPolicyDto } from './dto/create-privacy-policy.dto';
 import { UpdatePrivacyPolicyDto } from './dto/update-privacy-policy.dto';
+import { PrismaService } from 'src/prisma/prisma.service';
 
-import { PrismaClient } from '@prisma/client';
-function myPrisma(language?: string) {
-  language ? language : language = "en";
-  const prisma = new PrismaClient()
-    .$extends({
+@Injectable()
+export class PrivacyPolicyService {
+  constructor(private prisma: PrismaService) {}
+
+  myPrisma(language?: string) {
+    language ? language : (language = 'en');
+    return this.prisma.$extends({
       result: {
         privacyPolicy: {
           metaTitle: {
-            needs: { metaTitle_am: true, metaTitle_en: true, metaTitle_ru: true },
+            needs: {
+              metaTitle_am: true,
+              metaTitle_en: true,
+              metaTitle_ru: true,
+            },
             compute(privacyPolicy) {
-              return privacyPolicy[`metaTitle_${language}`]
-            }
+              return privacyPolicy[`metaTitle_${language}`];
+            },
           },
           metaDescription: {
-            needs: { metaDescription_am: true, metaDescription_en: true, metaDescription_ru: true },
+            needs: {
+              metaDescription_am: true,
+              metaDescription_en: true,
+              metaDescription_ru: true,
+            },
             compute(privacyPolicy) {
-              return privacyPolicy[`metaDescription_${language}`]
-            }
+              return privacyPolicy[`metaDescription_${language}`];
+            },
           },
           content: {
             needs: { content_am: true, content_en: true, content_ru: true },
             compute(privacyPolicy) {
-              return privacyPolicy[`content_${language}`]
-            }
-          }
-        }
-      }
-    })
-  return prisma
-}
-
-@Injectable()
-export class PrivacyPolicyService {
+              return privacyPolicy[`content_${language}`];
+            },
+          },
+        },
+      },
+    });
+  }
   async create(createPrivacyPolicyDto: CreatePrivacyPolicyDto) {
     try {
-      const newPrivacyPolicy = await myPrisma().privacyPolicy.create({
+      const newPrivacyPolicy = this.myPrisma().privacyPolicy.create({
         data: createPrivacyPolicyDto,
       });
       return newPrivacyPolicy;
     } catch (error) {
       console.error(error);
-      throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
-    } finally {
-      await myPrisma().$disconnect();
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
   async findOne(language: string) {
     try {
-      const privacyPolicy = await myPrisma(language).privacyPolicy.findFirst({
+      const privacyPolicy = this.myPrisma(language).privacyPolicy.findFirst({
         select: {
           id: true,
           metaTitle: true,
           metaDescription: true,
-          content: true
-        }
-      })
+          content: true,
+        },
+      });
       return privacyPolicy;
     } catch (error) {
       console.error(error);
-      throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
-    } finally {
-      await myPrisma().$disconnect();
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
   async update(id: number, updatePrivacyPolicyDto: UpdatePrivacyPolicyDto) {
     try {
-      const updatePrivacyPolicy = await myPrisma().privacyPolicy.update({
+      const updatePrivacyPolicy = this.myPrisma().privacyPolicy.update({
         where: {
           id,
         },
-        data: updatePrivacyPolicyDto
-      })
+        data: updatePrivacyPolicyDto,
+      });
       return updatePrivacyPolicy;
     } catch (error) {
       console.error(error);
-      throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
-    } finally {
-      await myPrisma().$disconnect();
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
   async remove(id: number) {
     try {
-      const deletePrivacyPolicy = await myPrisma().privacyPolicy.delete({
+      const deletePrivacyPolicy = this.myPrisma().privacyPolicy.delete({
         where: {
           id,
         },
-      })
+      });
       return deletePrivacyPolicy;
     } catch (error) {
       console.error(error);
-      throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
-    } finally {
-      await myPrisma().$disconnect();
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 }

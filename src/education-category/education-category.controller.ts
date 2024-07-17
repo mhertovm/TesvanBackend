@@ -1,14 +1,26 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseGuards,
+  Query,
+} from '@nestjs/common';
 import { EducationCategoryService } from './education-category.service';
 import { CreateEducationCategoryDto } from './dto/create-education-category.dto';
 import { UpdateEducationCategoryDto } from './dto/update-education-category.dto';
-import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';      
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';    
+import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @ApiTags('educationCategory')
 @Controller('educationCategory')
 export class EducationCategoryController {
-  constructor(private readonly educationCategoryService: EducationCategoryService) {}
+  constructor(
+    private readonly educationCategoryService: EducationCategoryService,
+  ) {}
 
   @Post()
   @ApiBearerAuth('access-token')
@@ -34,8 +46,14 @@ export class EducationCategoryController {
   @ApiBearerAuth('access-token')
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Update a educationCategory' })
-  update(@Param('id') id: string, @Body() updateEducationCategoryDto: UpdateEducationCategoryDto) {
-    return this.educationCategoryService.update(+id, updateEducationCategoryDto);
+  update(
+    @Param('id') id: string,
+    @Body() updateEducationCategoryDto: UpdateEducationCategoryDto,
+  ) {
+    return this.educationCategoryService.update(
+      +id,
+      updateEducationCategoryDto,
+    );
   }
 
   @Delete(':id')

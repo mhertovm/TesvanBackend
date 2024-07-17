@@ -1,110 +1,114 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { CreateAboutWorkDto } from './dto/create-about-work.dto';
 import { UpdateAboutWorkDto } from './dto/update-about-work.dto';
+import { PrismaService } from 'src/prisma/prisma.service';
 
-import { PrismaClient } from '@prisma/client';
-function myPrisma(language?: string) {
-  language ? language : language = "en";
-  const prisma = new PrismaClient()
-    .$extends({
+@Injectable()
+export class AboutWorkService {
+  constructor(private prisma: PrismaService) {}
+
+  myPrisma(language?: string) {
+    language ? language : (language = 'en');
+    return this.prisma.$extends({
       result: {
         aboutWork: {
           work: {
             needs: { work_am: true, work_en: true, work_ru: true },
             compute(aboutWork) {
-              return aboutWork[`work_${language}`]
-            }
+              return aboutWork[`work_${language}`];
+            },
           },
-        }
-      }
-    })
-  return prisma
-}
+        },
+      },
+    });
+  }
 
-
-@Injectable()
-export class AboutWorkService {
   async create(createAboutWorkDto: CreateAboutWorkDto) {
     try {
-      const newAboutWork = await myPrisma().aboutWork.create({
+      const newAboutWork = this.myPrisma().aboutWork.create({
         data: createAboutWorkDto,
       });
       return newAboutWork;
     } catch (error) {
       console.error(error);
-      throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
-    } finally {
-      await myPrisma().$disconnect();
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
   async findAll(language: string) {
     try {
-      const aboutWorks = await myPrisma(language).aboutWork.findMany({
+      const aboutWorks = this.myPrisma(language).aboutWork.findMany({
         select: {
           id: true,
           work: true,
-        }
-      })
+        },
+      });
       return aboutWorks;
     } catch (error) {
       console.error(error);
-      throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
-    } finally {
-      await myPrisma().$disconnect();
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
   async findOne(id: number, language: string) {
     try {
-      const aboutWork = await myPrisma(language).aboutWork.findUnique({
+      const aboutWork = this.myPrisma(language).aboutWork.findUnique({
         where: {
           id,
         },
         select: {
           id: true,
           work: true,
-        }
-      })
+        },
+      });
       return aboutWork;
     } catch (error) {
       console.error(error);
-      throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
-    } finally {
-      await myPrisma().$disconnect();
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
   async update(id: number, updateAboutWorkDto: UpdateAboutWorkDto) {
     try {
-      const updateAboutWork = await myPrisma().aboutWork.update({
+      const updateAboutWork = this.myPrisma().aboutWork.update({
         where: {
           id,
         },
-        data: updateAboutWorkDto
-      })
+        data: updateAboutWorkDto,
+      });
       return updateAboutWork;
     } catch (error) {
       console.error(error);
-      throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
-    } finally {
-      await myPrisma().$disconnect();
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
   async remove(id: number) {
     try {
-      const deleteAboutWork = await myPrisma().aboutWork.delete({
+      const deleteAboutWork = this.myPrisma().aboutWork.delete({
         where: {
           id,
         },
-      })
+      });
       return deleteAboutWork;
     } catch (error) {
       console.error(error);
-      throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
-    } finally {
-      await myPrisma().$disconnect();
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 }

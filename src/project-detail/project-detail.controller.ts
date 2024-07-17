@@ -1,8 +1,24 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query, UseInterceptors } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseGuards,
+  Query,
+  UseInterceptors,
+} from '@nestjs/common';
 import { ProjectDetailService } from './project-detail.service';
 import { CreateProjectDetailDto } from './dto/create-project-detail.dto';
 import { UpdateProjectDetailDto } from './dto/update-project-detail.dto';
-import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiConsumes } from '@nestjs/swagger';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiBearerAuth,
+  ApiConsumes,
+} from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { UploadService } from 'src/upload/upload.service';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -10,7 +26,10 @@ import { FileInterceptor } from '@nestjs/platform-express';
 @ApiTags('projectDetail')
 @Controller('projectDetail')
 export class ProjectDetailController {
-  constructor(private readonly projectDetailService: ProjectDetailService, private readonly uploadService: UploadService) { }
+  constructor(
+    private readonly projectDetailService: ProjectDetailService,
+    private readonly uploadService: UploadService,
+  ) {}
 
   @Post()
   @ApiBearerAuth('access-token')
@@ -18,8 +37,11 @@ export class ProjectDetailController {
   @ApiOperation({ summary: 'Create a projectDetail' })
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(FileInterceptor('file'))
-  create(@Body() createProjectDetailDto: CreateProjectDetailDto, file: Express.Multer.File) {
-    createProjectDetailDto.image = this.uploadService.uploadFile(file).filename
+  create(
+    @Body() createProjectDetailDto: CreateProjectDetailDto,
+    file: Express.Multer.File,
+  ) {
+    createProjectDetailDto.image = this.uploadService.uploadFile(file).filename;
     return this.projectDetailService.create(createProjectDetailDto);
   }
 
@@ -41,9 +63,14 @@ export class ProjectDetailController {
   @ApiOperation({ summary: 'Update a projectDetail' })
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(FileInterceptor('file'))
-  update(@Param('id') id: string, @Body() updateProjectDetailDto: UpdateProjectDetailDto, file: Express.Multer.File) {
+  update(
+    @Param('id') id: string,
+    @Body() updateProjectDetailDto: UpdateProjectDetailDto,
+    file: Express.Multer.File,
+  ) {
     if (file) {
-      updateProjectDetailDto.image = this.uploadService.uploadFile(file).filename
+      updateProjectDetailDto.image =
+        this.uploadService.uploadFile(file).filename;
     }
     return this.projectDetailService.update(+id, updateProjectDetailDto);
   }

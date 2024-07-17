@@ -1,8 +1,24 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query, UseInterceptors } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseGuards,
+  Query,
+  UseInterceptors,
+} from '@nestjs/common';
 import { EducationsService } from './educations.service';
 import { CreateEducationDto } from './dto/create-education.dto';
 import { UpdateEducationDto } from './dto/update-education.dto';
-import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiConsumes } from '@nestjs/swagger';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiBearerAuth,
+  ApiConsumes,
+} from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { UploadService } from 'src/upload/upload.service';
@@ -10,7 +26,10 @@ import { UploadService } from 'src/upload/upload.service';
 @ApiTags('educations')
 @Controller('educations')
 export class EducationsController {
-  constructor(private readonly educationsService: EducationsService, private readonly uploadService: UploadService) { }
+  constructor(
+    private readonly educationsService: EducationsService,
+    private readonly uploadService: UploadService,
+  ) {}
 
   @Post()
   @ApiBearerAuth('access-token')
@@ -18,8 +37,11 @@ export class EducationsController {
   @ApiOperation({ summary: 'Create a educations' })
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(FileInterceptor('file'))
-  create(@Body() createEducationDto: CreateEducationDto, file: Express.Multer.File) {
-    createEducationDto.image = this.uploadService.uploadFile(file).filename
+  create(
+    @Body() createEducationDto: CreateEducationDto,
+    file: Express.Multer.File,
+  ) {
+    createEducationDto.image = this.uploadService.uploadFile(file).filename;
     return this.educationsService.create(createEducationDto);
   }
 
@@ -41,9 +63,13 @@ export class EducationsController {
   @ApiOperation({ summary: 'Update a educations' })
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(FileInterceptor('file'))
-  update(@Param('id') id: string, @Body() updateEducationDto: UpdateEducationDto, file: Express.Multer.File) {
+  update(
+    @Param('id') id: string,
+    @Body() updateEducationDto: UpdateEducationDto,
+    file: Express.Multer.File,
+  ) {
     if (file) {
-      updateEducationDto.image = this.uploadService.uploadFile(file).filename
+      updateEducationDto.image = this.uploadService.uploadFile(file).filename;
     }
     return this.educationsService.update(+id, updateEducationDto);
   }

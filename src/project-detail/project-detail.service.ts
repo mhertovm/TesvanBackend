@@ -1,87 +1,91 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { CreateProjectDetailDto } from './dto/create-project-detail.dto';
 import { UpdateProjectDetailDto } from './dto/update-project-detail.dto';
+import { PrismaService } from 'src/prisma/prisma.service';
 
-import { PrismaClient } from '@prisma/client';
-function myPrisma(language?: string) {
-  language ? language : language = "en";
-  const prisma = new PrismaClient()
-    .$extends({
+@Injectable()
+export class ProjectDetailService {
+  constructor(private prisma: PrismaService) {}
+
+  myPrisma(language?: string) {
+    language ? language : (language = 'en');
+    return this.prisma.$extends({
       result: {
         projectDetail: {
           industry: {
             needs: { industry_am: true, industry_en: true, industry_ru: true },
             compute(projectDetail) {
-              return projectDetail[`industry_${language}`]
-            }
+              return projectDetail[`industry_${language}`];
+            },
           },
           location: {
             needs: { location_am: true, location_en: true, location_ru: true },
             compute(projectDetail) {
-              return projectDetail[`location_${language}`]
-            }
+              return projectDetail[`location_${language}`];
+            },
           },
           duration: {
             needs: { duration_am: true, duration_en: true, duration_ru: true },
             compute(projectDetail) {
-              return projectDetail[`duration_${language}`]
-            }
+              return projectDetail[`duration_${language}`];
+            },
           },
           team: {
             needs: { team_am: true, team_en: true, team_ru: true },
             compute(projectDetail) {
-              return projectDetail[`team_${language}`]
-            }
+              return projectDetail[`team_${language}`];
+            },
           },
           overview: {
             needs: { overview_am: true, overview_en: true, overview_ru: true },
             compute(projectDetail) {
-              return projectDetail[`overview_${language}`]
-            }
+              return projectDetail[`overview_${language}`];
+            },
           },
           challenge: {
-            needs: { challenge_am: true, challenge_en: true, challenge_ru: true },
+            needs: {
+              challenge_am: true,
+              challenge_en: true,
+              challenge_ru: true,
+            },
             compute(projectDetail) {
-              return projectDetail[`challenge_${language}`]
-            }
+              return projectDetail[`challenge_${language}`];
+            },
           },
           solution: {
             needs: { solution_am: true, solution_en: true, solution_ru: true },
             compute(projectDetail) {
-              return projectDetail[`solution_${language}`]
-            }
+              return projectDetail[`solution_${language}`];
+            },
           },
           result: {
             needs: { result_am: true, result_en: true, result_ru: true },
             compute(projectDetail) {
-              return projectDetail[`result_${language}`]
-            }
-          }
-        }
-      }
-    })
-  return prisma
-}
-
-@Injectable()
-export class ProjectDetailService {
+              return projectDetail[`result_${language}`];
+            },
+          },
+        },
+      },
+    });
+  }
   async create(createProjectDetailDto: CreateProjectDetailDto) {
     try {
-      const newProjectDetail = await myPrisma().projectDetail.create({
+      const newProjectDetail = this.myPrisma().projectDetail.create({
         data: createProjectDetailDto,
       });
       return newProjectDetail;
     } catch (error) {
       console.error(error);
-      throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
-    } finally {
-      await myPrisma().$disconnect();
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
   async findAll(language: string) {
     try {
-      const projectDetail = await myPrisma(language).projectDetail.findMany({
+      const projectDetail = this.myPrisma(language).projectDetail.findMany({
         select: {
           id: true,
           projectId: true,
@@ -93,21 +97,22 @@ export class ProjectDetailService {
           challenge: true,
           solution: true,
           result: true,
-          image: true
-        }
-      })
+          image: true,
+        },
+      });
       return projectDetail;
     } catch (error) {
       console.error(error);
-      throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
-    } finally {
-      await myPrisma().$disconnect();
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
   async findOne(id: number, language: string) {
     try {
-      const projectDetail = await myPrisma(language).projectDetail.findUnique({
+      const projectDetail = this.myPrisma(language).projectDetail.findUnique({
         where: {
           id,
         },
@@ -122,48 +127,51 @@ export class ProjectDetailService {
           challenge: true,
           solution: true,
           result: true,
-          image: true
-        }
-      })
+          image: true,
+        },
+      });
       return projectDetail;
     } catch (error) {
       console.error(error);
-      throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
-    } finally {
-      await myPrisma().$disconnect();
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
   async update(id: number, updateProjectDetailDto: UpdateProjectDetailDto) {
     try {
-      const updateProjectDetail = await myPrisma().projectDetail.update({
+      const updateProjectDetail = this.myPrisma().projectDetail.update({
         where: {
           id,
         },
-        data: updateProjectDetailDto
-      })
+        data: updateProjectDetailDto,
+      });
       return updateProjectDetail;
     } catch (error) {
       console.error(error);
-      throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
-    } finally {
-      await myPrisma().$disconnect();
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
   async remove(id: number) {
     try {
-      const deleteProjectDetail = await myPrisma().projectDetail.delete({
+      const deleteProjectDetail = this.myPrisma().projectDetail.delete({
         where: {
           id,
         },
-      })
+      });
       return deleteProjectDetail;
     } catch (error) {
       console.error(error);
-      throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
-    } finally {
-      await myPrisma().$disconnect();
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 }

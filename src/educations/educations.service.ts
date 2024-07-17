@@ -1,69 +1,81 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { CreateEducationDto } from './dto/create-education.dto';
 import { UpdateEducationDto } from './dto/update-education.dto';
+import { PrismaService } from 'src/prisma/prisma.service';
 
-import { PrismaClient } from '@prisma/client';
-function myPrisma(language?: string) {
-  language ? language : language = "en";
-  const prisma = new PrismaClient()
-    .$extends({
+@Injectable()
+export class EducationsService {
+  constructor(private prisma: PrismaService) {}
+
+  myPrisma(language?: string) {
+    language ? language : (language = 'en');
+    return this.prisma.$extends({
       result: {
         educations: {
           type: {
             needs: { type_am: true, type_en: true, type_ru: true },
             compute(educations) {
-              return educations[`type_${language}`]
-            }
+              return educations[`type_${language}`];
+            },
           },
           education: {
-            needs: { education_am: true, education_en: true, education_ru: true },
+            needs: {
+              education_am: true,
+              education_en: true,
+              education_ru: true,
+            },
             compute(educations) {
-              return educations[`education_${language}`]
-            }
+              return educations[`education_${language}`];
+            },
           },
           metaTitle: {
-            needs: { metaTitle_am: true, metaTitle_en: true, metaTitle_ru: true },
+            needs: {
+              metaTitle_am: true,
+              metaTitle_en: true,
+              metaTitle_ru: true,
+            },
             compute(educations) {
-              return educations[`metaTitle_${language}`]
-            }
+              return educations[`metaTitle_${language}`];
+            },
           },
           metaDescription: {
-            needs: { metaDescription_am: true, metaDescription_en: true, metaDescription_ru: true },
+            needs: {
+              metaDescription_am: true,
+              metaDescription_en: true,
+              metaDescription_ru: true,
+            },
             compute(educations) {
-              return educations[`metaDescription_${language}`]
-            }
+              return educations[`metaDescription_${language}`];
+            },
           },
           content: {
             needs: { content_am: true, content_en: true, content_ru: true },
             compute(educations) {
-              return educations[`content_${language}`]
-            }
+              return educations[`content_${language}`];
+            },
           },
-        }
-      }
-    })
-  return prisma
-}
-
-@Injectable()
-export class EducationsService {
+        },
+      },
+    });
+  }
   async create(createEducationDto: CreateEducationDto) {
     try {
-      const newEducations = await myPrisma().educations.create({
+      const newEducations = this.myPrisma().educations.create({
         data: createEducationDto,
       });
       return newEducations;
     } catch (error) {
       console.error(error);
-      throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
-    } finally {
-      await myPrisma().$disconnect();
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
   async findAll(language: string) {
     try {
-      const educations = await myPrisma(language).educations.findMany({
+      const educations = this.myPrisma(language).educations.findMany({
         select: {
           id: true,
           type: true,
@@ -72,21 +84,22 @@ export class EducationsService {
           metaDescription: true,
           image: true,
           url: true,
-          content: true
-        }
-      })
+          content: true,
+        },
+      });
       return educations;
     } catch (error) {
       console.error(error);
-      throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
-    } finally {
-      await myPrisma().$disconnect();
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
   async findOne(id: number, language: string) {
     try {
-      const education = await myPrisma(language).educations.findUnique({
+      const education = this.myPrisma(language).educations.findUnique({
         where: {
           id,
         },
@@ -98,48 +111,51 @@ export class EducationsService {
           metaDescription: true,
           image: true,
           url: true,
-          content: true
-        }
-      })
+          content: true,
+        },
+      });
       return education;
     } catch (error) {
       console.error(error);
-      throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
-    } finally {
-      await myPrisma().$disconnect();
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
   async update(id: number, updateEducationDto: UpdateEducationDto) {
     try {
-      const updateEducations = await myPrisma().educations.update({
+      const updateEducations = this.myPrisma().educations.update({
         where: {
           id,
         },
-        data: updateEducationDto
-      })
+        data: updateEducationDto,
+      });
       return updateEducations;
     } catch (error) {
       console.error(error);
-      throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
-    } finally {
-      await myPrisma().$disconnect();
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
   async remove(id: number) {
     try {
-      const deleteEducations = await myPrisma().educations.delete({
+      const deleteEducations = this.myPrisma().educations.delete({
         where: {
           id,
         },
-      })
+      });
       return deleteEducations;
     } catch (error) {
       console.error(error);
-      throw new HttpException('something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
-    } finally {
-      await myPrisma().$disconnect();
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 }

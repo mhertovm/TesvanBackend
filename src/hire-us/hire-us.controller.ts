@@ -1,9 +1,19 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseGuards,
+  Query,
+} from '@nestjs/common';
 import { HireUsService } from './hire-us.service';
 import { CreateHireUsDto } from './dto/create-hire-us.dto';
 import { UpdateHireUsDto } from './dto/update-hire-us.dto';
-import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';   
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';   
+import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @ApiTags('hireUs')
 @Controller('hireUs')

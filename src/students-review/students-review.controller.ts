@@ -1,8 +1,24 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query, UseInterceptors } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseGuards,
+  Query,
+  UseInterceptors,
+} from '@nestjs/common';
 import { StudentsReviewService } from './students-review.service';
 import { CreateStudentsReviewDto } from './dto/create-students-review.dto';
 import { UpdateStudentsReviewDto } from './dto/update-students-review.dto';
-import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiConsumes } from '@nestjs/swagger';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiBearerAuth,
+  ApiConsumes,
+} from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { UploadService } from 'src/upload/upload.service';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -10,7 +26,10 @@ import { FileInterceptor } from '@nestjs/platform-express';
 @ApiTags('studentsReview')
 @Controller('studentsReview')
 export class StudentsReviewController {
-  constructor(private readonly studentsReviewService: StudentsReviewService, private readonly uploadService: UploadService) { }
+  constructor(
+    private readonly studentsReviewService: StudentsReviewService,
+    private readonly uploadService: UploadService,
+  ) {}
 
   @Post()
   @ApiBearerAuth('access-token')
@@ -18,8 +37,12 @@ export class StudentsReviewController {
   @ApiOperation({ summary: 'Create a studentsReview' })
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(FileInterceptor('file'))
-  create(@Body() createStudentsReviewDto: CreateStudentsReviewDto, file: Express.Multer.File) {
-    createStudentsReviewDto.image = this.uploadService.uploadFile(file).filename
+  create(
+    @Body() createStudentsReviewDto: CreateStudentsReviewDto,
+    file: Express.Multer.File,
+  ) {
+    createStudentsReviewDto.image =
+      this.uploadService.uploadFile(file).filename;
     return this.studentsReviewService.create(createStudentsReviewDto);
   }
 
@@ -41,9 +64,14 @@ export class StudentsReviewController {
   @ApiOperation({ summary: 'Update a studentsReview' })
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(FileInterceptor('file'))
-  update(@Param('id') id: string, @Body() updateStudentsReviewDto: UpdateStudentsReviewDto, file: Express.Multer.File) {
+  update(
+    @Param('id') id: string,
+    @Body() updateStudentsReviewDto: UpdateStudentsReviewDto,
+    file: Express.Multer.File,
+  ) {
     if (file) {
-      updateStudentsReviewDto.image = this.uploadService.uploadFile(file).filename
+      updateStudentsReviewDto.image =
+        this.uploadService.uploadFile(file).filename;
     }
     return this.studentsReviewService.update(+id, updateStudentsReviewDto);
   }

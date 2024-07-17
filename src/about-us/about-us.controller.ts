@@ -1,14 +1,21 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Body,
+  Patch,
+  Param,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import { AboutUsService } from './about-us.service';
-import { CreateAboutUsDto } from './dto/create-about-us.dto';
 import { UpdateAboutUsDto } from './dto/update-about-us.dto';
-import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
-import { JwtAuthGuard } from '../auth/jwt-auth.guard';     
+import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @ApiTags('aboutUs')
 @Controller('aboutUs')
 export class AboutUsController {
-  constructor(private readonly aboutUsService: AboutUsService) { }
+  constructor(private readonly aboutUsService: AboutUsService) {}
 
   @Get()
   @ApiOperation({ summary: 'Find one aboutUs' })
@@ -17,7 +24,7 @@ export class AboutUsController {
   }
 
   @Patch(':id')
-  @ApiBearerAuth('access-token') 
+  @ApiBearerAuth('access-token')
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Update a aboutUs' })
   update(@Param('id') id: string, @Body() updateAboutUsDto: UpdateAboutUsDto) {
