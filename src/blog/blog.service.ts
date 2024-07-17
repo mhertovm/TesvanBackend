@@ -103,6 +103,18 @@ export class BlogService {
         where: {
           id,
         },
+        select: {
+          id: true,
+          image: true,
+          url: true,
+          bigImage: true,
+          altText: true,
+          createdAt: true,
+          metaTitle: true,
+          metaDescription: true,
+          duration: true,
+          content: true,
+        },
       });
       return blog;
     } catch (error) {
