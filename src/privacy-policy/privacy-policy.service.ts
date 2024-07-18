@@ -44,7 +44,7 @@ export class PrivacyPolicyService {
   }
   async create(createPrivacyPolicyDto: CreatePrivacyPolicyDto) {
     try {
-      const newPrivacyPolicy = this.myPrisma().privacyPolicy.create({
+      const newPrivacyPolicy = await this.myPrisma().privacyPolicy.create({
         data: createPrivacyPolicyDto,
       });
       return newPrivacyPolicy;
@@ -59,7 +59,7 @@ export class PrivacyPolicyService {
 
   async findOne(language: string) {
     try {
-      const privacyPolicy = this.myPrisma(language).privacyPolicy.findFirst({
+      const privacyPolicy = await this.myPrisma(language).privacyPolicy.findFirst({
         select: {
           id: true,
           metaTitle: true,
@@ -79,7 +79,7 @@ export class PrivacyPolicyService {
 
   async update(id: number, updatePrivacyPolicyDto: UpdatePrivacyPolicyDto) {
     try {
-      const updatePrivacyPolicy = this.myPrisma().privacyPolicy.update({
+      const updatePrivacyPolicy = await this.myPrisma().privacyPolicy.update({
         where: {
           id,
         },
@@ -97,7 +97,7 @@ export class PrivacyPolicyService {
 
   async remove(id: number) {
     try {
-      const deletePrivacyPolicy = this.myPrisma().privacyPolicy.delete({
+      const deletePrivacyPolicy = await this.myPrisma().privacyPolicy.delete({
         where: {
           id,
         },

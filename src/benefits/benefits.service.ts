@@ -35,7 +35,7 @@ export class BenefitsService {
 
   async create(createBenefitDto: CreateBenefitDto) {
     try {
-      const newBenefit = this.myPrisma().benefits.create({
+      const newBenefit = await this.myPrisma().benefits.create({
         data: createBenefitDto,
       });
       return newBenefit;
@@ -50,7 +50,7 @@ export class BenefitsService {
 
   async findAll(language: string) {
     try {
-      const benefits = this.myPrisma(language).benefits.findMany({
+      const benefits = await this.myPrisma(language).benefits.findMany({
         select: {
           id: true,
           serviceId: true,
@@ -70,7 +70,7 @@ export class BenefitsService {
 
   async findOne(id: number, language: string) {
     try {
-      const benefit = this.myPrisma(language).benefits.findUnique({
+      const benefit = await this.myPrisma(language).benefits.findUnique({
         where: {
           id,
         },
@@ -93,7 +93,7 @@ export class BenefitsService {
 
   async update(id: number, updateBenefitDto: UpdateBenefitDto) {
     try {
-      const updateBenefit = this.myPrisma().benefits.update({
+      const updateBenefit = await this.myPrisma().benefits.update({
         where: {
           id,
         },
@@ -111,7 +111,7 @@ export class BenefitsService {
 
   async remove(id: number) {
     try {
-      const deleteBenefit = this.myPrisma().benefits.delete({
+      const deleteBenefit = await this.myPrisma().benefits.delete({
         where: {
           id,
         },

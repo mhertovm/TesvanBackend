@@ -46,7 +46,7 @@ export class ProjectCategoryService {
   }
   async create(createProjectCategoryDto: CreateProjectCategoryDto) {
     try {
-      const newProjectCategory = this.myPrisma().projectCategory.create({
+      const newProjectCategory = await this.myPrisma().projectCategory.create({
         data: createProjectCategoryDto,
       });
       return newProjectCategory;
@@ -61,7 +61,7 @@ export class ProjectCategoryService {
 
   async findAll(language: string) {
     try {
-      const projectCategory = this.myPrisma(language).projectCategory.findMany({
+      const projectCategory = await this.myPrisma(language).projectCategory.findMany({
         select: {
           id: true,
           category: true,
@@ -89,7 +89,7 @@ export class ProjectCategoryService {
 
   async findOne(id: number, language: string) {
     try {
-      const projectCategory = this.myPrisma(
+      const projectCategory = await this.myPrisma(
         language,
       ).projectCategory.findUnique({
         where: {
@@ -122,7 +122,7 @@ export class ProjectCategoryService {
 
   async update(id: number, updateProjectCategoryDto: UpdateProjectCategoryDto) {
     try {
-      const updateProjectCategory = this.myPrisma().projectCategory.update({
+      const updateProjectCategory = await this.myPrisma().projectCategory.update({
         where: {
           id,
         },
@@ -140,7 +140,7 @@ export class ProjectCategoryService {
 
   async remove(id: number) {
     try {
-      const deleteProjectCategory = this.myPrisma().projectCategory.delete({
+      const deleteProjectCategory = await this.myPrisma().projectCategory.delete({
         where: {
           id,
         },

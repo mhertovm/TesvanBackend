@@ -8,7 +8,7 @@ export class TheyTrustUsService {
   constructor(private prisma: PrismaService) {}
   async create(createTheyTrustUsDto: CreateTheyTrustUsDto) {
     try {
-      const newTheyTrustUs = this.prisma.theyTrustUs.create({
+      const newTheyTrustUs = await this.prisma.theyTrustUs.create({
         data: createTheyTrustUsDto,
       });
       return newTheyTrustUs;
@@ -23,7 +23,7 @@ export class TheyTrustUsService {
 
   async findAll() {
     try {
-      const theyTrustUs = this.prisma.theyTrustUs.findMany();
+      const theyTrustUs = await this.prisma.theyTrustUs.findMany();
       return theyTrustUs;
     } catch (error) {
       console.error(error);
@@ -36,7 +36,7 @@ export class TheyTrustUsService {
 
   async findOne(id: number) {
     try {
-      const theyTrustUs = this.prisma.theyTrustUs.findUnique({
+      const theyTrustUs = await this.prisma.theyTrustUs.findUnique({
         where: {
           id,
         },
@@ -53,7 +53,7 @@ export class TheyTrustUsService {
 
   async update(id: number, updateTheyTrustUsDto: UpdateTheyTrustUsDto) {
     try {
-      const updateTheyTrustUs = this.prisma.theyTrustUs.update({
+      const updateTheyTrustUs = await this.prisma.theyTrustUs.update({
         where: {
           id,
         },
@@ -71,7 +71,7 @@ export class TheyTrustUsService {
 
   async remove(id: number) {
     try {
-      const deleteTheyTrustUs = this.prisma.theyTrustUs.delete({
+      const deleteTheyTrustUs = await this.prisma.theyTrustUs.delete({
         where: {
           id,
         },

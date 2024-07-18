@@ -24,7 +24,7 @@ export class HireUsService {
   }
   async create(createHireUsDto: CreateHireUsDto) {
     try {
-      const newHireUs = this.myPrisma().hireUs.create({
+      const newHireUs = await this.myPrisma().hireUs.create({
         data: createHireUsDto,
       });
       return newHireUs;
@@ -39,7 +39,7 @@ export class HireUsService {
 
   async findAll(language: string) {
     try {
-      const hireUs = this.myPrisma(language).hireUs.findMany({
+      const hireUs = await this.myPrisma(language).hireUs.findMany({
         select: {
           id: true,
           hire: true,
@@ -57,7 +57,7 @@ export class HireUsService {
 
   async findOne(id: number, language: string) {
     try {
-      const hireUs = this.myPrisma(language).hireUs.findUnique({
+      const hireUs = await this.myPrisma(language).hireUs.findUnique({
         where: {
           id,
         },
@@ -78,7 +78,7 @@ export class HireUsService {
 
   async update(id: number, updateHireUsDto: UpdateHireUsDto) {
     try {
-      const updateHireUs = this.myPrisma().hireUs.update({
+      const updateHireUs = await this.myPrisma().hireUs.update({
         where: {
           id,
         },
@@ -96,7 +96,7 @@ export class HireUsService {
 
   async remove(id: number) {
     try {
-      const deleteHireUs = this.myPrisma().hireUs.delete({
+      const deleteHireUs = await this.myPrisma().hireUs.delete({
         where: {
           id,
         },

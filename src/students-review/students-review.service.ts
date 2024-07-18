@@ -36,7 +36,7 @@ export class StudentsReviewService {
   }
   async create(createStudentsReviewDto: CreateStudentsReviewDto) {
     try {
-      const newStudentsReview = this.myPrisma().studentsReview.create({
+      const newStudentsReview = await this.myPrisma().studentsReview.create({
         data: createStudentsReviewDto,
       });
       return newStudentsReview;
@@ -51,7 +51,7 @@ export class StudentsReviewService {
 
   async findAll(language: string) {
     try {
-      const studentsReview = this.myPrisma(language).studentsReview.findMany({
+      const studentsReview = await this.myPrisma(language).studentsReview.findMany({
         select: {
           id: true,
           fullName: true,
@@ -72,7 +72,7 @@ export class StudentsReviewService {
 
   async findOne(id: number, language: string) {
     try {
-      const studentsReview = this.myPrisma(language).studentsReview.findUnique({
+      const studentsReview = await this.myPrisma(language).studentsReview.findUnique({
         where: {
           id,
         },
@@ -96,7 +96,7 @@ export class StudentsReviewService {
 
   async update(id: number, updateStudentsReviewDto: UpdateStudentsReviewDto) {
     try {
-      const updateStudentsReview = this.myPrisma().studentsReview.update({
+      const updateStudentsReview = await this.myPrisma().studentsReview.update({
         where: {
           id,
         },
@@ -114,7 +114,7 @@ export class StudentsReviewService {
 
   async remove(id: number) {
     try {
-      const deleteStudentsReview = this.myPrisma().studentsReview.delete({
+      const deleteStudentsReview = await this.myPrisma().studentsReview.delete({
         where: {
           id,
         },

@@ -60,7 +60,7 @@ export class EducationsService {
   }
   async create(createEducationDto: CreateEducationDto) {
     try {
-      const newEducations = this.myPrisma().educations.create({
+      const newEducations = await this.myPrisma().educations.create({
         data: createEducationDto,
       });
       return newEducations;
@@ -75,7 +75,7 @@ export class EducationsService {
 
   async findAll(language: string) {
     try {
-      const educations = this.myPrisma(language).educations.findMany({
+      const educations = await this.myPrisma(language).educations.findMany({
         select: {
           id: true,
           type: true,
@@ -99,7 +99,7 @@ export class EducationsService {
 
   async findOne(id: number, language: string) {
     try {
-      const education = this.myPrisma(language).educations.findUnique({
+      const education = await this.myPrisma(language).educations.findUnique({
         where: {
           id,
         },
@@ -126,7 +126,7 @@ export class EducationsService {
 
   async update(id: number, updateEducationDto: UpdateEducationDto) {
     try {
-      const updateEducations = this.myPrisma().educations.update({
+      const updateEducations = await this.myPrisma().educations.update({
         where: {
           id,
         },
@@ -144,7 +144,7 @@ export class EducationsService {
 
   async remove(id: number) {
     try {
-      const deleteEducations = this.myPrisma().educations.delete({
+      const deleteEducations = await this.myPrisma().educations.delete({
         where: {
           id,
         },

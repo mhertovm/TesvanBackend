@@ -55,7 +55,7 @@ export class CareersService {
 
   async create(createCareerDto: CreateCareerDto) {
     try {
-      const newCareers = this.myPrisma().careers.create({
+      const newCareers = await this.myPrisma().careers.create({
         data: createCareerDto,
       });
       return newCareers;
@@ -70,7 +70,7 @@ export class CareersService {
 
   async findAll(language: string) {
     try {
-      const careers = this.myPrisma(language).careers.findMany({
+      const careers = await this.myPrisma(language).careers.findMany({
         select: {
           id: true,
           metaTitle: true,
@@ -95,7 +95,7 @@ export class CareersService {
 
   async findOne(id: number, language: string) {
     try {
-      const career = this.myPrisma(language).careers.findUnique({
+      const career = await this.myPrisma(language).careers.findUnique({
         where: {
           id,
         },
@@ -123,7 +123,7 @@ export class CareersService {
 
   async update(id: number, updateCareerDto: UpdateCareerDto) {
     try {
-      const updateCareers = this.myPrisma().careers.update({
+      const updateCareers = await this.myPrisma().careers.update({
         where: {
           id,
         },
@@ -141,7 +141,7 @@ export class CareersService {
 
   async remove(id: number) {
     try {
-      const deleteCareers = this.myPrisma().careers.delete({
+      const deleteCareers = await this.myPrisma().careers.delete({
         where: {
           id,
         },

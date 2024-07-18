@@ -8,7 +8,7 @@ export class JobsService {
   constructor(private prisma: PrismaService) {}
   async create(createJobDto: CreateJobDto) {
     try {
-      const newJobs = this.prisma.jobs.create({
+      const newJobs = await this.prisma.jobs.create({
         data: createJobDto,
       });
       return newJobs;
@@ -23,7 +23,7 @@ export class JobsService {
 
   async findAll() {
     try {
-      const jobs = this.prisma.jobs.findMany();
+      const jobs = await this.prisma.jobs.findMany();
       return jobs;
     } catch (error) {
       console.error(error);
@@ -36,7 +36,7 @@ export class JobsService {
 
   async findOne(id: number) {
     try {
-      const job = this.prisma.jobs.findUnique({
+      const job = await this.prisma.jobs.findUnique({
         where: {
           id,
         },
@@ -53,7 +53,7 @@ export class JobsService {
 
   async update(id: number, updateJobDto: UpdateJobDto) {
     try {
-      const updateJobs = this.prisma.jobs.update({
+      const updateJobs = await this.prisma.jobs.update({
         where: {
           id,
         },
@@ -71,7 +71,7 @@ export class JobsService {
 
   async remove(id: number) {
     try {
-      const deleteJobs = this.prisma.jobs.delete({
+      const deleteJobs = await this.prisma.jobs.delete({
         where: {
           id,
         },

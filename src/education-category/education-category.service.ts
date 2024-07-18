@@ -83,7 +83,7 @@ export class EducationCategoryService {
 
   async findAll(language: string) {
     try {
-      const educationCategory = this.myPrisma(
+      const educationCategory = await this.myPrisma(
         language,
       ).educationCategory.findMany({
         select: {
@@ -115,7 +115,7 @@ export class EducationCategoryService {
 
   async findOne(id: number, language: string) {
     try {
-      const educationCategory = this.myPrisma(
+      const educationCategory = await this.myPrisma(
         language,
       ).educationCategory.findUnique({
         where: {
@@ -153,7 +153,7 @@ export class EducationCategoryService {
     updateEducationCategoryDto: UpdateEducationCategoryDto,
   ) {
     try {
-      const updateEducationCategory = this.myPrisma().educationCategory.update({
+      const updateEducationCategory = await this.myPrisma().educationCategory.update({
         where: {
           id,
         },
@@ -171,7 +171,7 @@ export class EducationCategoryService {
 
   async remove(id: number) {
     try {
-      const deleteEducationCategory = this.myPrisma().educationCategory.delete({
+      const deleteEducationCategory = await this.myPrisma().educationCategory.delete({
         where: {
           id,
         },

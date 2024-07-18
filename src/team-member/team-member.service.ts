@@ -30,7 +30,7 @@ export class TeamMemberService {
   }
   async create(createTeamMemberDto: CreateTeamMemberDto) {
     try {
-      const newTeamMember = this.myPrisma().teamMember.create({
+      const newTeamMember = await this.myPrisma().teamMember.create({
         data: createTeamMemberDto,
       });
       return newTeamMember;
@@ -45,7 +45,7 @@ export class TeamMemberService {
 
   async findAll(language: string) {
     try {
-      const teamMember = this.myPrisma(language).teamMember.findMany({
+      const teamMember = await this.myPrisma(language).teamMember.findMany({
         select: {
           id: true,
           order: true,
@@ -66,7 +66,7 @@ export class TeamMemberService {
 
   async findOne(id: number, language: string) {
     try {
-      const teamMember = this.myPrisma(language).teamMember.findUnique({
+      const teamMember = await this.myPrisma(language).teamMember.findUnique({
         where: {
           id,
         },
@@ -90,7 +90,7 @@ export class TeamMemberService {
 
   async update(id: number, updateTeamMemberDto: UpdateTeamMemberDto) {
     try {
-      const updateTeamMember = this.myPrisma().teamMember.update({
+      const updateTeamMember = await this.myPrisma().teamMember.update({
         where: {
           id,
         },
@@ -108,7 +108,7 @@ export class TeamMemberService {
 
   async remove(id: number) {
     try {
-      const deleteTeamMember = this.myPrisma().teamMember.delete({
+      const deleteTeamMember = await this.myPrisma().teamMember.delete({
         where: {
           id,
         },

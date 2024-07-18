@@ -8,7 +8,7 @@ export class ContactsService {
   constructor(private prisma: PrismaService) {}
   async create(createContactDto: CreateContactDto) {
     try {
-      const newContacts = this.prisma.contacts.create({
+      const newContacts = await this.prisma.contacts.create({
         data: createContactDto,
       });
       return newContacts;
@@ -23,7 +23,7 @@ export class ContactsService {
 
   async findAll() {
     try {
-      const contacts = this.prisma.contacts.findMany();
+      const contacts = await this.prisma.contacts.findMany();
       return contacts;
     } catch (error) {
       console.error(error);
@@ -36,7 +36,7 @@ export class ContactsService {
 
   async findOne(id: number) {
     try {
-      const contact = this.prisma.contacts.findUnique({
+      const contact = await this.prisma.contacts.findUnique({
         where: {
           id,
         },
@@ -53,7 +53,7 @@ export class ContactsService {
 
   async update(id: number, updateContactDto: UpdateContactDto) {
     try {
-      const updateContacts = this.prisma.contacts.update({
+      const updateContacts = await this.prisma.contacts.update({
         where: {
           id,
         },
@@ -71,7 +71,7 @@ export class ContactsService {
 
   async remove(id: number) {
     try {
-      const deleteContacts = this.prisma.contacts.delete({
+      const deleteContacts = await this.prisma.contacts.delete({
         where: {
           id,
         },

@@ -25,7 +25,7 @@ export class AboutWorkService {
 
   async create(createAboutWorkDto: CreateAboutWorkDto) {
     try {
-      const newAboutWork = this.myPrisma().aboutWork.create({
+      const newAboutWork = await this.myPrisma().aboutWork.create({
         data: createAboutWorkDto,
       });
       return newAboutWork;
@@ -40,7 +40,7 @@ export class AboutWorkService {
 
   async findAll(language: string) {
     try {
-      const aboutWorks = this.myPrisma(language).aboutWork.findMany({
+      const aboutWorks = await this.myPrisma(language).aboutWork.findMany({
         select: {
           id: true,
           work: true,
@@ -58,7 +58,7 @@ export class AboutWorkService {
 
   async findOne(id: number, language: string) {
     try {
-      const aboutWork = this.myPrisma(language).aboutWork.findUnique({
+      const aboutWork = await this.myPrisma(language).aboutWork.findUnique({
         where: {
           id,
         },
@@ -79,7 +79,7 @@ export class AboutWorkService {
 
   async update(id: number, updateAboutWorkDto: UpdateAboutWorkDto) {
     try {
-      const updateAboutWork = this.myPrisma().aboutWork.update({
+      const updateAboutWork = await this.myPrisma().aboutWork.update({
         where: {
           id,
         },
@@ -97,7 +97,7 @@ export class AboutWorkService {
 
   async remove(id: number) {
     try {
-      const deleteAboutWork = this.myPrisma().aboutWork.delete({
+      const deleteAboutWork = await this.myPrisma().aboutWork.delete({
         where: {
           id,
         },

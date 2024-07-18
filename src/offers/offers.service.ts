@@ -24,7 +24,7 @@ export class OffersService {
   }
   async create(createOfferDto: CreateOfferDto) {
     try {
-      const newOffers = this.myPrisma().offers.create({
+      const newOffers = await this.myPrisma().offers.create({
         data: createOfferDto,
       });
       return newOffers;
@@ -39,7 +39,7 @@ export class OffersService {
 
   async findAll(language: string) {
     try {
-      const offers = this.myPrisma(language).offers.findMany({
+      const offers = await this.myPrisma(language).offers.findMany({
         select: {
           id: true,
           serviceId: true,
@@ -58,7 +58,7 @@ export class OffersService {
 
   async findOne(id: number, language: string) {
     try {
-      const offer = this.myPrisma(language).offers.findUnique({
+      const offer = await this.myPrisma(language).offers.findUnique({
         where: {
           id,
         },
@@ -80,7 +80,7 @@ export class OffersService {
 
   async update(id: number, updateOfferDto: UpdateOfferDto) {
     try {
-      const updateOffers = this.myPrisma().offers.update({
+      const updateOffers = await this.myPrisma().offers.update({
         where: {
           id,
         },
@@ -98,7 +98,7 @@ export class OffersService {
 
   async remove(id: number) {
     try {
-      const deleteOffers = this.myPrisma().offers.delete({
+      const deleteOffers = await this.myPrisma().offers.delete({
         where: {
           id,
         },

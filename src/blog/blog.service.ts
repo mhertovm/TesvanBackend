@@ -2,10 +2,11 @@ import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { CreateBlogDto } from './dto/create-blog.dto';
 import { UpdateBlogDto } from './dto/update-blog.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { UploadService } from 'src/upload/upload.service';
 
 @Injectable()
 export class BlogService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService, private uploadService: UploadService) {}
 
   myPrisma(language?: string) {
     language ? language : (language = 'en');
@@ -50,7 +51,7 @@ export class BlogService {
   }
   async create(createBlogDto: CreateBlogDto) {
     try {
-      const newBlog = this.myPrisma().blog.create({
+      const newBlog = await this.myPrisma().blog.create({
         data: createBlogDto,
       });
       return newBlog;
@@ -65,7 +66,7 @@ export class BlogService {
 
   async findAll(language: string) {
     try {
-      const blog = this.myPrisma(language).blog.findMany({
+      const blog = await this.myPrisma(language).blog.findMany({
         where: {
           [`metaTitle_${language}`]: {
             not: null,
@@ -99,7 +100,7 @@ export class BlogService {
 
   async findOne(id: number, language: string) {
     try {
-      const blog = this.myPrisma(language).blog.findUnique({
+      const blog = await this.myPrisma(language).blog.findUnique({
         where: {
           id,
         },
@@ -128,7 +129,7 @@ export class BlogService {
 
   async update(id: number, updateBlogDto: UpdateBlogDto) {
     try {
-      const updateBlog = this.myPrisma().blog.update({
+      const updateBlog = await this.myPrisma().blog.update({
         where: {
           id,
         },
@@ -146,11 +147,13 @@ export class BlogService {
 
   async remove(id: number) {
     try {
-      const deleteBlog = this.myPrisma().blog.delete({
+      const deleteBlog = await this.myPrisma().blog.delete({
         where: {
           id,
         },
       });
+      this.uploadService.deleteFile(deleteBlog.image)
+      this.uploadService.deleteFile(deleteBlog.bigImage)
       return deleteBlog;
     } catch (error) {
       console.error(error);

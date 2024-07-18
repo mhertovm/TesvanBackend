@@ -70,7 +70,7 @@ export class ProjectDetailService {
   }
   async create(createProjectDetailDto: CreateProjectDetailDto) {
     try {
-      const newProjectDetail = this.myPrisma().projectDetail.create({
+      const newProjectDetail = await this.myPrisma().projectDetail.create({
         data: createProjectDetailDto,
       });
       return newProjectDetail;
@@ -85,7 +85,7 @@ export class ProjectDetailService {
 
   async findAll(language: string) {
     try {
-      const projectDetail = this.myPrisma(language).projectDetail.findMany({
+      const projectDetail = await this.myPrisma(language).projectDetail.findMany({
         select: {
           id: true,
           projectId: true,
@@ -112,7 +112,7 @@ export class ProjectDetailService {
 
   async findOne(id: number, language: string) {
     try {
-      const projectDetail = this.myPrisma(language).projectDetail.findUnique({
+      const projectDetail = await this.myPrisma(language).projectDetail.findUnique({
         where: {
           id,
         },
@@ -142,7 +142,7 @@ export class ProjectDetailService {
 
   async update(id: number, updateProjectDetailDto: UpdateProjectDetailDto) {
     try {
-      const updateProjectDetail = this.myPrisma().projectDetail.update({
+      const updateProjectDetail = await this.myPrisma().projectDetail.update({
         where: {
           id,
         },
@@ -160,7 +160,7 @@ export class ProjectDetailService {
 
   async remove(id: number) {
     try {
-      const deleteProjectDetail = this.myPrisma().projectDetail.delete({
+      const deleteProjectDetail = await this.myPrisma().projectDetail.delete({
         where: {
           id,
         },

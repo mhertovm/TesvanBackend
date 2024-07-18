@@ -98,7 +98,7 @@ export class ServicesService {
   }
   async create(createServiceDto: CreateServiceDto) {
     try {
-      const newServices = this.myPrisma().services.create({
+      const newServices = await this.myPrisma().services.create({
         data: createServiceDto,
       });
       return newServices;
@@ -113,7 +113,7 @@ export class ServicesService {
 
   async findAll(language: string) {
     try {
-      const services = this.myPrisma(language).services.findMany({
+      const services = await this.myPrisma(language).services.findMany({
         select: {
           id: true,
           type: true,
@@ -167,7 +167,7 @@ export class ServicesService {
 
   async findOne(id: number, language: string) {
     try {
-      const servic = this.myPrisma(language).services.findUnique({
+      const servic = await this.myPrisma(language).services.findUnique({
         where: {
           id,
         },
@@ -224,7 +224,7 @@ export class ServicesService {
 
   async update(id: number, updateServiceDto: UpdateServiceDto) {
     try {
-      const updateServices = this.myPrisma().services.update({
+      const updateServices = await this.myPrisma().services.update({
         where: {
           id,
         },
@@ -242,7 +242,7 @@ export class ServicesService {
 
   async remove(id: number) {
     try {
-      const deleteServices = this.myPrisma().services.delete({
+      const deleteServices = await this.myPrisma().services.delete({
         where: {
           id,
         },

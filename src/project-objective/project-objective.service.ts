@@ -28,7 +28,7 @@ export class ProjectObjectiveService {
   }
   async create(createProjectObjectiveDto: CreateProjectObjectiveDto) {
     try {
-      const newProjectObjective = this.myPrisma().projectObjective.create({
+      const newProjectObjective = await this.myPrisma().projectObjective.create({
         data: createProjectObjectiveDto,
       });
       return newProjectObjective;
@@ -43,9 +43,7 @@ export class ProjectObjectiveService {
 
   async findAll(language: string) {
     try {
-      const projectObjective = this.myPrisma(
-        language,
-      ).projectObjective.findMany({
+      const projectObjective = await this.myPrisma(language).projectObjective.findMany({
         select: {
           id: true,
           projectId: true,
@@ -64,9 +62,7 @@ export class ProjectObjectiveService {
 
   async findOne(id: number, language: string) {
     try {
-      const projectObjective = this.myPrisma(
-        language,
-      ).projectObjective.findUnique({
+      const projectObjective = await this.myPrisma(language).projectObjective.findUnique({
         where: {
           id,
         },
@@ -91,7 +87,7 @@ export class ProjectObjectiveService {
     updateProjectObjectiveDto: UpdateProjectObjectiveDto,
   ) {
     try {
-      const updateProjectObjective = this.myPrisma().projectObjective.update({
+      const updateProjectObjective = await this.myPrisma().projectObjective.update({
         where: {
           id,
         },
@@ -109,7 +105,7 @@ export class ProjectObjectiveService {
 
   async remove(id: number) {
     try {
-      const deleteProjectObjective = this.myPrisma().projectObjective.delete({
+      const deleteProjectObjective = await this.myPrisma().projectObjective.delete({
         where: {
           id,
         },

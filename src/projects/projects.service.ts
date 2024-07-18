@@ -104,7 +104,7 @@ export class ProjectsService {
   }
   async create(createProjectDto: CreateProjectDto) {
     try {
-      const newProjects = this.myPrisma().projects.create({
+      const newProjects = await this.myPrisma().projects.create({
         data: createProjectDto,
       });
       return newProjects;
@@ -119,7 +119,7 @@ export class ProjectsService {
 
   async findAll(language: string) {
     try {
-      const projects = this.myPrisma(language).projects.findMany({
+      const projects = await this.myPrisma(language).projects.findMany({
         select: {
           id: true,
           name: true,
@@ -164,7 +164,7 @@ export class ProjectsService {
 
   async findOne(id: number, language: string) {
     try {
-      const project = this.myPrisma(language).projects.findUnique({
+      const project = await this.myPrisma(language).projects.findUnique({
         where: {
           id,
         },
@@ -212,7 +212,7 @@ export class ProjectsService {
 
   async update(id: number, updateProjectDto: UpdateProjectDto) {
     try {
-      const updateProjects = this.myPrisma().projects.update({
+      const updateProjects = await this.myPrisma().projects.update({
         where: {
           id,
         },
@@ -230,7 +230,7 @@ export class ProjectsService {
 
   async remove(id: number) {
     try {
-      const deleteProjects = this.myPrisma().projects.delete({
+      const deleteProjects = await this.myPrisma().projects.delete({
         where: {
           id,
         },

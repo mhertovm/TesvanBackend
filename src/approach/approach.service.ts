@@ -24,7 +24,7 @@ export class ApproachService {
   }
   async create(createApproachDto: CreateApproachDto) {
     try {
-      const newApproach = this.myPrisma().approach.create({
+      const newApproach = await this.myPrisma().approach.create({
         data: createApproachDto,
       });
       return newApproach;
@@ -39,7 +39,7 @@ export class ApproachService {
 
   async findAll(language: string) {
     try {
-      const approaches = this.myPrisma(language).approach.findMany({
+      const approaches = await this.myPrisma(language).approach.findMany({
         select: {
           id: true,
           serviceId: true,
@@ -58,7 +58,7 @@ export class ApproachService {
 
   async findOne(id: number, language: string) {
     try {
-      const approach = this.myPrisma(language).approach.findUnique({
+      const approach = await this.myPrisma(language).approach.findUnique({
         where: {
           id,
         },
@@ -80,7 +80,7 @@ export class ApproachService {
 
   async update(id: number, updateApproachDto: UpdateApproachDto) {
     try {
-      const updateApproach = this.myPrisma().approach.update({
+      const updateApproach = await this.myPrisma().approach.update({
         where: {
           id,
         },
@@ -98,7 +98,7 @@ export class ApproachService {
 
   async remove(id: number) {
     try {
-      const deleteApproach = this.myPrisma().approach.delete({
+      const deleteApproach = await this.myPrisma().approach.delete({
         where: {
           id,
         },

@@ -8,7 +8,7 @@ export class ApplicantService {
   constructor(private prisma: PrismaService) {}
   async create(createApplicantDto: CreateApplicantDto) {
     try {
-      const newApplicant = this.prisma.applicant.create({
+      const newApplicant = await this.prisma.applicant.create({
         data: createApplicantDto,
       });
       return newApplicant;
@@ -23,7 +23,7 @@ export class ApplicantService {
 
   async findAll() {
     try {
-      const applicants = this.prisma.applicant.findMany();
+      const applicants = await this.prisma.applicant.findMany();
       return applicants;
     } catch (error) {
       console.error(error);
@@ -36,7 +36,7 @@ export class ApplicantService {
 
   async findOne(id: number) {
     try {
-      const applicant = this.prisma.applicant.findUnique({
+      const applicant = await this.prisma.applicant.findUnique({
         where: {
           id,
         },
@@ -53,7 +53,7 @@ export class ApplicantService {
 
   async update(id: number, updateApplicantDto: UpdateApplicantDto) {
     try {
-      const updateApplicant = this.prisma.applicant.update({
+      const updateApplicant = await this.prisma.applicant.update({
         where: {
           id,
         },
@@ -71,7 +71,7 @@ export class ApplicantService {
 
   async remove(id: number) {
     try {
-      const deleteApplicant = this.prisma.applicant.delete({
+      const deleteApplicant = await this.prisma.applicant.delete({
         where: {
           id,
         },

@@ -38,7 +38,7 @@ export class PageTitlesService {
   }
   async create(createPageTitleDto: CreatePageTitleDto) {
     try {
-      const newAboutWork = this.myPrisma().pageTitles.create({
+      const newAboutWork = await this.myPrisma().pageTitles.create({
         data: createPageTitleDto,
       });
       return newAboutWork;
@@ -53,7 +53,7 @@ export class PageTitlesService {
 
   async findAll(language: string) {
     try {
-      const pageTitles = this.myPrisma(language).pageTitles.findMany({
+      const pageTitles = await this.myPrisma(language).pageTitles.findMany({
         select: {
           id: true,
           metaTitle: true,
@@ -76,7 +76,7 @@ export class PageTitlesService {
 
   async findOne(id: number, language: string) {
     try {
-      const pageTitl = this.myPrisma(language).pageTitles.findUnique({
+      const pageTitl = await this.myPrisma(language).pageTitles.findUnique({
         where: {
           id,
         },
@@ -102,7 +102,7 @@ export class PageTitlesService {
 
   async update(id: number, updatePageTitleDto: UpdatePageTitleDto) {
     try {
-      const updatePageTitles = this.myPrisma().pageTitles.update({
+      const updatePageTitles = await this.myPrisma().pageTitles.update({
         where: {
           id,
         },
@@ -120,7 +120,7 @@ export class PageTitlesService {
 
   async remove(id: number) {
     try {
-      const deletePageTitles = this.myPrisma().pageTitles.delete({
+      const deletePageTitles = await this.myPrisma().pageTitles.delete({
         where: {
           id,
         },

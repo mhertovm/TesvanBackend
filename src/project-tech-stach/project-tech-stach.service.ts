@@ -23,7 +23,7 @@ export class ProjectTechStachService {
 
   async findAll() {
     try {
-      const projectTechStach = this.prisma.projectTechStack.findMany();
+      const projectTechStach = await this.prisma.projectTechStack.findMany();
       return projectTechStach;
     } catch (error) {
       console.error(error);
@@ -36,7 +36,7 @@ export class ProjectTechStachService {
 
   async findOne(id: number) {
     try {
-      const projectTechStach = this.prisma.projectTechStack.findUnique({
+      const projectTechStach = await this.prisma.projectTechStack.findUnique({
         where: {
           id,
         },
@@ -56,7 +56,7 @@ export class ProjectTechStachService {
     updateProjectTechStachDto: UpdateProjectTechStachDto,
   ) {
     try {
-      const updateProjectTechStach = this.prisma.projectTechStack.update({
+      const updateProjectTechStach = await this.prisma.projectTechStack.update({
         where: {
           id,
         },
@@ -74,7 +74,7 @@ export class ProjectTechStachService {
 
   async remove(id: number) {
     try {
-      const deleteProjectTechStach = this.prisma.projectTechStack.delete({
+      const deleteProjectTechStach = await this.prisma.projectTechStack.delete({
         where: {
           id,
         },

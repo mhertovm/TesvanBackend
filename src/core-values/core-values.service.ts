@@ -34,7 +34,7 @@ export class CoreValuesService {
   }
   async create(createCoreValueDto: CreateCoreValueDto) {
     try {
-      const newCoreValues = this.myPrisma().coreValues.create({
+      const newCoreValues = await this.myPrisma().coreValues.create({
         data: createCoreValueDto,
       });
       return newCoreValues;
@@ -49,7 +49,7 @@ export class CoreValuesService {
 
   async findAll(language: string) {
     try {
-      const coreValues = this.myPrisma(language).coreValues.findMany({
+      const coreValues = await this.myPrisma(language).coreValues.findMany({
         select: {
           id: true,
           title: true,
@@ -68,7 +68,7 @@ export class CoreValuesService {
 
   async findOne(id: number, language: string) {
     try {
-      const coreValue = this.myPrisma(language).coreValues.findUnique({
+      const coreValue = await this.myPrisma(language).coreValues.findUnique({
         where: {
           id,
         },
@@ -90,7 +90,7 @@ export class CoreValuesService {
 
   async update(id: number, updateCoreValueDto: UpdateCoreValueDto) {
     try {
-      const updateCoreValues = this.myPrisma().coreValues.update({
+      const updateCoreValues = await this.myPrisma().coreValues.update({
         where: {
           id,
         },
@@ -108,7 +108,7 @@ export class CoreValuesService {
 
   async remove(id: number) {
     try {
-      const deleteCoreValues = this.myPrisma().coreValues.delete({
+      const deleteCoreValues = await this.myPrisma().coreValues.delete({
         where: {
           id,
         },

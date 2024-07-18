@@ -30,7 +30,7 @@ export class FaqService {
   }
   async create(createFaqDto: CreateFaqDto) {
     try {
-      const newFaq = this.myPrisma().faq.create({
+      const newFaq = await this.myPrisma().faq.create({
         data: createFaqDto,
       });
       return newFaq;
@@ -45,7 +45,7 @@ export class FaqService {
 
   async findAll(language: string) {
     try {
-      const faq = this.myPrisma(language).faq.findMany({
+      const faq = await this.myPrisma(language).faq.findMany({
         select: {
           id: true,
           serviceId: true,
@@ -65,7 +65,7 @@ export class FaqService {
 
   async findOne(id: number, language: string) {
     try {
-      const faq = this.myPrisma(language).faq.findUnique({
+      const faq = await this.myPrisma(language).faq.findUnique({
         where: {
           id,
         },
@@ -88,7 +88,7 @@ export class FaqService {
 
   async update(id: number, updateFaqDto: UpdateFaqDto) {
     try {
-      const updateFaq = this.myPrisma().faq.update({
+      const updateFaq = await this.myPrisma().faq.update({
         where: {
           id,
         },
@@ -106,7 +106,7 @@ export class FaqService {
 
   async remove(id: number) {
     try {
-      const deleteFaq = this.myPrisma().faq.delete({
+      const deleteFaq = await this.myPrisma().faq.delete({
         where: {
           id,
         },

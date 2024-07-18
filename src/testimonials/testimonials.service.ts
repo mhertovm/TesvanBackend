@@ -36,7 +36,7 @@ export class TestimonialsService {
   }
   async create(createTestimonialDto: CreateTestimonialDto) {
     try {
-      const newTestimonials = this.myPrisma().testimonials.create({
+      const newTestimonials = await this.myPrisma().testimonials.create({
         data: createTestimonialDto,
       });
       return newTestimonials;
@@ -51,7 +51,7 @@ export class TestimonialsService {
 
   async findAll(language: string) {
     try {
-      const testimonials = this.myPrisma(language).testimonials.findMany({
+      const testimonials = await this.myPrisma(language).testimonials.findMany({
         select: {
           id: true,
           fullName: true,
@@ -72,7 +72,7 @@ export class TestimonialsService {
 
   async findOne(id: number, language: string) {
     try {
-      const testimonial = this.myPrisma(language).testimonials.findUnique({
+      const testimonial = await this.myPrisma(language).testimonials.findUnique({
         where: {
           id,
         },
@@ -96,7 +96,7 @@ export class TestimonialsService {
 
   async update(id: number, updateTestimonialDto: UpdateTestimonialDto) {
     try {
-      const updateTestimonials = this.myPrisma().testimonials.update({
+      const updateTestimonials = await this.myPrisma().testimonials.update({
         where: {
           id,
         },
@@ -114,7 +114,7 @@ export class TestimonialsService {
 
   async remove(id: number) {
     try {
-      const deleteTestimonials = this.myPrisma().testimonials.delete({
+      const deleteTestimonials = await this.myPrisma().testimonials.delete({
         where: {
           id,
         },
