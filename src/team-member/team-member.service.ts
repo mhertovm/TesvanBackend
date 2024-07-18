@@ -2,10 +2,11 @@ import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { CreateTeamMemberDto } from './dto/create-team-member.dto';
 import { UpdateTeamMemberDto } from './dto/update-team-member.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { UploadService } from 'src/upload/upload.service';
 
 @Injectable()
 export class TeamMemberService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService, private uploadService: UploadService) {}
 
   myPrisma(language?: string) {
     language ? language : (language = 'en');
@@ -113,6 +114,7 @@ export class TeamMemberService {
           id,
         },
       });
+      this.uploadService.deleteFile(deleteTeamMember.image)
       return deleteTeamMember;
     } catch (error) {
       console.error(error);

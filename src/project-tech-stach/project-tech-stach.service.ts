@@ -2,10 +2,11 @@ import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { CreateProjectTechStachDto } from './dto/create-project-tech-stach.dto';
 import { UpdateProjectTechStachDto } from './dto/update-project-tech-stach.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { UploadService } from 'src/upload/upload.service';
 
 @Injectable()
 export class ProjectTechStachService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService, private uploadService: UploadService) {}
   async create(createProjectTechStachDto: CreateProjectTechStachDto) {
     try {
       const newProjectTechStach = this.prisma.projectTechStack.create({
@@ -79,6 +80,7 @@ export class ProjectTechStachService {
           id,
         },
       });
+      this.uploadService.deleteFile(deleteProjectTechStach.image)
       return deleteProjectTechStach;
     } catch (error) {
       console.error(error);

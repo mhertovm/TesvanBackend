@@ -2,10 +2,11 @@ import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { CreateJobDto } from './dto/create-job.dto';
 import { UpdateJobDto } from './dto/update-job.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { UploadService } from 'src/upload/upload.service';
 
 @Injectable()
 export class JobsService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService, private uploadService: UploadService) {}
   async create(createJobDto: CreateJobDto) {
     try {
       const newJobs = await this.prisma.jobs.create({
@@ -76,6 +77,7 @@ export class JobsService {
           id,
         },
       });
+      this.uploadService.deleteFile(deleteJobs.image)
       return deleteJobs;
     } catch (error) {
       console.error(error);
