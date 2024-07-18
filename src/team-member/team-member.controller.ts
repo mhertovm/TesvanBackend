@@ -9,6 +9,7 @@ import {
   UseGuards,
   Query,
   UseInterceptors,
+  UploadedFile,
 } from '@nestjs/common';
 import { TeamMemberService } from './team-member.service';
 import { CreateTeamMemberDto } from './dto/create-team-member.dto';
@@ -36,12 +37,12 @@ export class TeamMemberController {
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Create a teamMember' })
   @ApiConsumes('multipart/form-data')
-  @UseInterceptors(FileInterceptor('file'))
+  @UseInterceptors(FileInterceptor('image'))
   create(
     @Body() createTeamMemberDto: CreateTeamMemberDto,
-    file: Express.Multer.File,
+    @UploadedFile() image: Express.Multer.File,
   ) {
-    createTeamMemberDto.image = this.uploadService.uploadFile(file).filename;
+    createTeamMemberDto.image = this.uploadService.uploadFile(image).filename;
     return this.teamMemberService.create(createTeamMemberDto);
   }
 
@@ -62,14 +63,14 @@ export class TeamMemberController {
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Update a teamMember' })
   @ApiConsumes('multipart/form-data')
-  @UseInterceptors(FileInterceptor('file'))
+  @UseInterceptors(FileInterceptor('image'))
   update(
     @Param('id') id: string,
     @Body() updateTeamMemberDto: UpdateTeamMemberDto,
-    file: Express.Multer.File,
+    @UploadedFile() image: Express.Multer.File,
   ) {
-    if (file) {
-      updateTeamMemberDto.image = this.uploadService.uploadFile(file).filename;
+    if (image) {
+      updateTeamMemberDto.image = this.uploadService.uploadFile(image).filename;
     }
     return this.teamMemberService.update(+id, updateTeamMemberDto);
   }

@@ -9,6 +9,7 @@ import {
   UseGuards,
   Query,
   UseInterceptors,
+  UploadedFile,
 } from '@nestjs/common';
 import { CoursesService } from './courses.service';
 import { CreateCourseDto } from './dto/create-course.dto';
@@ -36,9 +37,12 @@ export class CoursesController {
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Create a courses' })
   @ApiConsumes('multipart/form-data')
-  @UseInterceptors(FileInterceptor('file'))
-  create(@Body() createCourseDto: CreateCourseDto, file: Express.Multer.File) {
-    createCourseDto.image = this.uploadService.uploadFile(file).filename;
+  @UseInterceptors(FileInterceptor('image'))
+  create(
+    @Body() createCourseDto: CreateCourseDto,
+    @UploadedFile() image: Express.Multer.File,
+  ) {
+    createCourseDto.image = this.uploadService.uploadFile(image).filename;
     return this.coursesService.create(createCourseDto);
   }
 
@@ -59,14 +63,14 @@ export class CoursesController {
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Update a courses' })
   @ApiConsumes('multipart/form-data')
-  @UseInterceptors(FileInterceptor('file'))
+  @UseInterceptors(FileInterceptor('image'))
   update(
     @Param('id') id: string,
     @Body() updateCourseDto: UpdateCourseDto,
-    file: Express.Multer.File,
+    @UploadedFile() image: Express.Multer.File,
   ) {
-    if (file) {
-      updateCourseDto.image = this.uploadService.uploadFile(file).filename;
+    if (image) {
+      updateCourseDto.image = this.uploadService.uploadFile(image).filename;
     }
     return this.coursesService.update(+id, updateCourseDto);
   }

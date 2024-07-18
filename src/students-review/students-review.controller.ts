@@ -9,6 +9,7 @@ import {
   UseGuards,
   Query,
   UseInterceptors,
+  UploadedFile,
 } from '@nestjs/common';
 import { StudentsReviewService } from './students-review.service';
 import { CreateStudentsReviewDto } from './dto/create-students-review.dto';
@@ -36,13 +37,13 @@ export class StudentsReviewController {
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Create a studentsReview' })
   @ApiConsumes('multipart/form-data')
-  @UseInterceptors(FileInterceptor('file'))
+  @UseInterceptors(FileInterceptor('image'))
   create(
     @Body() createStudentsReviewDto: CreateStudentsReviewDto,
-    file: Express.Multer.File,
+    @UploadedFile() image: Express.Multer.File,
   ) {
     createStudentsReviewDto.image =
-      this.uploadService.uploadFile(file).filename;
+      this.uploadService.uploadFile(image).filename;
     return this.studentsReviewService.create(createStudentsReviewDto);
   }
 
@@ -63,15 +64,15 @@ export class StudentsReviewController {
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Update a studentsReview' })
   @ApiConsumes('multipart/form-data')
-  @UseInterceptors(FileInterceptor('file'))
+  @UseInterceptors(FileInterceptor('image'))
   update(
     @Param('id') id: string,
     @Body() updateStudentsReviewDto: UpdateStudentsReviewDto,
-    file: Express.Multer.File,
+    @UploadedFile() image: Express.Multer.File,
   ) {
-    if (file) {
+    if (image) {
       updateStudentsReviewDto.image =
-        this.uploadService.uploadFile(file).filename;
+        this.uploadService.uploadFile(image).filename;
     }
     return this.studentsReviewService.update(+id, updateStudentsReviewDto);
   }

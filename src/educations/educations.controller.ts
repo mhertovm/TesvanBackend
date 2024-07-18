@@ -9,6 +9,7 @@ import {
   UseGuards,
   Query,
   UseInterceptors,
+  UploadedFile,
 } from '@nestjs/common';
 import { EducationsService } from './educations.service';
 import { CreateEducationDto } from './dto/create-education.dto';
@@ -36,12 +37,12 @@ export class EducationsController {
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Create a educations' })
   @ApiConsumes('multipart/form-data')
-  @UseInterceptors(FileInterceptor('file'))
+  @UseInterceptors(FileInterceptor('image'))
   create(
     @Body() createEducationDto: CreateEducationDto,
-    file: Express.Multer.File,
+    @UploadedFile() image: Express.Multer.File,
   ) {
-    createEducationDto.image = this.uploadService.uploadFile(file).filename;
+    createEducationDto.image = this.uploadService.uploadFile(image).filename;
     return this.educationsService.create(createEducationDto);
   }
 
@@ -62,14 +63,14 @@ export class EducationsController {
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Update a educations' })
   @ApiConsumes('multipart/form-data')
-  @UseInterceptors(FileInterceptor('file'))
+  @UseInterceptors(FileInterceptor('image'))
   update(
     @Param('id') id: string,
     @Body() updateEducationDto: UpdateEducationDto,
-    file: Express.Multer.File,
+    @UploadedFile() image: Express.Multer.File,
   ) {
-    if (file) {
-      updateEducationDto.image = this.uploadService.uploadFile(file).filename;
+    if (image) {
+      updateEducationDto.image = this.uploadService.uploadFile(image).filename;
     }
     return this.educationsService.update(+id, updateEducationDto);
   }

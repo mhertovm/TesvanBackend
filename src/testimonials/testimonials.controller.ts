@@ -9,6 +9,7 @@ import {
   UseGuards,
   Query,
   UseInterceptors,
+  UploadedFile,
 } from '@nestjs/common';
 import { TestimonialsService } from './testimonials.service';
 import { CreateTestimonialDto } from './dto/create-testimonial.dto';
@@ -36,12 +37,12 @@ export class TestimonialsController {
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Create a testimonials' })
   @ApiConsumes('multipart/form-data')
-  @UseInterceptors(FileInterceptor('file'))
+  @UseInterceptors(FileInterceptor('image'))
   create(
     @Body() createTestimonialDto: CreateTestimonialDto,
-    file: Express.Multer.File,
+    @UploadedFile() image: Express.Multer.File,
   ) {
-    createTestimonialDto.image = this.uploadService.uploadFile(file).filename;
+    createTestimonialDto.image = this.uploadService.uploadFile(image).filename;
     return this.testimonialsService.create(createTestimonialDto);
   }
 
@@ -62,14 +63,15 @@ export class TestimonialsController {
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Update a testimonials' })
   @ApiConsumes('multipart/form-data')
-  @UseInterceptors(FileInterceptor('file'))
+  @UseInterceptors(FileInterceptor('image'))
   update(
     @Param('id') id: string,
     @Body() updateTestimonialDto: UpdateTestimonialDto,
-    file: Express.Multer.File,
+    @UploadedFile() image: Express.Multer.File,
   ) {
-    if (file) {
-      updateTestimonialDto.image = this.uploadService.uploadFile(file).filename;
+    if (image) {
+      updateTestimonialDto.image =
+        this.uploadService.uploadFile(image).filename;
     }
     return this.testimonialsService.update(+id, updateTestimonialDto);
   }

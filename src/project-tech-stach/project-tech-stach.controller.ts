@@ -8,6 +8,7 @@ import {
   Delete,
   UseGuards,
   UseInterceptors,
+  UploadedFile,
 } from '@nestjs/common';
 import { ProjectTechStachService } from './project-tech-stach.service';
 import { CreateProjectTechStachDto } from './dto/create-project-tech-stach.dto';
@@ -38,10 +39,10 @@ export class ProjectTechStachController {
   @UseInterceptors(FileInterceptor('file'))
   create(
     @Body() createProjectTechStachDto: CreateProjectTechStachDto,
-    file: Express.Multer.File,
+    @UploadedFile() image: Express.Multer.File,
   ) {
     createProjectTechStachDto.image =
-      this.uploadService.uploadFile(file).filename;
+      this.uploadService.uploadFile(image).filename;
     return this.projectTechStachService.create(createProjectTechStachDto);
   }
 
@@ -62,15 +63,15 @@ export class ProjectTechStachController {
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Update a projectTechStach' })
   @ApiConsumes('multipart/form-data')
-  @UseInterceptors(FileInterceptor('file'))
+  @UseInterceptors(FileInterceptor('image'))
   update(
     @Param('id') id: string,
     @Body() updateProjectTechStachDto: UpdateProjectTechStachDto,
-    file: Express.Multer.File,
+    @UploadedFile() image: Express.Multer.File,
   ) {
-    if (file) {
+    if (image) {
       updateProjectTechStachDto.image =
-        this.uploadService.uploadFile(file).filename;
+        this.uploadService.uploadFile(image).filename;
     }
     return this.projectTechStachService.update(+id, updateProjectTechStachDto);
   }

@@ -45,21 +45,22 @@ export class BlogController {
     const imageFile = files.find((file) => file.fieldname === 'image');
     const bigImageFile = files.find((file) => file.fieldname === 'bigImage');
     createBlogDto.image = this.uploadService.uploadFile(imageFile).filename;
-    createBlogDto.bigImage = this.uploadService.uploadFile(bigImageFile).filename;
+    createBlogDto.bigImage =
+      this.uploadService.uploadFile(bigImageFile).filename;
     return this.blogService.create(createBlogDto);
-  };
+  }
 
   @Get()
   @ApiOperation({ summary: 'Find all blog' })
   findAll(@Query('language') language: string) {
     return this.blogService.findAll(language);
-  };
+  }
 
   @Get(':id')
   @ApiOperation({ summary: 'Find one blog' })
   findOne(@Param('id') id: string, @Query('language') language: string) {
     return this.blogService.findOne(+id, language);
-  };
+  }
 
   @Patch(':id')
   @ApiBearerAuth('access-token')
@@ -84,7 +85,7 @@ export class BlogController {
       }
     }
     return this.blogService.update(+id, updateBlogDto);
-  };
+  }
 
   @Delete(':id')
   @ApiBearerAuth('access-token')
@@ -92,5 +93,5 @@ export class BlogController {
   @ApiOperation({ summary: 'Delete a blog' })
   remove(@Param('id') id: string) {
     return this.blogService.remove(+id);
-  };
+  }
 }

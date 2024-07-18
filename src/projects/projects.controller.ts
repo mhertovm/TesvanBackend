@@ -9,6 +9,7 @@ import {
   UseGuards,
   Query,
   UseInterceptors,
+  UploadedFile,
 } from '@nestjs/common';
 import { ProjectsService } from './projects.service';
 import { CreateProjectDto } from './dto/create-project.dto';
@@ -36,12 +37,12 @@ export class ProjectsController {
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Create a projects' })
   @ApiConsumes('multipart/form-data')
-  @UseInterceptors(FileInterceptor('file'))
+  @UseInterceptors(FileInterceptor('image'))
   create(
     @Body() createProjectDto: CreateProjectDto,
-    file: Express.Multer.File,
+    @UploadedFile() image: Express.Multer.File,
   ) {
-    createProjectDto.image = this.uploadService.uploadFile(file).filename;
+    createProjectDto.image = this.uploadService.uploadFile(image).filename;
     return this.projectsService.create(createProjectDto);
   }
 
@@ -62,14 +63,14 @@ export class ProjectsController {
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Update a projects' })
   @ApiConsumes('multipart/form-data')
-  @UseInterceptors(FileInterceptor('file'))
+  @UseInterceptors(FileInterceptor('image'))
   update(
     @Param('id') id: string,
     @Body() updateProjectDto: UpdateProjectDto,
-    file: Express.Multer.File,
+    @UploadedFile() image: Express.Multer.File,
   ) {
-    if (file) {
-      updateProjectDto.image = this.uploadService.uploadFile(file).filename;
+    if (image) {
+      updateProjectDto.image = this.uploadService.uploadFile(image).filename;
     }
     return this.projectsService.update(+id, updateProjectDto);
   }

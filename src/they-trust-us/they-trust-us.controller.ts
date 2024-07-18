@@ -8,6 +8,7 @@ import {
   Delete,
   UseGuards,
   UseInterceptors,
+  UploadedFile,
 } from '@nestjs/common';
 import { TheyTrustUsService } from './they-trust-us.service';
 import { CreateTheyTrustUsDto } from './dto/create-they-trust-us.dto';
@@ -35,12 +36,12 @@ export class TheyTrustUsController {
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Create a theyTrustUs' })
   @ApiConsumes('multipart/form-data')
-  @UseInterceptors(FileInterceptor('file'))
+  @UseInterceptors(FileInterceptor('image'))
   create(
     @Body() createTheyTrustUsDto: CreateTheyTrustUsDto,
-    file: Express.Multer.File,
+    @UploadedFile() image: Express.Multer.File,
   ) {
-    createTheyTrustUsDto.image = this.uploadService.uploadFile(file).filename;
+    createTheyTrustUsDto.image = this.uploadService.uploadFile(image).filename;
     return this.theyTrustUsService.create(createTheyTrustUsDto);
   }
 
@@ -61,14 +62,15 @@ export class TheyTrustUsController {
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Update a theyTrustUs' })
   @ApiConsumes('multipart/form-data')
-  @UseInterceptors(FileInterceptor('file'))
+  @UseInterceptors(FileInterceptor('image'))
   update(
     @Param('id') id: string,
     @Body() updateTheyTrustUsDto: UpdateTheyTrustUsDto,
-    file: Express.Multer.File,
+    @UploadedFile() image: Express.Multer.File,
   ) {
-    if (file) {
-      updateTheyTrustUsDto.image = this.uploadService.uploadFile(file).filename;
+    if (image) {
+      updateTheyTrustUsDto.image =
+        this.uploadService.uploadFile(image).filename;
     }
     return this.theyTrustUsService.update(+id, updateTheyTrustUsDto);
   }

@@ -9,6 +9,7 @@ import {
   UseGuards,
   Query,
   UseInterceptors,
+  UploadedFile,
 } from '@nestjs/common';
 import { PageTitlesService } from './page-titles.service';
 import { CreatePageTitleDto } from './dto/create-page-title.dto';
@@ -36,12 +37,12 @@ export class PageTitlesController {
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Create a pageTitles' })
   @ApiConsumes('multipart/form-data')
-  @UseInterceptors(FileInterceptor('file'))
+  @UseInterceptors(FileInterceptor('image'))
   create(
     @Body() createPageTitleDto: CreatePageTitleDto,
-    file: Express.Multer.File,
+    @UploadedFile() image: Express.Multer.File,
   ) {
-    createPageTitleDto.image = this.uploadService.uploadFile(file).filename;
+    createPageTitleDto.image = this.uploadService.uploadFile(image).filename;
     return this.pageTitlesService.create(createPageTitleDto);
   }
 
@@ -62,14 +63,14 @@ export class PageTitlesController {
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Update a pageTitles' })
   @ApiConsumes('multipart/form-data')
-  @UseInterceptors(FileInterceptor('file'))
+  @UseInterceptors(FileInterceptor('image'))
   update(
     @Param('id') id: string,
     @Body() updatePageTitleDto: UpdatePageTitleDto,
-    file: Express.Multer.File,
+    @UploadedFile() image: Express.Multer.File,
   ) {
-    if (file) {
-      updatePageTitleDto.image = this.uploadService.uploadFile(file).filename;
+    if (image) {
+      updatePageTitleDto.image = this.uploadService.uploadFile(image).filename;
     }
     return this.pageTitlesService.update(+id, updatePageTitleDto);
   }

@@ -9,6 +9,7 @@ import {
   UseGuards,
   Query,
   UseInterceptors,
+  UploadedFile,
 } from '@nestjs/common';
 import { ServicesService } from './services.service';
 import { CreateServiceDto } from './dto/create-service.dto';
@@ -36,12 +37,12 @@ export class ServicesController {
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Create a services' })
   @ApiConsumes('multipart/form-data')
-  @UseInterceptors(FileInterceptor('file'))
+  @UseInterceptors(FileInterceptor('image'))
   create(
     @Body() createServiceDto: CreateServiceDto,
-    file: Express.Multer.File,
+    @UploadedFile() image: Express.Multer.File,
   ) {
-    createServiceDto.image = this.uploadService.uploadFile(file).filename;
+    createServiceDto.image = this.uploadService.uploadFile(image).filename;
     return this.servicesService.create(createServiceDto);
   }
 
@@ -62,14 +63,14 @@ export class ServicesController {
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Update a services' })
   @ApiConsumes('multipart/form-data')
-  @UseInterceptors(FileInterceptor('file'))
+  @UseInterceptors(FileInterceptor('image'))
   update(
     @Param('id') id: string,
     @Body() updateServiceDto: UpdateServiceDto,
-    file: Express.Multer.File,
+    @UploadedFile() image: Express.Multer.File,
   ) {
-    if (file) {
-      updateServiceDto.image = this.uploadService.uploadFile(file).filename;
+    if (image) {
+      updateServiceDto.image = this.uploadService.uploadFile(image).filename;
     }
     return this.servicesService.update(+id, updateServiceDto);
   }

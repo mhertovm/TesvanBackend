@@ -8,6 +8,7 @@ import {
   Delete,
   UseGuards,
   UseInterceptors,
+  UploadedFile,
 } from '@nestjs/common';
 import { JobsService } from './jobs.service';
 import { CreateJobDto } from './dto/create-job.dto';
@@ -35,9 +36,12 @@ export class JobsController {
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Create a jobs' })
   @ApiConsumes('multipart/form-data')
-  @UseInterceptors(FileInterceptor('file'))
-  create(@Body() createJobDto: CreateJobDto, file: Express.Multer.File) {
-    createJobDto.image = this.uploadService.uploadFile(file).filename;
+  @UseInterceptors(FileInterceptor('image'))
+  create(
+    @Body() createJobDto: CreateJobDto,
+    @UploadedFile() image: Express.Multer.File,
+  ) {
+    createJobDto.image = this.uploadService.uploadFile(image).filename;
     return this.jobsService.create(createJobDto);
   }
 
@@ -58,14 +62,14 @@ export class JobsController {
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Update a jobs' })
   @ApiConsumes('multipart/form-data')
-  @UseInterceptors(FileInterceptor('file'))
+  @UseInterceptors(FileInterceptor('image'))
   update(
     @Param('id') id: string,
     @Body() updateJobDto: UpdateJobDto,
-    file: Express.Multer.File,
+    @UploadedFile() image: Express.Multer.File,
   ) {
-    if (file) {
-      updateJobDto.image = this.uploadService.uploadFile(file).filename;
+    if (image) {
+      updateJobDto.image = this.uploadService.uploadFile(image).filename;
     }
     return this.jobsService.update(+id, updateJobDto);
   }

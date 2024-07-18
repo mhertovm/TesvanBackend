@@ -9,6 +9,7 @@ import {
   UseGuards,
   Query,
   UseInterceptors,
+  UploadedFile,
 } from '@nestjs/common';
 import { ProjectDetailService } from './project-detail.service';
 import { CreateProjectDetailDto } from './dto/create-project-detail.dto';
@@ -36,12 +37,13 @@ export class ProjectDetailController {
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Create a projectDetail' })
   @ApiConsumes('multipart/form-data')
-  @UseInterceptors(FileInterceptor('file'))
+  @UseInterceptors(FileInterceptor('image'))
   create(
     @Body() createProjectDetailDto: CreateProjectDetailDto,
-    file: Express.Multer.File,
+    @UploadedFile() image: Express.Multer.File,
   ) {
-    createProjectDetailDto.image = this.uploadService.uploadFile(file).filename;
+    createProjectDetailDto.image =
+      this.uploadService.uploadFile(image).filename;
     return this.projectDetailService.create(createProjectDetailDto);
   }
 
@@ -62,15 +64,15 @@ export class ProjectDetailController {
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Update a projectDetail' })
   @ApiConsumes('multipart/form-data')
-  @UseInterceptors(FileInterceptor('file'))
+  @UseInterceptors(FileInterceptor('image'))
   update(
     @Param('id') id: string,
     @Body() updateProjectDetailDto: UpdateProjectDetailDto,
-    file: Express.Multer.File,
+    @UploadedFile() image: Express.Multer.File,
   ) {
-    if (file) {
+    if (image) {
       updateProjectDetailDto.image =
-        this.uploadService.uploadFile(file).filename;
+        this.uploadService.uploadFile(image).filename;
     }
     return this.projectDetailService.update(+id, updateProjectDetailDto);
   }
