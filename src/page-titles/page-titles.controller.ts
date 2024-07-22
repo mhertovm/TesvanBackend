@@ -10,6 +10,8 @@ import {
   Query,
   UseInterceptors,
   UploadedFile,
+  HttpStatus,
+  HttpException,
 } from '@nestjs/common';
 import { PageTitlesService } from './page-titles.service';
 import { CreatePageTitleDto } from './dto/create-page-title.dto';
@@ -42,20 +44,44 @@ export class PageTitlesController {
     @Body() createPageTitleDto: CreatePageTitleDto,
     @UploadedFile() image: Express.Multer.File,
   ) {
-    createPageTitleDto.image = this.uploadService.uploadFile(image).filename;
-    return this.pageTitlesService.create(createPageTitleDto);
+    try {
+      createPageTitleDto.image = this.uploadService.uploadFile(image).filename;
+      return this.pageTitlesService.create(createPageTitleDto);
+    } catch (error) {
+      console.error(error);
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   @Get()
   @ApiOperation({ summary: 'Find all pageTitles' })
   findAll(@Query('language') language: string) {
-    return this.pageTitlesService.findAll(language);
+    try {
+      return this.pageTitlesService.findAll(language);
+    } catch (error) {
+      console.error(error);
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   @Get(':id')
   @ApiOperation({ summary: 'Find one pageTitles' })
   findOne(@Param('id') id: string, @Query('language') language: string) {
-    return this.pageTitlesService.findOne(+id, language);
+    try {
+      return this.pageTitlesService.findOne(+id, language);
+    } catch (error) {
+      console.error(error);
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   @Patch(':id')
@@ -69,10 +95,19 @@ export class PageTitlesController {
     @Body() updatePageTitleDto: UpdatePageTitleDto,
     @UploadedFile() image: Express.Multer.File,
   ) {
-    if (image) {
-      updatePageTitleDto.image = this.uploadService.uploadFile(image).filename;
+    try {
+      if (image) {
+        updatePageTitleDto.image =
+          this.uploadService.uploadFile(image).filename;
+      }
+      return this.pageTitlesService.update(+id, updatePageTitleDto);
+    } catch (error) {
+      console.error(error);
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
-    return this.pageTitlesService.update(+id, updatePageTitleDto);
   }
 
   @Delete(':id')
@@ -80,6 +115,14 @@ export class PageTitlesController {
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Delete a pageTitles' })
   remove(@Param('id') id: string) {
-    return this.pageTitlesService.remove(+id);
+    try {
+      return this.pageTitlesService.remove(+id);
+    } catch (error) {
+      console.error(error);
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 }

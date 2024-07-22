@@ -1,4 +1,4 @@
-import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CreatePageTitleDto } from './dto/create-page-title.dto';
 import { UpdatePageTitleDto } from './dto/update-page-title.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -6,7 +6,10 @@ import { UploadService } from 'src/upload/upload.service';
 
 @Injectable()
 export class PageTitlesService {
-  constructor(private prisma: PrismaService, private uploadService: UploadService) {}
+  constructor(
+    private prisma: PrismaService,
+    private uploadService: UploadService,
+  ) {}
 
   myPrisma(language?: string) {
     language ? language : (language = 'en');
@@ -38,102 +41,62 @@ export class PageTitlesService {
     });
   }
   async create(createPageTitleDto: CreatePageTitleDto) {
-    try {
-      const newAboutWork = await this.myPrisma().pageTitles.create({
-        data: createPageTitleDto,
-      });
-      return newAboutWork;
-    } catch (error) {
-      console.error(error);
-      throw new HttpException(
-        'something went wrong',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+    const newAboutWork = await this.myPrisma().pageTitles.create({
+      data: createPageTitleDto,
+    });
+    return newAboutWork;
   }
 
   async findAll(language: string) {
-    try {
-      const pageTitles = await this.myPrisma(language).pageTitles.findMany({
-        select: {
-          id: true,
-          metaTitle: true,
-          metaDescription: true,
-          students: true,
-          joinedOurTeam: true,
-          image: true,
-          type: true,
-        },
-      });
-      return pageTitles;
-    } catch (error) {
-      console.error(error);
-      throw new HttpException(
-        'something went wrong',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+    const pageTitles = await this.myPrisma(language).pageTitles.findMany({
+      select: {
+        id: true,
+        metaTitle: true,
+        metaDescription: true,
+        students: true,
+        joinedOurTeam: true,
+        image: true,
+        type: true,
+      },
+    });
+    return pageTitles;
   }
 
   async findOne(id: number, language: string) {
-    try {
-      const pageTitl = await this.myPrisma(language).pageTitles.findUnique({
-        where: {
-          id,
-        },
-        select: {
-          id: true,
-          metaTitle: true,
-          metaDescription: true,
-          students: true,
-          joinedOurTeam: true,
-          image: true,
-          type: true,
-        },
-      });
-      return pageTitl;
-    } catch (error) {
-      console.error(error);
-      throw new HttpException(
-        'something went wrong',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+    const pageTitl = await this.myPrisma(language).pageTitles.findUnique({
+      where: {
+        id,
+      },
+      select: {
+        id: true,
+        metaTitle: true,
+        metaDescription: true,
+        students: true,
+        joinedOurTeam: true,
+        image: true,
+        type: true,
+      },
+    });
+    return pageTitl;
   }
 
   async update(id: number, updatePageTitleDto: UpdatePageTitleDto) {
-    try {
-      const updatePageTitles = await this.myPrisma().pageTitles.update({
-        where: {
-          id,
-        },
-        data: updatePageTitleDto,
-      });
-      return updatePageTitles;
-    } catch (error) {
-      console.error(error);
-      throw new HttpException(
-        'something went wrong',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+    const updatePageTitles = await this.myPrisma().pageTitles.update({
+      where: {
+        id,
+      },
+      data: updatePageTitleDto,
+    });
+    return updatePageTitles;
   }
 
   async remove(id: number) {
-    try {
-      const deletePageTitles = await this.myPrisma().pageTitles.delete({
-        where: {
-          id,
-        },
-      });
-      this.uploadService.deleteFile(deletePageTitles.image)
-      return deletePageTitles;
-    } catch (error) {
-      console.error(error);
-      throw new HttpException(
-        'something went wrong',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+    const deletePageTitles = await this.myPrisma().pageTitles.delete({
+      where: {
+        id,
+      },
+    });
+    this.uploadService.deleteFile(deletePageTitles.image);
+    return deletePageTitles;
   }
 }

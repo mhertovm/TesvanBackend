@@ -10,6 +10,8 @@ import {
   Query,
   UseInterceptors,
   UploadedFile,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { ProjectDetailService } from './project-detail.service';
 import { CreateProjectDetailDto } from './dto/create-project-detail.dto';
@@ -42,21 +44,45 @@ export class ProjectDetailController {
     @Body() createProjectDetailDto: CreateProjectDetailDto,
     @UploadedFile() image: Express.Multer.File,
   ) {
-    createProjectDetailDto.image =
-      this.uploadService.uploadFile(image).filename;
-    return this.projectDetailService.create(createProjectDetailDto);
+    try {
+      createProjectDetailDto.image =
+        this.uploadService.uploadFile(image).filename;
+      return this.projectDetailService.create(createProjectDetailDto);
+    } catch (error) {
+      console.error(error);
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   @Get()
   @ApiOperation({ summary: 'Find all projectDetail' })
   findAll(@Query('language') language: string) {
-    return this.projectDetailService.findAll(language);
+    try {
+      return this.projectDetailService.findAll(language);
+    } catch (error) {
+      console.error(error);
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   @Get(':id')
   @ApiOperation({ summary: 'Find one projectDetail' })
   findOne(@Param('id') id: string, @Query('language') language: string) {
-    return this.projectDetailService.findOne(+id, language);
+    try {
+      return this.projectDetailService.findOne(+id, language);
+    } catch (error) {
+      console.error(error);
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   @Patch(':id')
@@ -70,11 +96,19 @@ export class ProjectDetailController {
     @Body() updateProjectDetailDto: UpdateProjectDetailDto,
     @UploadedFile() image: Express.Multer.File,
   ) {
-    if (image) {
-      updateProjectDetailDto.image =
-        this.uploadService.uploadFile(image).filename;
+    try {
+      if (image) {
+        updateProjectDetailDto.image =
+          this.uploadService.uploadFile(image).filename;
+      }
+      return this.projectDetailService.update(+id, updateProjectDetailDto);
+    } catch (error) {
+      console.error(error);
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
-    return this.projectDetailService.update(+id, updateProjectDetailDto);
   }
 
   @Delete(':id')
@@ -82,6 +116,14 @@ export class ProjectDetailController {
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Delete a projectDetail' })
   remove(@Param('id') id: string) {
-    return this.projectDetailService.remove(+id);
+    try {
+      return this.projectDetailService.remove(+id);
+    } catch (error) {
+      console.error(error);
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 }

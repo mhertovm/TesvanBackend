@@ -9,6 +9,8 @@ import {
   UseGuards,
   UseInterceptors,
   UploadedFile,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { JobsService } from './jobs.service';
 import { CreateJobDto } from './dto/create-job.dto';
@@ -41,20 +43,44 @@ export class JobsController {
     @Body() createJobDto: CreateJobDto,
     @UploadedFile() image: Express.Multer.File,
   ) {
-    createJobDto.image = this.uploadService.uploadFile(image).filename;
-    return this.jobsService.create(createJobDto);
+    try {
+      createJobDto.image = this.uploadService.uploadFile(image).filename;
+      return this.jobsService.create(createJobDto);
+    } catch (error) {
+      console.error(error);
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   @Get()
   @ApiOperation({ summary: 'Find all jobs' })
   findAll() {
-    return this.jobsService.findAll();
+    try {
+      return this.jobsService.findAll();
+    } catch (error) {
+      console.error(error);
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   @Get(':id')
   @ApiOperation({ summary: 'Find one jobs' })
   findOne(@Param('id') id: string) {
-    return this.jobsService.findOne(+id);
+    try {
+      return this.jobsService.findOne(+id);
+    } catch (error) {
+      console.error(error);
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   @Patch(':id')
@@ -68,10 +94,18 @@ export class JobsController {
     @Body() updateJobDto: UpdateJobDto,
     @UploadedFile() image: Express.Multer.File,
   ) {
-    if (image) {
-      updateJobDto.image = this.uploadService.uploadFile(image).filename;
+    try {
+      if (image) {
+        updateJobDto.image = this.uploadService.uploadFile(image).filename;
+      }
+      return this.jobsService.update(+id, updateJobDto);
+    } catch (error) {
+      console.error(error);
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
-    return this.jobsService.update(+id, updateJobDto);
   }
 
   @Delete(':id')
@@ -79,6 +113,14 @@ export class JobsController {
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Delete a jobs' })
   remove(@Param('id') id: string) {
-    return this.jobsService.remove(+id);
+    try {
+      return this.jobsService.remove(+id);
+    } catch (error) {
+      console.error(error);
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 }

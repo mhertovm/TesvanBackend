@@ -8,6 +8,8 @@ import {
   Delete,
   UseGuards,
   Query,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { CoreValuesService } from './core-values.service';
 import { CreateCoreValueDto } from './dto/create-core-value.dto';
@@ -25,19 +27,43 @@ export class CoreValuesController {
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Create a coreValues' })
   create(@Body() createCoreValueDto: CreateCoreValueDto) {
-    return this.coreValuesService.create(createCoreValueDto);
+    try {
+      return this.coreValuesService.create(createCoreValueDto);
+    } catch (error) {
+      console.error(error);
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   @Get()
   @ApiOperation({ summary: 'Find all coreValues' })
   findAll(@Query('language') language: string) {
-    return this.coreValuesService.findAll(language);
+    try {
+      return this.coreValuesService.findAll(language);
+    } catch (error) {
+      console.error(error);
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   @Get(':id')
   @ApiOperation({ summary: 'Find one coreValues' })
   findOne(@Param('id') id: string, @Query('language') language: string) {
-    return this.coreValuesService.findOne(+id, language);
+    try {
+      return this.coreValuesService.findOne(+id, language);
+    } catch (error) {
+      console.error(error);
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   @Patch(':id')
@@ -48,7 +74,15 @@ export class CoreValuesController {
     @Param('id') id: string,
     @Body() updateCoreValueDto: UpdateCoreValueDto,
   ) {
-    return this.coreValuesService.update(+id, updateCoreValueDto);
+    try {
+      return this.coreValuesService.update(+id, updateCoreValueDto);
+    } catch (error) {
+      console.error(error);
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   @Delete(':id')
@@ -56,6 +90,14 @@ export class CoreValuesController {
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Delete a coreValues' })
   remove(@Param('id') id: string) {
-    return this.coreValuesService.remove(+id);
+    try {
+      return this.coreValuesService.remove(+id);
+    } catch (error) {
+      console.error(error);
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 }

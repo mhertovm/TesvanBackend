@@ -9,6 +9,8 @@ import {
   UseGuards,
   UseInterceptors,
   UploadedFile,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { ProjectTechStachService } from './project-tech-stach.service';
 import { CreateProjectTechStachDto } from './dto/create-project-tech-stach.dto';
@@ -41,21 +43,45 @@ export class ProjectTechStachController {
     @Body() createProjectTechStachDto: CreateProjectTechStachDto,
     @UploadedFile() image: Express.Multer.File,
   ) {
-    createProjectTechStachDto.image =
-      this.uploadService.uploadFile(image).filename;
-    return this.projectTechStachService.create(createProjectTechStachDto);
+    try {
+      createProjectTechStachDto.image =
+        this.uploadService.uploadFile(image).filename;
+      return this.projectTechStachService.create(createProjectTechStachDto);
+    } catch (error) {
+      console.error(error);
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   @Get()
   @ApiOperation({ summary: 'Find all projectTechStach' })
   findAll() {
-    return this.projectTechStachService.findAll();
+    try {
+      return this.projectTechStachService.findAll();
+    } catch (error) {
+      console.error(error);
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   @Get(':id')
   @ApiOperation({ summary: 'Find one projectTechStach' })
   findOne(@Param('id') id: string) {
-    return this.projectTechStachService.findOne(+id);
+    try {
+      return this.projectTechStachService.findOne(+id);
+    } catch (error) {
+      console.error(error);
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   @Patch(':id')
@@ -69,11 +95,22 @@ export class ProjectTechStachController {
     @Body() updateProjectTechStachDto: UpdateProjectTechStachDto,
     @UploadedFile() image: Express.Multer.File,
   ) {
-    if (image) {
-      updateProjectTechStachDto.image =
-        this.uploadService.uploadFile(image).filename;
+    try {
+      if (image) {
+        updateProjectTechStachDto.image =
+          this.uploadService.uploadFile(image).filename;
+      }
+      return this.projectTechStachService.update(
+        +id,
+        updateProjectTechStachDto,
+      );
+    } catch (error) {
+      console.error(error);
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
-    return this.projectTechStachService.update(+id, updateProjectTechStachDto);
   }
 
   @Delete(':id')
@@ -81,6 +118,14 @@ export class ProjectTechStachController {
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Delete a projectTechStach' })
   remove(@Param('id') id: string) {
-    return this.projectTechStachService.remove(+id);
+    try {
+      return this.projectTechStachService.remove(+id);
+    } catch (error) {
+      console.error(error);
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 }

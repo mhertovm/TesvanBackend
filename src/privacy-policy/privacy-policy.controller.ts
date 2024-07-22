@@ -6,6 +6,8 @@ import {
   Param,
   UseGuards,
   Query,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { PrivacyPolicyService } from './privacy-policy.service';
 import { UpdatePrivacyPolicyDto } from './dto/update-privacy-policy.dto';
@@ -20,7 +22,15 @@ export class PrivacyPolicyController {
   @Get()
   @ApiOperation({ summary: 'Find one privacyPolicy' })
   findOne(@Query('language') language: string) {
-    return this.privacyPolicyService.findOne(language);
+    try {
+      return this.privacyPolicyService.findOne(language);
+    } catch (error) {
+      console.error(error);
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   @Patch(':id')
@@ -31,6 +41,14 @@ export class PrivacyPolicyController {
     @Param('id') id: string,
     @Body() updatePrivacyPolicyDto: UpdatePrivacyPolicyDto,
   ) {
-    return this.privacyPolicyService.update(+id, updatePrivacyPolicyDto);
+    try {
+      return this.privacyPolicyService.update(+id, updatePrivacyPolicyDto);
+    } catch (error) {
+      console.error(error);
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 }

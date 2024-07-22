@@ -1,4 +1,4 @@
-import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -7,82 +7,42 @@ import { PrismaService } from 'src/prisma/prisma.service';
 export class UserService {
   constructor(private prisma: PrismaService) {}
   async create(createUserDto: CreateUserDto) {
-    try {
-      const newUser = await this.prisma.user.create({
-        data: createUserDto,
-      });
-      return newUser;
-    } catch (error) {
-      console.error(error);
-      throw new HttpException(
-        'something went wrong',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+    const newUser = await this.prisma.user.create({
+      data: createUserDto,
+    });
+    return newUser;
   }
 
   async findAll() {
-    try {
-      const users = await this.prisma.user.findMany();
-      return users;
-    } catch (error) {
-      console.error(error);
-      throw new HttpException(
-        'something went wrong',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+    const users = await this.prisma.user.findMany();
+    return users;
   }
 
   async findOne(id: number) {
-    try {
-      const user = await this.prisma.user.findUnique({
-        where: {
-          id,
-        },
-      });
-      return user;
-    } catch (error) {
-      console.error(error);
-      throw new HttpException(
-        'something went wrong',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+    const user = await this.prisma.user.findUnique({
+      where: {
+        id,
+      },
+    });
+    return user;
   }
 
   async update(id: number, updateUserDto: UpdateUserDto) {
-    try {
-      const updateUser = await this.prisma.user.update({
-        where: {
-          id,
-        },
-        data: updateUserDto,
-      });
-      return updateUser;
-    } catch (error) {
-      console.error(error);
-      throw new HttpException(
-        'something went wrong',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+    const updateUser = await this.prisma.user.update({
+      where: {
+        id,
+      },
+      data: updateUserDto,
+    });
+    return updateUser;
   }
 
   async remove(id: number) {
-    try {
-      const deleteUser = await this.prisma.user.delete({
-        where: {
-          id,
-        },
-      });
-      return deleteUser;
-    } catch (error) {
-      console.error(error);
-      throw new HttpException(
-        'something went wrong',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+    const deleteUser = await this.prisma.user.delete({
+      where: {
+        id,
+      },
+    });
+    return deleteUser;
   }
 }

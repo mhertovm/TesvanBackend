@@ -1,4 +1,4 @@
-import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CreateApproachDto } from './dto/create-approach.dto';
 import { UpdateApproachDto } from './dto/update-approach.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -23,93 +23,53 @@ export class ApproachService {
     });
   }
   async create(createApproachDto: CreateApproachDto) {
-    try {
-      const newApproach = await this.myPrisma().approach.create({
-        data: createApproachDto,
-      });
-      return newApproach;
-    } catch (error) {
-      console.error(error);
-      throw new HttpException(
-        'something went wrong',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+    const newApproach = await this.myPrisma().approach.create({
+      data: createApproachDto,
+    });
+    return newApproach;
   }
 
   async findAll(language: string) {
-    try {
-      const approaches = await this.myPrisma(language).approach.findMany({
-        select: {
-          id: true,
-          serviceId: true,
-          approach: true,
-        },
-      });
-      return approaches;
-    } catch (error) {
-      console.error(error);
-      throw new HttpException(
-        'something went wrong',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+    const approaches = await this.myPrisma(language).approach.findMany({
+      select: {
+        id: true,
+        serviceId: true,
+        approach: true,
+      },
+    });
+    return approaches;
   }
 
   async findOne(id: number, language: string) {
-    try {
-      const approach = await this.myPrisma(language).approach.findUnique({
-        where: {
-          id,
-        },
-        select: {
-          id: true,
-          serviceId: true,
-          approach: true,
-        },
-      });
-      return approach;
-    } catch (error) {
-      console.error(error);
-      throw new HttpException(
-        'something went wrong',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+    const approach = await this.myPrisma(language).approach.findUnique({
+      where: {
+        id,
+      },
+      select: {
+        id: true,
+        serviceId: true,
+        approach: true,
+      },
+    });
+    return approach;
   }
 
   async update(id: number, updateApproachDto: UpdateApproachDto) {
-    try {
-      const updateApproach = await this.myPrisma().approach.update({
-        where: {
-          id,
-        },
-        data: updateApproachDto,
-      });
-      return updateApproach;
-    } catch (error) {
-      console.error(error);
-      throw new HttpException(
-        'something went wrong',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+    const updateApproach = await this.myPrisma().approach.update({
+      where: {
+        id,
+      },
+      data: updateApproachDto,
+    });
+    return updateApproach;
   }
 
   async remove(id: number) {
-    try {
-      const deleteApproach = await this.myPrisma().approach.delete({
-        where: {
-          id,
-        },
-      });
-      return deleteApproach;
-    } catch (error) {
-      console.error(error);
-      throw new HttpException(
-        'something went wrong',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+    const deleteApproach = await this.myPrisma().approach.delete({
+      where: {
+        id,
+      },
+    });
+    return deleteApproach;
   }
 }

@@ -1,4 +1,4 @@
-import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CreateProjectDetailDto } from './dto/create-project-detail.dto';
 import { UpdateProjectDetailDto } from './dto/update-project-detail.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -6,7 +6,10 @@ import { UploadService } from 'src/upload/upload.service';
 
 @Injectable()
 export class ProjectDetailService {
-  constructor(private prisma: PrismaService, private uploadService: UploadService) {}
+  constructor(
+    private prisma: PrismaService,
+    private uploadService: UploadService,
+  ) {}
 
   myPrisma(language?: string) {
     language ? language : (language = 'en');
@@ -70,110 +73,72 @@ export class ProjectDetailService {
     });
   }
   async create(createProjectDetailDto: CreateProjectDetailDto) {
-    try {
-      const newProjectDetail = await this.myPrisma().projectDetail.create({
-        data: createProjectDetailDto,
-      });
-      return newProjectDetail;
-    } catch (error) {
-      console.error(error);
-      throw new HttpException(
-        'something went wrong',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+    const newProjectDetail = await this.myPrisma().projectDetail.create({
+      data: createProjectDetailDto,
+    });
+    return newProjectDetail;
   }
 
   async findAll(language: string) {
-    try {
-      const projectDetail = await this.myPrisma(language).projectDetail.findMany({
-        select: {
-          id: true,
-          projectId: true,
-          industry: true,
-          location: true,
-          duration: true,
-          team: true,
-          overview: true,
-          challenge: true,
-          solution: true,
-          result: true,
-          image: true,
-        },
-      });
-      return projectDetail;
-    } catch (error) {
-      console.error(error);
-      throw new HttpException(
-        'something went wrong',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+    const projectDetail = await this.myPrisma(language).projectDetail.findMany({
+      select: {
+        id: true,
+        projectId: true,
+        industry: true,
+        location: true,
+        duration: true,
+        team: true,
+        overview: true,
+        challenge: true,
+        solution: true,
+        result: true,
+        image: true,
+      },
+    });
+    return projectDetail;
   }
 
   async findOne(id: number, language: string) {
-    try {
-      const projectDetail = await this.myPrisma(language).projectDetail.findUnique({
-        where: {
-          id,
-        },
-        select: {
-          id: true,
-          projectId: true,
-          industry: true,
-          location: true,
-          duration: true,
-          team: true,
-          overview: true,
-          challenge: true,
-          solution: true,
-          result: true,
-          image: true,
-        },
-      });
-      return projectDetail;
-    } catch (error) {
-      console.error(error);
-      throw new HttpException(
-        'something went wrong',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+    const projectDetail = await this.myPrisma(
+      language,
+    ).projectDetail.findUnique({
+      where: {
+        id,
+      },
+      select: {
+        id: true,
+        projectId: true,
+        industry: true,
+        location: true,
+        duration: true,
+        team: true,
+        overview: true,
+        challenge: true,
+        solution: true,
+        result: true,
+        image: true,
+      },
+    });
+    return projectDetail;
   }
 
   async update(id: number, updateProjectDetailDto: UpdateProjectDetailDto) {
-    try {
-      const updateProjectDetail = await this.myPrisma().projectDetail.update({
-        where: {
-          id,
-        },
-        data: updateProjectDetailDto,
-      });
-      return updateProjectDetail;
-    } catch (error) {
-      console.error(error);
-      throw new HttpException(
-        'something went wrong',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+    const updateProjectDetail = await this.myPrisma().projectDetail.update({
+      where: {
+        id,
+      },
+      data: updateProjectDetailDto,
+    });
+    return updateProjectDetail;
   }
 
   async remove(id: number) {
-    try {
-      const deleteProjectDetail = await this.myPrisma().projectDetail.delete({
-        where: {
-          id,
-        },
-      });
-      this.uploadService.deleteFile(deleteProjectDetail.image)
-      return deleteProjectDetail;
-    } catch (error) {
-      console.error(error);
-      throw new HttpException(
-        'something went wrong',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+    const deleteProjectDetail = await this.myPrisma().projectDetail.delete({
+      where: {
+        id,
+      },
+    });
+    this.uploadService.deleteFile(deleteProjectDetail.image);
+    return deleteProjectDetail;
   }
 }

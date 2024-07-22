@@ -8,6 +8,8 @@ import {
   Delete,
   UseGuards,
   Query,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { ProjectObjectiveService } from './project-objective.service';
 import { CreateProjectObjectiveDto } from './dto/create-project-objective.dto';
@@ -27,19 +29,43 @@ export class ProjectObjectiveController {
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Create a projectObjective' })
   create(@Body() createProjectObjectiveDto: CreateProjectObjectiveDto) {
-    return this.projectObjectiveService.create(createProjectObjectiveDto);
+    try {
+      return this.projectObjectiveService.create(createProjectObjectiveDto);
+    } catch (error) {
+      console.error(error);
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   @Get()
   @ApiOperation({ summary: 'Find all projectObjective' })
   findAll(@Query('language') language: string) {
-    return this.projectObjectiveService.findAll(language);
+    try {
+      return this.projectObjectiveService.findAll(language);
+    } catch (error) {
+      console.error(error);
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   @Get(':id')
   @ApiOperation({ summary: 'Find one projectObjective' })
   findOne(@Param('id') id: string, @Query('language') language: string) {
-    return this.projectObjectiveService.findOne(+id, language);
+    try {
+      return this.projectObjectiveService.findOne(+id, language);
+    } catch (error) {
+      console.error(error);
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   @Patch(':id')
@@ -50,7 +76,18 @@ export class ProjectObjectiveController {
     @Param('id') id: string,
     @Body() updateProjectObjectiveDto: UpdateProjectObjectiveDto,
   ) {
-    return this.projectObjectiveService.update(+id, updateProjectObjectiveDto);
+    try {
+      return this.projectObjectiveService.update(
+        +id,
+        updateProjectObjectiveDto,
+      );
+    } catch (error) {
+      console.error(error);
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   @Delete(':id')
@@ -58,6 +95,14 @@ export class ProjectObjectiveController {
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Delete a projectObjective' })
   remove(@Param('id') id: string) {
-    return this.projectObjectiveService.remove(+id);
+    try {
+      return this.projectObjectiveService.remove(+id);
+    } catch (error) {
+      console.error(error);
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 }

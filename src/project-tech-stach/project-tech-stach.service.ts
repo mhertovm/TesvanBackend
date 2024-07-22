@@ -1,4 +1,4 @@
-import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CreateProjectTechStachDto } from './dto/create-project-tech-stach.dto';
 import { UpdateProjectTechStachDto } from './dto/update-project-tech-stach.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -6,88 +6,51 @@ import { UploadService } from 'src/upload/upload.service';
 
 @Injectable()
 export class ProjectTechStachService {
-  constructor(private prisma: PrismaService, private uploadService: UploadService) {}
+  constructor(
+    private prisma: PrismaService,
+    private uploadService: UploadService,
+  ) {}
   async create(createProjectTechStachDto: CreateProjectTechStachDto) {
-    try {
-      const newProjectTechStach = this.prisma.projectTechStack.create({
-        data: createProjectTechStachDto,
-      });
-      return newProjectTechStach;
-    } catch (error) {
-      console.error(error);
-      throw new HttpException(
-        'something went wrong',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+    const newProjectTechStach = this.prisma.projectTechStack.create({
+      data: createProjectTechStachDto,
+    });
+    return newProjectTechStach;
   }
 
   async findAll() {
-    try {
-      const projectTechStach = await this.prisma.projectTechStack.findMany();
-      return projectTechStach;
-    } catch (error) {
-      console.error(error);
-      throw new HttpException(
-        'something went wrong',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+    const projectTechStach = await this.prisma.projectTechStack.findMany();
+    return projectTechStach;
   }
 
   async findOne(id: number) {
-    try {
-      const projectTechStach = await this.prisma.projectTechStack.findUnique({
-        where: {
-          id,
-        },
-      });
-      return projectTechStach;
-    } catch (error) {
-      console.error(error);
-      throw new HttpException(
-        'something went wrong',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+    const projectTechStach = await this.prisma.projectTechStack.findUnique({
+      where: {
+        id,
+      },
+    });
+    return projectTechStach;
   }
 
   async update(
     id: number,
     updateProjectTechStachDto: UpdateProjectTechStachDto,
   ) {
-    try {
-      const updateProjectTechStach = await this.prisma.projectTechStack.update({
-        where: {
-          id,
-        },
-        data: updateProjectTechStachDto,
-      });
-      return updateProjectTechStach;
-    } catch (error) {
-      console.error(error);
-      throw new HttpException(
-        'something went wrong',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+    const updateProjectTechStach = await this.prisma.projectTechStack.update({
+      where: {
+        id,
+      },
+      data: updateProjectTechStachDto,
+    });
+    return updateProjectTechStach;
   }
 
   async remove(id: number) {
-    try {
-      const deleteProjectTechStach = await this.prisma.projectTechStack.delete({
-        where: {
-          id,
-        },
-      });
-      this.uploadService.deleteFile(deleteProjectTechStach.image)
-      return deleteProjectTechStach;
-    } catch (error) {
-      console.error(error);
-      throw new HttpException(
-        'something went wrong',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+    const deleteProjectTechStach = await this.prisma.projectTechStack.delete({
+      where: {
+        id,
+      },
+    });
+    this.uploadService.deleteFile(deleteProjectTechStach.image);
+    return deleteProjectTechStach;
   }
 }

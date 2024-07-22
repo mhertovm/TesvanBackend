@@ -8,6 +8,8 @@ import {
   Delete,
   UseGuards,
   Query,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { BenefitsService } from './benefits.service';
 import { CreateBenefitDto } from './dto/create-benefit.dto';
@@ -25,19 +27,43 @@ export class BenefitsController {
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Create a benefits' })
   create(@Body() createBenefitDto: CreateBenefitDto) {
-    return this.benefitsService.create(createBenefitDto);
+    try {
+      return this.benefitsService.create(createBenefitDto);
+    } catch (error) {
+      console.error(error);
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   @Get()
   @ApiOperation({ summary: 'Find all benefits' })
   findAll(@Query('language') language: string) {
-    return this.benefitsService.findAll(language);
+    try {
+      return this.benefitsService.findAll(language);
+    } catch (error) {
+      console.error(error);
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   @Get(':id')
   @ApiOperation({ summary: 'Find one benefits' })
   findOne(@Param('id') id: string, @Query('language') language: string) {
-    return this.benefitsService.findOne(+id, language);
+    try {
+      return this.benefitsService.findOne(+id, language);
+    } catch (error) {
+      console.error(error);
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   @Patch(':id')
@@ -45,7 +71,15 @@ export class BenefitsController {
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Update a benefits' })
   update(@Param('id') id: string, @Body() updateBenefitDto: UpdateBenefitDto) {
-    return this.benefitsService.update(+id, updateBenefitDto);
+    try {
+      return this.benefitsService.update(+id, updateBenefitDto);
+    } catch (error) {
+      console.error(error);
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   @Delete(':id')
@@ -53,6 +87,14 @@ export class BenefitsController {
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Delete a benefits' })
   remove(@Param('id') id: string) {
-    return this.benefitsService.remove(+id);
+    try {
+      return this.benefitsService.remove(+id);
+    } catch (error) {
+      console.error(error);
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 }

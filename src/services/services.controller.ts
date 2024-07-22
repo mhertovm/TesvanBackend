@@ -10,6 +10,8 @@ import {
   Query,
   UseInterceptors,
   UploadedFile,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { ServicesService } from './services.service';
 import { CreateServiceDto } from './dto/create-service.dto';
@@ -42,20 +44,44 @@ export class ServicesController {
     @Body() createServiceDto: CreateServiceDto,
     @UploadedFile() image: Express.Multer.File,
   ) {
-    createServiceDto.image = this.uploadService.uploadFile(image).filename;
-    return this.servicesService.create(createServiceDto);
+    try {
+      createServiceDto.image = this.uploadService.uploadFile(image).filename;
+      return this.servicesService.create(createServiceDto);
+    } catch (error) {
+      console.error(error);
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   @Get()
   @ApiOperation({ summary: 'Find all services' })
   findAll(@Query('language') language: string) {
-    return this.servicesService.findAll(language);
+    try {
+      return this.servicesService.findAll(language);
+    } catch (error) {
+      console.error(error);
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   @Get(':id')
   @ApiOperation({ summary: 'Find one services' })
   findOne(@Param('id') id: string, @Query('language') language: string) {
-    return this.servicesService.findOne(+id, language);
+    try {
+      return this.servicesService.findOne(+id, language);
+    } catch (error) {
+      console.error(error);
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   @Patch(':id')
@@ -69,10 +95,18 @@ export class ServicesController {
     @Body() updateServiceDto: UpdateServiceDto,
     @UploadedFile() image: Express.Multer.File,
   ) {
-    if (image) {
-      updateServiceDto.image = this.uploadService.uploadFile(image).filename;
+    try {
+      if (image) {
+        updateServiceDto.image = this.uploadService.uploadFile(image).filename;
+      }
+      return this.servicesService.update(+id, updateServiceDto);
+    } catch (error) {
+      console.error(error);
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
-    return this.servicesService.update(+id, updateServiceDto);
   }
 
   @Delete(':id')
@@ -80,6 +114,14 @@ export class ServicesController {
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Delete a services' })
   remove(@Param('id') id: string) {
-    return this.servicesService.remove(+id);
+    try {
+      return this.servicesService.remove(+id);
+    } catch (error) {
+      console.error(error);
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 }

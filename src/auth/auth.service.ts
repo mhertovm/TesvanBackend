@@ -12,38 +12,30 @@ export class AuthService {
   ) {}
 
   async generateToken(loginDto: LoginDto) {
-    try {
-      const user = await this.prisma.user.findUnique({
-        where: {
-          username: loginDto.username,
-        },
-      });
-      if (!user) {
-        return new HttpException(
-          'Invalid email or password',
-          HttpStatus.FORBIDDEN,
-        );
-      }
-      const isMatch = await bcrypt.compare(loginDto.password, user.password);
-
-      if (!isMatch) {
-        return new HttpException(
-          'Invalid email or password',
-          HttpStatus.FORBIDDEN,
-        );
-      }
-
-      const payload = { username: loginDto.username };
-      const access_token = this.jwtService.sign(payload);
-
-      return { access_token };
-    } catch (error) {
-      console.error(error);
-      throw new HttpException(
-        'something went wrong',
-        HttpStatus.INTERNAL_SERVER_ERROR,
+    const user = await this.prisma.user.findUnique({
+      where: {
+        username: loginDto.username,
+      },
+    });
+    if (!user) {
+      return new HttpException(
+        'Invalid email or password',
+        HttpStatus.FORBIDDEN,
       );
     }
+    const isMatch = await bcrypt.compare(loginDto.password, user.password);
+
+    if (!isMatch) {
+      return new HttpException(
+        'Invalid email or password',
+        HttpStatus.FORBIDDEN,
+      );
+    }
+
+    const payload = { username: loginDto.username };
+    const access_token = this.jwtService.sign(payload);
+
+    return { access_token };
   }
 
   verifyToken(token: string) {

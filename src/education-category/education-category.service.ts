@@ -1,4 +1,4 @@
-import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CreateEducationCategoryDto } from './dto/create-education-category.dto';
 import { UpdateEducationCategoryDto } from './dto/update-education-category.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -67,122 +67,84 @@ export class EducationCategoryService {
     });
   }
   async create(createEducationCategoryDto: CreateEducationCategoryDto) {
-    try {
-      const newEducationCategory = this.myPrisma().educationCategory.create({
-        data: createEducationCategoryDto,
-      });
-      return newEducationCategory;
-    } catch (error) {
-      console.error(error);
-      throw new HttpException(
-        'something went wrong',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+    const newEducationCategory = this.myPrisma().educationCategory.create({
+      data: createEducationCategoryDto,
+    });
+    return newEducationCategory;
   }
 
   async findAll(language: string) {
-    try {
-      const educationCategory = await this.myPrisma(
-        language,
-      ).educationCategory.findMany({
-        select: {
-          id: true,
-          category: true,
-          educations: {
-            select: {
-              id: true,
-              type: true,
-              education: true,
-              metaTitle: true,
-              metaDescription: true,
-              image: true,
-              url: true,
-              content: true,
-            },
+    const educationCategory = await this.myPrisma(
+      language,
+    ).educationCategory.findMany({
+      select: {
+        id: true,
+        category: true,
+        educations: {
+          select: {
+            id: true,
+            type: true,
+            education: true,
+            metaTitle: true,
+            metaDescription: true,
+            image: true,
+            url: true,
+            content: true,
           },
         },
-      });
-      return educationCategory;
-    } catch (error) {
-      console.error(error);
-      throw new HttpException(
-        'something went wrong',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+      },
+    });
+    return educationCategory;
   }
 
   async findOne(id: number, language: string) {
-    try {
-      const educationCategory = await this.myPrisma(
-        language,
-      ).educationCategory.findUnique({
-        where: {
-          id,
-        },
-        select: {
-          id: true,
-          category: true,
-          educations: {
-            select: {
-              id: true,
-              type: true,
-              education: true,
-              metaTitle: true,
-              metaDescription: true,
-              image: true,
-              url: true,
-              content: true,
-            },
+    const educationCategory = await this.myPrisma(
+      language,
+    ).educationCategory.findUnique({
+      where: {
+        id,
+      },
+      select: {
+        id: true,
+        category: true,
+        educations: {
+          select: {
+            id: true,
+            type: true,
+            education: true,
+            metaTitle: true,
+            metaDescription: true,
+            image: true,
+            url: true,
+            content: true,
           },
         },
-      });
-      return educationCategory;
-    } catch (error) {
-      console.error(error);
-      throw new HttpException(
-        'something went wrong',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+      },
+    });
+    return educationCategory;
   }
 
   async update(
     id: number,
     updateEducationCategoryDto: UpdateEducationCategoryDto,
   ) {
-    try {
-      const updateEducationCategory = await this.myPrisma().educationCategory.update({
+    const updateEducationCategory =
+      await this.myPrisma().educationCategory.update({
         where: {
           id,
         },
         data: updateEducationCategoryDto,
       });
-      return updateEducationCategory;
-    } catch (error) {
-      console.error(error);
-      throw new HttpException(
-        'something went wrong',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+    return updateEducationCategory;
   }
 
   async remove(id: number) {
-    try {
-      const deleteEducationCategory = await this.myPrisma().educationCategory.delete({
+    const deleteEducationCategory =
+      await this.myPrisma().educationCategory.delete({
         where: {
           id,
         },
       });
-      return deleteEducationCategory;
-    } catch (error) {
-      console.error(error);
-      throw new HttpException(
-        'something went wrong',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+    return deleteEducationCategory;
   }
 }

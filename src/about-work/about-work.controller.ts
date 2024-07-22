@@ -8,6 +8,8 @@ import {
   Delete,
   UseGuards,
   Query,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { AboutWorkService } from './about-work.service';
 import { CreateAboutWorkDto } from './dto/create-about-work.dto';
@@ -25,19 +27,43 @@ export class AboutWorkController {
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Create a aboutWork' })
   create(@Body() createAboutWorkDto: CreateAboutWorkDto) {
-    return this.aboutWorkService.create(createAboutWorkDto);
+    try {
+      return this.aboutWorkService.create(createAboutWorkDto);
+    } catch (error) {
+      console.error(error);
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   @Get()
   @ApiOperation({ summary: 'Find all aboutWork' })
   findAll(@Query('language') language: string) {
-    return this.aboutWorkService.findAll(language);
+    try {
+      return this.aboutWorkService.findAll(language);
+    } catch (error) {
+      console.error(error);
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   @Get(':id')
   @ApiOperation({ summary: 'Find one aboutWork' })
   findOne(@Param('id') id: string, @Query('language') language: string) {
-    return this.aboutWorkService.findOne(+id, language);
+    try {
+      return this.aboutWorkService.findOne(+id, language);
+    } catch (error) {
+      console.error(error);
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   @Patch(':id')
@@ -48,7 +74,15 @@ export class AboutWorkController {
     @Param('id') id: string,
     @Body() updateAboutWorkDto: UpdateAboutWorkDto,
   ) {
-    return this.aboutWorkService.update(+id, updateAboutWorkDto);
+    try {
+      return this.aboutWorkService.update(+id, updateAboutWorkDto);
+    } catch (error) {
+      console.error(error);
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   @Delete(':id')
@@ -56,6 +90,14 @@ export class AboutWorkController {
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Delete a aboutWork' })
   remove(@Param('id') id: string) {
-    return this.aboutWorkService.remove(+id);
+    try {
+      return this.aboutWorkService.remove(+id);
+    } catch (error) {
+      console.error(error);
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 }

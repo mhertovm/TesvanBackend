@@ -1,4 +1,4 @@
-import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CreateCourseDto } from './dto/create-course.dto';
 import { UpdateCourseDto } from './dto/update-course.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -6,7 +6,10 @@ import { UploadService } from 'src/upload/upload.service';
 
 @Injectable()
 export class CoursesService {
-  constructor(private prisma: PrismaService, private uploadService: UploadService) {}
+  constructor(
+    private prisma: PrismaService,
+    private uploadService: UploadService,
+  ) {}
 
   myPrisma(language?: string) {
     language ? language : (language = 'en');
@@ -98,120 +101,80 @@ export class CoursesService {
     });
   }
   async create(createCourseDto: CreateCourseDto) {
-    try {
-      const newCourses = await this.myPrisma().courses.create({
-        data: createCourseDto,
-      });
-      return newCourses;
-    } catch (error) {
-      console.error(error);
-      throw new HttpException(
-        'something went wrong',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+    const newCourses = await this.myPrisma().courses.create({
+      data: createCourseDto,
+    });
+    return newCourses;
   }
 
   async findAll(language: string) {
-    try {
-      const courses = await this.myPrisma(language).courses.findMany({
-        select: {
-          id: true,
-          metaTitle: true,
-          metaDescription: true,
-          url: true,
-          start: true,
-          duration: true,
-          price: true,
-          deadline: true,
-          description: true,
-          level: true,
-          type: true,
-          days: true,
-          lessonTime: true,
-          courseDescription: true,
-          image: true,
-          altText: true,
-        },
-      });
-      return courses;
-    } catch (error) {
-      console.error(error);
-      throw new HttpException(
-        'something went wrong',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+    const courses = await this.myPrisma(language).courses.findMany({
+      select: {
+        id: true,
+        metaTitle: true,
+        metaDescription: true,
+        url: true,
+        start: true,
+        duration: true,
+        price: true,
+        deadline: true,
+        description: true,
+        level: true,
+        type: true,
+        days: true,
+        lessonTime: true,
+        courseDescription: true,
+        image: true,
+        altText: true,
+      },
+    });
+    return courses;
   }
 
   async findOne(id: number, language: string) {
-    try {
-      const course = await this.myPrisma(language).courses.findUnique({
-        where: {
-          id,
-        },
-        select: {
-          id: true,
-          metaTitle: true,
-          metaDescription: true,
-          url: true,
-          start: true,
-          duration: true,
-          price: true,
-          deadline: true,
-          description: true,
-          level: true,
-          type: true,
-          days: true,
-          lessonTime: true,
-          courseDescription: true,
-          image: true,
-          altText: true,
-        },
-      });
-      return course;
-    } catch (error) {
-      console.error(error);
-      throw new HttpException(
-        'something went wrong',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+    const course = await this.myPrisma(language).courses.findUnique({
+      where: {
+        id,
+      },
+      select: {
+        id: true,
+        metaTitle: true,
+        metaDescription: true,
+        url: true,
+        start: true,
+        duration: true,
+        price: true,
+        deadline: true,
+        description: true,
+        level: true,
+        type: true,
+        days: true,
+        lessonTime: true,
+        courseDescription: true,
+        image: true,
+        altText: true,
+      },
+    });
+    return course;
   }
 
   async update(id: number, updateCourseDto: UpdateCourseDto) {
-    try {
-      const updateCourses = await this.myPrisma().courses.update({
-        where: {
-          id,
-        },
-        data: updateCourseDto,
-      });
-      return updateCourses;
-    } catch (error) {
-      console.error(error);
-      throw new HttpException(
-        'something went wrong',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+    const updateCourses = await this.myPrisma().courses.update({
+      where: {
+        id,
+      },
+      data: updateCourseDto,
+    });
+    return updateCourses;
   }
 
   async remove(id: number) {
-    try {
-      const deleteCourses = await this.myPrisma().courses.delete({
-        where: {
-          id,
-        },
-      });
-      this.uploadService.deleteFile(deleteCourses.image)
-      return deleteCourses;
-    } catch (error) {
-      console.error(error);
-      throw new HttpException(
-        'something went wrong',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+    const deleteCourses = await this.myPrisma().courses.delete({
+      where: {
+        id,
+      },
+    });
+    this.uploadService.deleteFile(deleteCourses.image);
+    return deleteCourses;
   }
 }

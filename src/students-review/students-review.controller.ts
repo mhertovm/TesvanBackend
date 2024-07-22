@@ -10,6 +10,8 @@ import {
   Query,
   UseInterceptors,
   UploadedFile,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { StudentsReviewService } from './students-review.service';
 import { CreateStudentsReviewDto } from './dto/create-students-review.dto';
@@ -42,21 +44,45 @@ export class StudentsReviewController {
     @Body() createStudentsReviewDto: CreateStudentsReviewDto,
     @UploadedFile() image: Express.Multer.File,
   ) {
-    createStudentsReviewDto.image =
-      this.uploadService.uploadFile(image).filename;
-    return this.studentsReviewService.create(createStudentsReviewDto);
+    try {
+      createStudentsReviewDto.image =
+        this.uploadService.uploadFile(image).filename;
+      return this.studentsReviewService.create(createStudentsReviewDto);
+    } catch (error) {
+      console.error(error);
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   @Get()
   @ApiOperation({ summary: 'Find all studentsReview' })
   findAll(@Query('language') language: string) {
-    return this.studentsReviewService.findAll(language);
+    try {
+      return this.studentsReviewService.findAll(language);
+    } catch (error) {
+      console.error(error);
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   @Get(':id')
   @ApiOperation({ summary: 'Find one studentsReview' })
   findOne(@Param('id') id: string, @Query('language') language: string) {
-    return this.studentsReviewService.findOne(+id, language);
+    try {
+      return this.studentsReviewService.findOne(+id, language);
+    } catch (error) {
+      console.error(error);
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   @Patch(':id')
@@ -70,11 +96,19 @@ export class StudentsReviewController {
     @Body() updateStudentsReviewDto: UpdateStudentsReviewDto,
     @UploadedFile() image: Express.Multer.File,
   ) {
-    if (image) {
-      updateStudentsReviewDto.image =
-        this.uploadService.uploadFile(image).filename;
+    try {
+      if (image) {
+        updateStudentsReviewDto.image =
+          this.uploadService.uploadFile(image).filename;
+      }
+      return this.studentsReviewService.update(+id, updateStudentsReviewDto);
+    } catch (error) {
+      console.error(error);
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
-    return this.studentsReviewService.update(+id, updateStudentsReviewDto);
   }
 
   @Delete(':id')
@@ -82,6 +116,14 @@ export class StudentsReviewController {
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Delete a studentsReview' })
   remove(@Param('id') id: string) {
-    return this.studentsReviewService.remove(+id);
+    try {
+      return this.studentsReviewService.remove(+id);
+    } catch (error) {
+      console.error(error);
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 }

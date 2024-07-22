@@ -8,6 +8,8 @@ import {
   Delete,
   UseGuards,
   Query,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { ProjectCategoryService } from './project-category.service';
 import { CreateProjectCategoryDto } from './dto/create-project-category.dto';
@@ -27,19 +29,43 @@ export class ProjectCategoryController {
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Create a projectCategory' })
   create(@Body() createProjectCategoryDto: CreateProjectCategoryDto) {
-    return this.projectCategoryService.create(createProjectCategoryDto);
+    try {
+      return this.projectCategoryService.create(createProjectCategoryDto);
+    } catch (error) {
+      console.error(error);
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   @Get()
   @ApiOperation({ summary: 'Find all projectCategory' })
   findAll(@Query('language') language: string) {
-    return this.projectCategoryService.findAll(language);
+    try {
+      return this.projectCategoryService.findAll(language);
+    } catch (error) {
+      console.error(error);
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   @Get(':id')
   @ApiOperation({ summary: 'Find one projectCategory' })
   findOne(@Param('id') id: string, @Query('language') language: string) {
-    return this.projectCategoryService.findOne(+id, language);
+    try {
+      return this.projectCategoryService.findOne(+id, language);
+    } catch (error) {
+      console.error(error);
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   @Patch(':id')
@@ -50,7 +76,15 @@ export class ProjectCategoryController {
     @Param('id') id: string,
     @Body() updateProjectCategoryDto: UpdateProjectCategoryDto,
   ) {
-    return this.projectCategoryService.update(+id, updateProjectCategoryDto);
+    try {
+      return this.projectCategoryService.update(+id, updateProjectCategoryDto);
+    } catch (error) {
+      console.error(error);
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   @Delete(':id')
@@ -58,6 +92,14 @@ export class ProjectCategoryController {
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Delete a projectCategory' })
   remove(@Param('id') id: string) {
-    return this.projectCategoryService.remove(+id);
+    try {
+      return this.projectCategoryService.remove(+id);
+    } catch (error) {
+      console.error(error);
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 }

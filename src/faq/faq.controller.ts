@@ -8,6 +8,8 @@ import {
   Delete,
   UseGuards,
   Query,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { FaqService } from './faq.service';
 import { CreateFaqDto } from './dto/create-faq.dto';
@@ -24,19 +26,43 @@ export class FaqController {
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Create a faq' })
   create(@Body() createFaqDto: CreateFaqDto) {
-    return this.faqService.create(createFaqDto);
+    try {
+      return this.faqService.create(createFaqDto);
+    } catch (error) {
+      console.error(error);
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   @Get()
   @ApiOperation({ summary: 'Find all faq' })
   findAll(@Query('language') language: string) {
-    return this.faqService.findAll(language);
+    try {
+      return this.faqService.findAll(language);
+    } catch (error) {
+      console.error(error);
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   @Get(':id')
   @ApiOperation({ summary: 'Find one faq' })
   findOne(@Param('id') id: string, @Query('language') language: string) {
-    return this.faqService.findOne(+id, language);
+    try {
+      return this.faqService.findOne(+id, language);
+    } catch (error) {
+      console.error(error);
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   @Patch(':id')
@@ -44,7 +70,15 @@ export class FaqController {
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Update a faq' })
   update(@Param('id') id: string, @Body() updateFaqDto: UpdateFaqDto) {
-    return this.faqService.update(+id, updateFaqDto);
+    try {
+      return this.faqService.update(+id, updateFaqDto);
+    } catch (error) {
+      console.error(error);
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   @Delete(':id')
@@ -52,6 +86,14 @@ export class FaqController {
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Delete a faq' })
   remove(@Param('id') id: string) {
-    return this.faqService.remove(+id);
+    try {
+      return this.faqService.remove(+id);
+    } catch (error) {
+      console.error(error);
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 }

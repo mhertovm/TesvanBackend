@@ -1,4 +1,4 @@
-import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CreateBlogDto } from './dto/create-blog.dto';
 import { UpdateBlogDto } from './dto/update-blog.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -6,7 +6,10 @@ import { UploadService } from 'src/upload/upload.service';
 
 @Injectable()
 export class BlogService {
-  constructor(private prisma: PrismaService, private uploadService: UploadService) {}
+  constructor(
+    private prisma: PrismaService,
+    private uploadService: UploadService,
+  ) {}
 
   myPrisma(language?: string) {
     language ? language : (language = 'en');
@@ -50,117 +53,77 @@ export class BlogService {
     });
   }
   async create(createBlogDto: CreateBlogDto) {
-    try {
-      const newBlog = await this.myPrisma().blog.create({
-        data: createBlogDto,
-      });
-      return newBlog;
-    } catch (error) {
-      console.error(error);
-      throw new HttpException(
-        'something went wrong',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+    const newBlog = await this.myPrisma().blog.create({
+      data: createBlogDto,
+    });
+    return newBlog;
   }
 
   async findAll(language: string) {
-    try {
-      const blog = await this.myPrisma(language).blog.findMany({
-        where: {
-          [`metaTitle_${language}`]: {
-            not: null,
-          },
+    const blog = await this.myPrisma(language).blog.findMany({
+      where: {
+        [`metaTitle_${language}`]: {
+          not: null,
         },
-        select: {
-          id: true,
-          image: true,
-          url: true,
-          bigImage: true,
-          altText: true,
-          createdAt: true,
-          metaTitle: true,
-          metaDescription: true,
-          duration: true,
-          content: true,
-        },
-        orderBy: {
-          id: 'asc',
-        },
-      });
-      return blog;
-    } catch (error) {
-      console.error(error);
-      throw new HttpException(
-        'something went wrong',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+      },
+      select: {
+        id: true,
+        image: true,
+        url: true,
+        bigImage: true,
+        altText: true,
+        createdAt: true,
+        metaTitle: true,
+        metaDescription: true,
+        duration: true,
+        content: true,
+      },
+      orderBy: {
+        id: 'asc',
+      },
+    });
+    return blog;
   }
 
   async findOne(id: number, language: string) {
-    try {
-      const blog = await this.myPrisma(language).blog.findUnique({
-        where: {
-          id,
-        },
-        select: {
-          id: true,
-          image: true,
-          url: true,
-          bigImage: true,
-          altText: true,
-          createdAt: true,
-          metaTitle: true,
-          metaDescription: true,
-          duration: true,
-          content: true,
-        },
-      });
-      return blog;
-    } catch (error) {
-      console.error(error);
-      throw new HttpException(
-        'something went wrong',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+    const blog = await this.myPrisma(language).blog.findUnique({
+      where: {
+        id,
+      },
+      select: {
+        id: true,
+        image: true,
+        url: true,
+        bigImage: true,
+        altText: true,
+        createdAt: true,
+        metaTitle: true,
+        metaDescription: true,
+        duration: true,
+        content: true,
+      },
+    });
+    return blog;
   }
 
   async update(id: number, updateBlogDto: UpdateBlogDto) {
-    try {
-      const updateBlog = await this.myPrisma().blog.update({
-        where: {
-          id,
-        },
-        data: updateBlogDto,
-      });
-      return updateBlog;
-    } catch (error) {
-      console.error(error);
-      throw new HttpException(
-        'something went wrong',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+    const updateBlog = await this.myPrisma().blog.update({
+      where: {
+        id,
+      },
+      data: updateBlogDto,
+    });
+    return updateBlog;
   }
 
   async remove(id: number) {
-    try {
-      const deleteBlog = await this.myPrisma().blog.delete({
-        where: {
-          id,
-        },
-      });
-      this.uploadService.deleteFile(deleteBlog.image)
-      this.uploadService.deleteFile(deleteBlog.bigImage)
-      return deleteBlog;
-    } catch (error) {
-      console.error(error);
-      throw new HttpException(
-        'something went wrong',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+    const deleteBlog = await this.myPrisma().blog.delete({
+      where: {
+        id,
+      },
+    });
+    this.uploadService.deleteFile(deleteBlog.image);
+    this.uploadService.deleteFile(deleteBlog.bigImage);
+    return deleteBlog;
   }
 }

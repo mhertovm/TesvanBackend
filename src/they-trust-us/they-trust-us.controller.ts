@@ -9,6 +9,8 @@ import {
   UseGuards,
   UseInterceptors,
   UploadedFile,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { TheyTrustUsService } from './they-trust-us.service';
 import { CreateTheyTrustUsDto } from './dto/create-they-trust-us.dto';
@@ -41,20 +43,45 @@ export class TheyTrustUsController {
     @Body() createTheyTrustUsDto: CreateTheyTrustUsDto,
     @UploadedFile() image: Express.Multer.File,
   ) {
-    createTheyTrustUsDto.image = this.uploadService.uploadFile(image).filename;
-    return this.theyTrustUsService.create(createTheyTrustUsDto);
+    try {
+      createTheyTrustUsDto.image =
+        this.uploadService.uploadFile(image).filename;
+      return this.theyTrustUsService.create(createTheyTrustUsDto);
+    } catch (error) {
+      console.error(error);
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   @Get()
   @ApiOperation({ summary: 'Find all theyTrustUs' })
   findAll() {
-    return this.theyTrustUsService.findAll();
+    try {
+      return this.theyTrustUsService.findAll();
+    } catch (error) {
+      console.error(error);
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   @Get(':id')
   @ApiOperation({ summary: 'Find one theyTrustUs' })
   findOne(@Param('id') id: string) {
-    return this.theyTrustUsService.findOne(+id);
+    try {
+      return this.theyTrustUsService.findOne(+id);
+    } catch (error) {
+      console.error(error);
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   @Patch(':id')
@@ -68,11 +95,19 @@ export class TheyTrustUsController {
     @Body() updateTheyTrustUsDto: UpdateTheyTrustUsDto,
     @UploadedFile() image: Express.Multer.File,
   ) {
-    if (image) {
-      updateTheyTrustUsDto.image =
-        this.uploadService.uploadFile(image).filename;
+    try {
+      if (image) {
+        updateTheyTrustUsDto.image =
+          this.uploadService.uploadFile(image).filename;
+      }
+      return this.theyTrustUsService.update(+id, updateTheyTrustUsDto);
+    } catch (error) {
+      console.error(error);
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
-    return this.theyTrustUsService.update(+id, updateTheyTrustUsDto);
   }
 
   @Delete(':id')
@@ -80,6 +115,14 @@ export class TheyTrustUsController {
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Delete a theyTrustUs' })
   remove(@Param('id') id: string) {
-    return this.theyTrustUsService.remove(+id);
+    try {
+      return this.theyTrustUsService.remove(+id);
+    } catch (error) {
+      console.error(error);
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 }

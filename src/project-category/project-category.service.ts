@@ -1,4 +1,4 @@
-import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CreateProjectCategoryDto } from './dto/create-project-category.dto';
 import { UpdateProjectCategoryDto } from './dto/update-project-category.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -45,113 +45,75 @@ export class ProjectCategoryService {
     });
   }
   async create(createProjectCategoryDto: CreateProjectCategoryDto) {
-    try {
-      const newProjectCategory = await this.myPrisma().projectCategory.create({
-        data: createProjectCategoryDto,
-      });
-      return newProjectCategory;
-    } catch (error) {
-      console.error(error);
-      throw new HttpException(
-        'something went wrong',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+    const newProjectCategory = await this.myPrisma().projectCategory.create({
+      data: createProjectCategoryDto,
+    });
+    return newProjectCategory;
   }
 
   async findAll(language: string) {
-    try {
-      const projectCategory = await this.myPrisma(language).projectCategory.findMany({
-        select: {
-          id: true,
-          category: true,
-          projects: {
-            select: {
-              id: true,
-              name: true,
-              metaTitle: true,
-              metaDescription: true,
-              image: true,
-              url: true,
-            },
+    const projectCategory = await this.myPrisma(
+      language,
+    ).projectCategory.findMany({
+      select: {
+        id: true,
+        category: true,
+        projects: {
+          select: {
+            id: true,
+            name: true,
+            metaTitle: true,
+            metaDescription: true,
+            image: true,
+            url: true,
           },
         },
-      });
-      return projectCategory;
-    } catch (error) {
-      console.error(error);
-      throw new HttpException(
-        'something went wrong',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+      },
+    });
+    return projectCategory;
   }
 
   async findOne(id: number, language: string) {
-    try {
-      const projectCategory = await this.myPrisma(
-        language,
-      ).projectCategory.findUnique({
-        where: {
-          id,
-        },
-        select: {
-          id: true,
-          category: true,
-          projects: {
-            select: {
-              id: true,
-              name: true,
-              metaTitle: true,
-              metaDescription: true,
-              image: true,
-              url: true,
-            },
+    const projectCategory = await this.myPrisma(
+      language,
+    ).projectCategory.findUnique({
+      where: {
+        id,
+      },
+      select: {
+        id: true,
+        category: true,
+        projects: {
+          select: {
+            id: true,
+            name: true,
+            metaTitle: true,
+            metaDescription: true,
+            image: true,
+            url: true,
           },
         },
-      });
-      return projectCategory;
-    } catch (error) {
-      console.error(error);
-      throw new HttpException(
-        'something went wrong',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+      },
+    });
+    return projectCategory;
   }
 
   async update(id: number, updateProjectCategoryDto: UpdateProjectCategoryDto) {
-    try {
-      const updateProjectCategory = await this.myPrisma().projectCategory.update({
-        where: {
-          id,
-        },
-        data: updateProjectCategoryDto,
-      });
-      return updateProjectCategory;
-    } catch (error) {
-      console.error(error);
-      throw new HttpException(
-        'something went wrong',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+    const updateProjectCategory = await this.myPrisma().projectCategory.update({
+      where: {
+        id,
+      },
+      data: updateProjectCategoryDto,
+    });
+    return updateProjectCategory;
   }
 
   async remove(id: number) {
-    try {
-      const deleteProjectCategory = await this.myPrisma().projectCategory.delete({
-        where: {
-          id,
-        },
-      });
-      return deleteProjectCategory;
-    } catch (error) {
-      console.error(error);
-      throw new HttpException(
-        'something went wrong',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+    const deleteProjectCategory = await this.myPrisma().projectCategory.delete({
+      where: {
+        id,
+      },
+    });
+    return deleteProjectCategory;
   }
 }

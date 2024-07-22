@@ -10,6 +10,8 @@ import {
   Query,
   UseInterceptors,
   UploadedFile,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { EducationsService } from './educations.service';
 import { CreateEducationDto } from './dto/create-education.dto';
@@ -42,20 +44,44 @@ export class EducationsController {
     @Body() createEducationDto: CreateEducationDto,
     @UploadedFile() image: Express.Multer.File,
   ) {
-    createEducationDto.image = this.uploadService.uploadFile(image).filename;
-    return this.educationsService.create(createEducationDto);
+    try {
+      createEducationDto.image = this.uploadService.uploadFile(image).filename;
+      return this.educationsService.create(createEducationDto);
+    } catch (error) {
+      console.error(error);
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   @Get()
   @ApiOperation({ summary: 'Find all educations' })
   findAll(@Query('language') language: string) {
-    return this.educationsService.findAll(language);
+    try {
+      return this.educationsService.findAll(language);
+    } catch (error) {
+      console.error(error);
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   @Get(':id')
   @ApiOperation({ summary: 'Find one educations' })
-  findOne(@Param('id') id: string, language) {
-    return this.educationsService.findOne(+id, language);
+  findOne(@Param('id') id: string, language: string) {
+    try {
+      return this.educationsService.findOne(+id, language);
+    } catch (error) {
+      console.error(error);
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   @Patch(':id')
@@ -69,10 +95,19 @@ export class EducationsController {
     @Body() updateEducationDto: UpdateEducationDto,
     @UploadedFile() image: Express.Multer.File,
   ) {
-    if (image) {
-      updateEducationDto.image = this.uploadService.uploadFile(image).filename;
+    try {
+      if (image) {
+        updateEducationDto.image =
+          this.uploadService.uploadFile(image).filename;
+      }
+      return this.educationsService.update(+id, updateEducationDto);
+    } catch (error) {
+      console.error(error);
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
-    return this.educationsService.update(+id, updateEducationDto);
   }
 
   @Delete(':id')
@@ -80,6 +115,14 @@ export class EducationsController {
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Delete a educations' })
   remove(@Param('id') id: string) {
-    return this.educationsService.remove(+id);
+    try {
+      return this.educationsService.remove(+id);
+    } catch (error) {
+      console.error(error);
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 }

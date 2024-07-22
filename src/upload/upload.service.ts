@@ -11,11 +11,13 @@ export class UploadService {
       path: file.path,
       size: file.size,
     };
-  };
+  }
 
   async deleteFile(filename: string): Promise<void> {
     const uploadPath = './static';
     const filePath = join(uploadPath, filename);
-    await fs.unlink(filePath).catch(error=> console.error(`Error deleting ${filePath}:`, error))
+    await fs
+      .unlink(filePath)
+      .catch((error) => console.error(`Error deleting ${filePath}:`, error));
   }
 }

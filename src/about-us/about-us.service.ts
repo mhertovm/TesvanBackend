@@ -1,4 +1,4 @@
-import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CreateAboutUsDto } from './dto/create-about-us.dto';
 import { UpdateAboutUsDto } from './dto/update-about-us.dto';
 
@@ -45,76 +45,44 @@ export class AboutUsService {
   }
 
   async create(createAboutUsDto: CreateAboutUsDto) {
-    try {
-      const newAboutUs = await this.myPrisma().aboutUs.create({
-        data: createAboutUsDto,
-      });
-      return newAboutUs;
-    } catch (error) {
-      console.error(error);
-      throw new HttpException(
-        'something went wrong',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+    const newAboutUs = await this.myPrisma().aboutUs.create({
+      data: createAboutUsDto,
+    });
+    return newAboutUs;
   }
 
   async findOne(language: string) {
-    try {
-      const aboutUs = await this.myPrisma(language).aboutUs.findFirst({
-        select: {
-          id: true,
-          projects: true,
-          freeCourse: true,
-          employess: true,
-          metaTitle: true,
-          metaDescription: true,
-          content: true,
-        },
-      });
+    const aboutUs = await this.myPrisma(language).aboutUs.findFirst({
+      select: {
+        id: true,
+        projects: true,
+        freeCourse: true,
+        employess: true,
+        metaTitle: true,
+        metaDescription: true,
+        content: true,
+      },
+    });
 
-      return aboutUs;
-    } catch (error) {
-      console.error(error);
-      throw new HttpException(
-        'something went wrong',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+    return aboutUs;
   }
 
   async update(id: number, updateAboutUsDto: UpdateAboutUsDto) {
-    try {
-      const updateAboutUs = await this.myPrisma().aboutUs.update({
-        where: {
-          id,
-        },
-        data: updateAboutUsDto,
-      });
-      return updateAboutUs;
-    } catch (error) {
-      console.error(error);
-      throw new HttpException(
-        'something went wrong',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+    const updateAboutUs = await this.myPrisma().aboutUs.update({
+      where: {
+        id,
+      },
+      data: updateAboutUsDto,
+    });
+    return updateAboutUs;
   }
 
   async remove(id: number) {
-    try {
-      const deleteAboutUs = await this.myPrisma().aboutUs.delete({
-        where: {
-          id,
-        },
-      });
-      return deleteAboutUs;
-    } catch (error) {
-      console.error(error);
-      throw new HttpException(
-        'something went wrong',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+    const deleteAboutUs = await this.myPrisma().aboutUs.delete({
+      where: {
+        id,
+      },
+    });
+    return deleteAboutUs;
   }
 }

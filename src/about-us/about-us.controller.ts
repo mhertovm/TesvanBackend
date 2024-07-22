@@ -6,6 +6,8 @@ import {
   Param,
   Query,
   UseGuards,
+  HttpStatus,
+  HttpException,
 } from '@nestjs/common';
 import { AboutUsService } from './about-us.service';
 import { UpdateAboutUsDto } from './dto/update-about-us.dto';
@@ -20,7 +22,15 @@ export class AboutUsController {
   @Get()
   @ApiOperation({ summary: 'Find one aboutUs' })
   findOne(@Query('language') language: string) {
-    return this.aboutUsService.findOne(language);
+    try {
+      return this.aboutUsService.findOne(language);
+    } catch (error) {
+      console.error(error);
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   @Patch(':id')
@@ -28,6 +38,14 @@ export class AboutUsController {
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Update a aboutUs' })
   update(@Param('id') id: string, @Body() updateAboutUsDto: UpdateAboutUsDto) {
-    return this.aboutUsService.update(+id, updateAboutUsDto);
+    try {
+      return this.aboutUsService.update(+id, updateAboutUsDto);
+    } catch (error) {
+      console.error(error);
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 }

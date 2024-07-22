@@ -8,6 +8,8 @@ import {
   Delete,
   UseGuards,
   Query,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { CareersService } from './careers.service';
 import { CreateCareerDto } from './dto/create-career.dto';
@@ -25,19 +27,43 @@ export class CareersController {
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Create a careers' })
   create(@Body() createCareerDto: CreateCareerDto) {
-    return this.careersService.create(createCareerDto);
+    try {
+      return this.careersService.create(createCareerDto);
+    } catch (error) {
+      console.error(error);
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   @Get()
   @ApiOperation({ summary: 'Find all careers' })
   findAll(@Query('language') language: string) {
-    return this.careersService.findAll(language);
+    try {
+      return this.careersService.findAll(language);
+    } catch (error) {
+      console.error(error);
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   @Get(':id')
   @ApiOperation({ summary: 'Find one careers' })
   findOne(@Param('id') id: string, @Query('language') language: string) {
-    return this.careersService.findOne(+id, language);
+    try {
+      return this.careersService.findOne(+id, language);
+    } catch (error) {
+      console.error(error);
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   @Patch(':id')
@@ -45,7 +71,15 @@ export class CareersController {
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Update a careers' })
   update(@Param('id') id: string, @Body() updateCareerDto: UpdateCareerDto) {
-    return this.careersService.update(+id, updateCareerDto);
+    try {
+      return this.careersService.update(+id, updateCareerDto);
+    } catch (error) {
+      console.error(error);
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   @Delete(':id')
@@ -53,6 +87,14 @@ export class CareersController {
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Delete a careers' })
   remove(@Param('id') id: string) {
-    return this.careersService.remove(+id);
+    try {
+      return this.careersService.remove(+id);
+    } catch (error) {
+      console.error(error);
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 }

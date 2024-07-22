@@ -8,6 +8,8 @@ import {
   Delete,
   UseGuards,
   Query,
+  HttpStatus,
+  HttpException,
 } from '@nestjs/common';
 import { EducationCategoryService } from './education-category.service';
 import { CreateEducationCategoryDto } from './dto/create-education-category.dto';
@@ -27,19 +29,43 @@ export class EducationCategoryController {
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Create a educationCategory' })
   create(@Body() createEducationCategoryDto: CreateEducationCategoryDto) {
-    return this.educationCategoryService.create(createEducationCategoryDto);
+    try {
+      return this.educationCategoryService.create(createEducationCategoryDto);
+    } catch (error) {
+      console.error(error);
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   @Get()
   @ApiOperation({ summary: 'Find all educationCategory' })
   findAll(@Query('language') language: string) {
-    return this.educationCategoryService.findAll(language);
+    try {
+      return this.educationCategoryService.findAll(language);
+    } catch (error) {
+      console.error(error);
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   @Get(':id')
   @ApiOperation({ summary: 'Find one educationCategory' })
-  findOne(@Param('id') id: string, language) {
-    return this.educationCategoryService.findOne(+id, language);
+  findOne(@Param('id') id: string, language: string) {
+    try {
+      return this.educationCategoryService.findOne(+id, language);
+    } catch (error) {
+      console.error(error);
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   @Patch(':id')
@@ -50,10 +76,18 @@ export class EducationCategoryController {
     @Param('id') id: string,
     @Body() updateEducationCategoryDto: UpdateEducationCategoryDto,
   ) {
-    return this.educationCategoryService.update(
-      +id,
-      updateEducationCategoryDto,
-    );
+    try {
+      return this.educationCategoryService.update(
+        +id,
+        updateEducationCategoryDto,
+      );
+    } catch (error) {
+      console.error(error);
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   @Delete(':id')
@@ -61,6 +95,14 @@ export class EducationCategoryController {
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Delete a educationCategory' })
   remove(@Param('id') id: string) {
-    return this.educationCategoryService.remove(+id);
+    try {
+      return this.educationCategoryService.remove(+id);
+    } catch (error) {
+      console.error(error);
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 }

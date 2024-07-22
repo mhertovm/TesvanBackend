@@ -1,4 +1,4 @@
-import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CreateFaqDto } from './dto/create-faq.dto';
 import { UpdateFaqDto } from './dto/update-faq.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -29,95 +29,55 @@ export class FaqService {
     });
   }
   async create(createFaqDto: CreateFaqDto) {
-    try {
-      const newFaq = await this.myPrisma().faq.create({
-        data: createFaqDto,
-      });
-      return newFaq;
-    } catch (error) {
-      console.error(error);
-      throw new HttpException(
-        'something went wrong',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+    const newFaq = await this.myPrisma().faq.create({
+      data: createFaqDto,
+    });
+    return newFaq;
   }
 
   async findAll(language: string) {
-    try {
-      const faq = await this.myPrisma(language).faq.findMany({
-        select: {
-          id: true,
-          serviceId: true,
-          question: true,
-          answer: true,
-        },
-      });
-      return faq;
-    } catch (error) {
-      console.error(error);
-      throw new HttpException(
-        'something went wrong',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+    const faq = await this.myPrisma(language).faq.findMany({
+      select: {
+        id: true,
+        serviceId: true,
+        question: true,
+        answer: true,
+      },
+    });
+    return faq;
   }
 
   async findOne(id: number, language: string) {
-    try {
-      const faq = await this.myPrisma(language).faq.findUnique({
-        where: {
-          id,
-        },
-        select: {
-          id: true,
-          serviceId: true,
-          question: true,
-          answer: true,
-        },
-      });
-      return faq;
-    } catch (error) {
-      console.error(error);
-      throw new HttpException(
-        'something went wrong',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+    const faq = await this.myPrisma(language).faq.findUnique({
+      where: {
+        id,
+      },
+      select: {
+        id: true,
+        serviceId: true,
+        question: true,
+        answer: true,
+      },
+    });
+    return faq;
   }
 
   async update(id: number, updateFaqDto: UpdateFaqDto) {
-    try {
-      const updateFaq = await this.myPrisma().faq.update({
-        where: {
-          id,
-        },
-        data: updateFaqDto,
-      });
-      return updateFaq;
-    } catch (error) {
-      console.error(error);
-      throw new HttpException(
-        'something went wrong',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+    const updateFaq = await this.myPrisma().faq.update({
+      where: {
+        id,
+      },
+      data: updateFaqDto,
+    });
+    return updateFaq;
   }
 
   async remove(id: number) {
-    try {
-      const deleteFaq = await this.myPrisma().faq.delete({
-        where: {
-          id,
-        },
-      });
-      return deleteFaq;
-    } catch (error) {
-      console.error(error);
-      throw new HttpException(
-        'something went wrong',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+    const deleteFaq = await this.myPrisma().faq.delete({
+      where: {
+        id,
+      },
+    });
+    return deleteFaq;
   }
 }

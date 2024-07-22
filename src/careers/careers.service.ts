@@ -1,4 +1,4 @@
-import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CreateCareerDto } from './dto/create-career.dto';
 import { UpdateCareerDto } from './dto/update-career.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -54,105 +54,65 @@ export class CareersService {
   }
 
   async create(createCareerDto: CreateCareerDto) {
-    try {
-      const newCareers = await this.myPrisma().careers.create({
-        data: createCareerDto,
-      });
-      return newCareers;
-    } catch (error) {
-      console.error(error);
-      throw new HttpException(
-        'something went wrong',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+    const newCareers = await this.myPrisma().careers.create({
+      data: createCareerDto,
+    });
+    return newCareers;
   }
 
   async findAll(language: string) {
-    try {
-      const careers = await this.myPrisma(language).careers.findMany({
-        select: {
-          id: true,
-          metaTitle: true,
-          metaDescription: true,
-          url: true,
-          term: true,
-          type: true,
-          location: true,
-          dueDate: true,
-          jobDescription: true,
-        },
-      });
-      return careers;
-    } catch (error) {
-      console.error(error);
-      throw new HttpException(
-        'something went wrong',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+    const careers = await this.myPrisma(language).careers.findMany({
+      select: {
+        id: true,
+        metaTitle: true,
+        metaDescription: true,
+        url: true,
+        term: true,
+        type: true,
+        location: true,
+        dueDate: true,
+        jobDescription: true,
+      },
+    });
+    return careers;
   }
 
   async findOne(id: number, language: string) {
-    try {
-      const career = await this.myPrisma(language).careers.findUnique({
-        where: {
-          id,
-        },
-        select: {
-          id: true,
-          metaTitle: true,
-          metaDescription: true,
-          url: true,
-          term: true,
-          type: true,
-          location: true,
-          dueDate: true,
-          jobDescription: true,
-        },
-      });
-      return career;
-    } catch (error) {
-      console.error(error);
-      throw new HttpException(
-        'something went wrong',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+    const career = await this.myPrisma(language).careers.findUnique({
+      where: {
+        id,
+      },
+      select: {
+        id: true,
+        metaTitle: true,
+        metaDescription: true,
+        url: true,
+        term: true,
+        type: true,
+        location: true,
+        dueDate: true,
+        jobDescription: true,
+      },
+    });
+    return career;
   }
 
   async update(id: number, updateCareerDto: UpdateCareerDto) {
-    try {
-      const updateCareers = await this.myPrisma().careers.update({
-        where: {
-          id,
-        },
-        data: updateCareerDto,
-      });
-      return updateCareers;
-    } catch (error) {
-      console.error(error);
-      throw new HttpException(
-        'something went wrong',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+    const updateCareers = await this.myPrisma().careers.update({
+      where: {
+        id,
+      },
+      data: updateCareerDto,
+    });
+    return updateCareers;
   }
 
   async remove(id: number) {
-    try {
-      const deleteCareers = await this.myPrisma().careers.delete({
-        where: {
-          id,
-        },
-      });
-      return deleteCareers;
-    } catch (error) {
-      console.error(error);
-      throw new HttpException(
-        'something went wrong',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+    const deleteCareers = await this.myPrisma().careers.delete({
+      where: {
+        id,
+      },
+    });
+    return deleteCareers;
   }
 }

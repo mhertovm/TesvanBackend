@@ -7,6 +7,8 @@ import {
   Param,
   Delete,
   UseGuards,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { ApplicantService } from './applicant.service';
 import { CreateApplicantDto } from './dto/create-applicant.dto';
@@ -24,19 +26,43 @@ export class ApplicantController {
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Create a applicant' })
   create(@Body() createApplicantDto: CreateApplicantDto) {
-    return this.applicantService.create(createApplicantDto);
+    try {
+      return this.applicantService.create(createApplicantDto);
+    } catch (error) {
+      console.error(error);
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   @Get()
   @ApiOperation({ summary: 'Find all applicant' })
   findAll() {
-    return this.applicantService.findAll();
+    try {
+      return this.applicantService.findAll();
+    } catch (error) {
+      console.error(error);
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   @Get(':id')
   @ApiOperation({ summary: 'Find one applicant' })
   findOne(@Param('id') id: string) {
-    return this.applicantService.findOne(+id);
+    try {
+      return this.applicantService.findOne(+id);
+    } catch (error) {
+      console.error(error);
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   @Patch(':id')
@@ -47,7 +73,15 @@ export class ApplicantController {
     @Param('id') id: string,
     @Body() updateApplicantDto: UpdateApplicantDto,
   ) {
-    return this.applicantService.update(+id, updateApplicantDto);
+    try {
+      return this.applicantService.update(+id, updateApplicantDto);
+    } catch (error) {
+      console.error(error);
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   @Delete(':id')
@@ -55,6 +89,14 @@ export class ApplicantController {
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Delete a applicant' })
   remove(@Param('id') id: string) {
-    return this.applicantService.remove(+id);
+    try {
+      return this.applicantService.remove(+id);
+    } catch (error) {
+      console.error(error);
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 }

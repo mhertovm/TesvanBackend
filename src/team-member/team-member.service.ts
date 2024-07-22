@@ -1,4 +1,4 @@
-import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CreateTeamMemberDto } from './dto/create-team-member.dto';
 import { UpdateTeamMemberDto } from './dto/update-team-member.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -6,7 +6,10 @@ import { UploadService } from 'src/upload/upload.service';
 
 @Injectable()
 export class TeamMemberService {
-  constructor(private prisma: PrismaService, private uploadService: UploadService) {}
+  constructor(
+    private prisma: PrismaService,
+    private uploadService: UploadService,
+  ) {}
 
   myPrisma(language?: string) {
     language ? language : (language = 'en');
@@ -30,98 +33,58 @@ export class TeamMemberService {
     });
   }
   async create(createTeamMemberDto: CreateTeamMemberDto) {
-    try {
-      const newTeamMember = await this.myPrisma().teamMember.create({
-        data: createTeamMemberDto,
-      });
-      return newTeamMember;
-    } catch (error) {
-      console.error(error);
-      throw new HttpException(
-        'something went wrong',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+    const newTeamMember = await this.myPrisma().teamMember.create({
+      data: createTeamMemberDto,
+    });
+    return newTeamMember;
   }
 
   async findAll(language: string) {
-    try {
-      const teamMember = await this.myPrisma(language).teamMember.findMany({
-        select: {
-          id: true,
-          order: true,
-          name: true,
-          position: true,
-          image: true,
-        },
-      });
-      return teamMember;
-    } catch (error) {
-      console.error(error);
-      throw new HttpException(
-        'something went wrong',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+    const teamMember = await this.myPrisma(language).teamMember.findMany({
+      select: {
+        id: true,
+        order: true,
+        name: true,
+        position: true,
+        image: true,
+      },
+    });
+    return teamMember;
   }
 
   async findOne(id: number, language: string) {
-    try {
-      const teamMember = await this.myPrisma(language).teamMember.findUnique({
-        where: {
-          id,
-        },
-        select: {
-          id: true,
-          order: true,
-          name: true,
-          position: true,
-          image: true,
-        },
-      });
-      return teamMember;
-    } catch (error) {
-      console.error(error);
-      throw new HttpException(
-        'something went wrong',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+    const teamMember = await this.myPrisma(language).teamMember.findUnique({
+      where: {
+        id,
+      },
+      select: {
+        id: true,
+        order: true,
+        name: true,
+        position: true,
+        image: true,
+      },
+    });
+    return teamMember;
   }
 
   async update(id: number, updateTeamMemberDto: UpdateTeamMemberDto) {
-    try {
-      const updateTeamMember = await this.myPrisma().teamMember.update({
-        where: {
-          id,
-        },
-        data: updateTeamMemberDto,
-      });
-      return updateTeamMember;
-    } catch (error) {
-      console.error(error);
-      throw new HttpException(
-        'something went wrong',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+    const updateTeamMember = await this.myPrisma().teamMember.update({
+      where: {
+        id,
+      },
+      data: updateTeamMemberDto,
+    });
+    return updateTeamMember;
   }
 
   async remove(id: number) {
-    try {
-      const deleteTeamMember = await this.myPrisma().teamMember.delete({
-        where: {
-          id,
-        },
-      });
-      this.uploadService.deleteFile(deleteTeamMember.image)
-      return deleteTeamMember;
-    } catch (error) {
-      console.error(error);
-      throw new HttpException(
-        'something went wrong',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+    const deleteTeamMember = await this.myPrisma().teamMember.delete({
+      where: {
+        id,
+      },
+    });
+    this.uploadService.deleteFile(deleteTeamMember.image);
+    return deleteTeamMember;
   }
 }

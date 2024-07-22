@@ -1,4 +1,4 @@
-import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CreateHireUsDto } from './dto/create-hire-us.dto';
 import { UpdateHireUsDto } from './dto/update-hire-us.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -23,91 +23,51 @@ export class HireUsService {
     });
   }
   async create(createHireUsDto: CreateHireUsDto) {
-    try {
-      const newHireUs = await this.myPrisma().hireUs.create({
-        data: createHireUsDto,
-      });
-      return newHireUs;
-    } catch (error) {
-      console.error(error);
-      throw new HttpException(
-        'something went wrong',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+    const newHireUs = await this.myPrisma().hireUs.create({
+      data: createHireUsDto,
+    });
+    return newHireUs;
   }
 
   async findAll(language: string) {
-    try {
-      const hireUs = await this.myPrisma(language).hireUs.findMany({
-        select: {
-          id: true,
-          hire: true,
-        },
-      });
-      return hireUs;
-    } catch (error) {
-      console.error(error);
-      throw new HttpException(
-        'something went wrong',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+    const hireUs = await this.myPrisma(language).hireUs.findMany({
+      select: {
+        id: true,
+        hire: true,
+      },
+    });
+    return hireUs;
   }
 
   async findOne(id: number, language: string) {
-    try {
-      const hireUs = await this.myPrisma(language).hireUs.findUnique({
-        where: {
-          id,
-        },
-        select: {
-          id: true,
-          hire: true,
-        },
-      });
-      return hireUs;
-    } catch (error) {
-      console.error(error);
-      throw new HttpException(
-        'something went wrong',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+    const hireUs = await this.myPrisma(language).hireUs.findUnique({
+      where: {
+        id,
+      },
+      select: {
+        id: true,
+        hire: true,
+      },
+    });
+    return hireUs;
   }
 
   async update(id: number, updateHireUsDto: UpdateHireUsDto) {
-    try {
-      const updateHireUs = await this.myPrisma().hireUs.update({
-        where: {
-          id,
-        },
-        data: updateHireUsDto,
-      });
-      return updateHireUs;
-    } catch (error) {
-      console.error(error);
-      throw new HttpException(
-        'something went wrong',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+    const updateHireUs = await this.myPrisma().hireUs.update({
+      where: {
+        id,
+      },
+      data: updateHireUsDto,
+    });
+    return updateHireUs;
   }
 
   async remove(id: number) {
-    try {
-      const deleteHireUs = await this.myPrisma().hireUs.delete({
-        where: {
-          id,
-        },
-      });
-      return deleteHireUs;
-    } catch (error) {
-      console.error(error);
-      throw new HttpException(
-        'something went wrong',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+    const deleteHireUs = await this.myPrisma().hireUs.delete({
+      where: {
+        id,
+      },
+    });
+    return deleteHireUs;
   }
 }

@@ -10,6 +10,8 @@ import {
   Query,
   UseInterceptors,
   UploadedFile,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { TeamMemberService } from './team-member.service';
 import { CreateTeamMemberDto } from './dto/create-team-member.dto';
@@ -42,20 +44,44 @@ export class TeamMemberController {
     @Body() createTeamMemberDto: CreateTeamMemberDto,
     @UploadedFile() image: Express.Multer.File,
   ) {
-    createTeamMemberDto.image = this.uploadService.uploadFile(image).filename;
-    return this.teamMemberService.create(createTeamMemberDto);
+    try {
+      createTeamMemberDto.image = this.uploadService.uploadFile(image).filename;
+      return this.teamMemberService.create(createTeamMemberDto);
+    } catch (error) {
+      console.error(error);
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   @Get()
   @ApiOperation({ summary: 'Find all teamMember' })
   findAll(@Query('language') language: string) {
-    return this.teamMemberService.findAll(language);
+    try {
+      return this.teamMemberService.findAll(language);
+    } catch (error) {
+      console.error(error);
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   @Get(':id')
   @ApiOperation({ summary: 'Find one teamMember' })
   findOne(@Param('id') id: string, @Query('language') language: string) {
-    return this.teamMemberService.findOne(+id, language);
+    try {
+      return this.teamMemberService.findOne(+id, language);
+    } catch (error) {
+      console.error(error);
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   @Patch(':id')
@@ -69,10 +95,19 @@ export class TeamMemberController {
     @Body() updateTeamMemberDto: UpdateTeamMemberDto,
     @UploadedFile() image: Express.Multer.File,
   ) {
-    if (image) {
-      updateTeamMemberDto.image = this.uploadService.uploadFile(image).filename;
+    try {
+      if (image) {
+        updateTeamMemberDto.image =
+          this.uploadService.uploadFile(image).filename;
+      }
+      return this.teamMemberService.update(+id, updateTeamMemberDto);
+    } catch (error) {
+      console.error(error);
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
-    return this.teamMemberService.update(+id, updateTeamMemberDto);
   }
 
   @Delete(':id')
@@ -80,6 +115,14 @@ export class TeamMemberController {
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Delete a teamMember' })
   remove(@Param('id') id: string) {
-    return this.teamMemberService.remove(+id);
+    try {
+      return this.teamMemberService.remove(+id);
+    } catch (error) {
+      console.error(error);
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 }

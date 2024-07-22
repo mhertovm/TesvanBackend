@@ -1,4 +1,4 @@
-import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CreateServiceDto } from './dto/create-service.dto';
 import { UpdateServiceDto } from './dto/update-service.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -6,7 +6,10 @@ import { UploadService } from 'src/upload/upload.service';
 
 @Injectable()
 export class ServicesService {
-  constructor(private prisma: PrismaService, private uploadService: UploadService) {}
+  constructor(
+    private prisma: PrismaService,
+    private uploadService: UploadService,
+  ) {}
 
   myPrisma(language?: string) {
     language ? language : (language = 'en');
@@ -98,164 +101,124 @@ export class ServicesService {
     });
   }
   async create(createServiceDto: CreateServiceDto) {
-    try {
-      const newServices = await this.myPrisma().services.create({
-        data: createServiceDto,
-      });
-      return newServices;
-    } catch (error) {
-      console.error(error);
-      throw new HttpException(
-        'something went wrong',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+    const newServices = await this.myPrisma().services.create({
+      data: createServiceDto,
+    });
+    return newServices;
   }
 
   async findAll(language: string) {
-    try {
-      const services = await this.myPrisma(language).services.findMany({
-        select: {
-          id: true,
-          type: true,
-          service: true,
-          metaTitle: true,
-          metaDescription: true,
-          image: true,
-          url: true,
-          altText: true,
-          approach: {
-            select: {
-              id: true,
-              serviceId: true,
-              approach: true,
-            },
-          },
-          benefits: {
-            select: {
-              id: true,
-              serviceId: true,
-              title: true,
-              description: true,
-            },
-          },
-          faq: {
-            select: {
-              id: true,
-              serviceId: true,
-              question: true,
-              answer: true,
-            },
-          },
-          offers: {
-            select: {
-              id: true,
-              serviceId: true,
-              offers: true,
-            },
+    const services = await this.myPrisma(language).services.findMany({
+      select: {
+        id: true,
+        type: true,
+        service: true,
+        metaTitle: true,
+        metaDescription: true,
+        image: true,
+        url: true,
+        altText: true,
+        approach: {
+          select: {
+            id: true,
+            serviceId: true,
+            approach: true,
           },
         },
-      });
-      return services;
-    } catch (error) {
-      console.error(error);
-      throw new HttpException(
-        'something went wrong',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+        benefits: {
+          select: {
+            id: true,
+            serviceId: true,
+            title: true,
+            description: true,
+          },
+        },
+        faq: {
+          select: {
+            id: true,
+            serviceId: true,
+            question: true,
+            answer: true,
+          },
+        },
+        offers: {
+          select: {
+            id: true,
+            serviceId: true,
+            offers: true,
+          },
+        },
+      },
+    });
+    return services;
   }
 
   async findOne(id: number, language: string) {
-    try {
-      const servic = await this.myPrisma(language).services.findUnique({
-        where: {
-          id,
-        },
-        select: {
-          id: true,
-          type: true,
-          service: true,
-          metaTitle: true,
-          metaDescription: true,
-          image: true,
-          url: true,
-          altText: true,
-          approach: {
-            select: {
-              id: true,
-              serviceId: true,
-              approach: true,
-            },
-          },
-          benefits: {
-            select: {
-              id: true,
-              serviceId: true,
-              title: true,
-              description: true,
-            },
-          },
-          faq: {
-            select: {
-              id: true,
-              serviceId: true,
-              question: true,
-              answer: true,
-            },
-          },
-          offers: {
-            select: {
-              id: true,
-              serviceId: true,
-              offers: true,
-            },
+    const servic = await this.myPrisma(language).services.findUnique({
+      where: {
+        id,
+      },
+      select: {
+        id: true,
+        type: true,
+        service: true,
+        metaTitle: true,
+        metaDescription: true,
+        image: true,
+        url: true,
+        altText: true,
+        approach: {
+          select: {
+            id: true,
+            serviceId: true,
+            approach: true,
           },
         },
-      });
-      return servic;
-    } catch (error) {
-      console.error(error);
-      throw new HttpException(
-        'something went wrong',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+        benefits: {
+          select: {
+            id: true,
+            serviceId: true,
+            title: true,
+            description: true,
+          },
+        },
+        faq: {
+          select: {
+            id: true,
+            serviceId: true,
+            question: true,
+            answer: true,
+          },
+        },
+        offers: {
+          select: {
+            id: true,
+            serviceId: true,
+            offers: true,
+          },
+        },
+      },
+    });
+    return servic;
   }
 
   async update(id: number, updateServiceDto: UpdateServiceDto) {
-    try {
-      const updateServices = await this.myPrisma().services.update({
-        where: {
-          id,
-        },
-        data: updateServiceDto,
-      });
-      return updateServices;
-    } catch (error) {
-      console.error(error);
-      throw new HttpException(
-        'something went wrong',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+    const updateServices = await this.myPrisma().services.update({
+      where: {
+        id,
+      },
+      data: updateServiceDto,
+    });
+    return updateServices;
   }
 
   async remove(id: number) {
-    try {
-      const deleteServices = await this.myPrisma().services.delete({
-        where: {
-          id,
-        },
-      });
-      this.uploadService.deleteFile(deleteServices.image)
-      return deleteServices;
-    } catch (error) {
-      console.error(error);
-      throw new HttpException(
-        'something went wrong',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+    const deleteServices = await this.myPrisma().services.delete({
+      where: {
+        id,
+      },
+    });
+    this.uploadService.deleteFile(deleteServices.image);
+    return deleteServices;
   }
 }

@@ -10,6 +10,8 @@ import {
   UseGuards,
   UseInterceptors,
   UploadedFiles,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { BlogService } from './blog.service';
 import { CreateBlogDto } from './dto/create-blog.dto';
@@ -42,24 +44,48 @@ export class BlogController {
     @Body() createBlogDto: CreateBlogDto,
     @UploadedFiles() files: Array<Express.Multer.File>,
   ) {
-    const imageFile = files.find((file) => file.fieldname === 'image');
-    const bigImageFile = files.find((file) => file.fieldname === 'bigImage');
-    createBlogDto.image = this.uploadService.uploadFile(imageFile).filename;
-    createBlogDto.bigImage =
-      this.uploadService.uploadFile(bigImageFile).filename;
-    return this.blogService.create(createBlogDto);
+    try {
+      const imageFile = files.find((file) => file.fieldname === 'image');
+      const bigImageFile = files.find((file) => file.fieldname === 'bigImage');
+      createBlogDto.image = this.uploadService.uploadFile(imageFile).filename;
+      createBlogDto.bigImage =
+        this.uploadService.uploadFile(bigImageFile).filename;
+      return this.blogService.create(createBlogDto);
+    } catch (error) {
+      console.error(error);
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   @Get()
   @ApiOperation({ summary: 'Find all blog' })
   findAll(@Query('language') language: string) {
-    return this.blogService.findAll(language);
+    try {
+      return this.blogService.findAll(language);
+    } catch (error) {
+      console.error(error);
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   @Get(':id')
   @ApiOperation({ summary: 'Find one blog' })
   findOne(@Param('id') id: string, @Query('language') language: string) {
-    return this.blogService.findOne(+id, language);
+    try {
+      return this.blogService.findOne(+id, language);
+    } catch (error) {
+      console.error(error);
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   @Patch(':id')
@@ -73,18 +99,29 @@ export class BlogController {
     @Body() updateBlogDto: UpdateBlogDto,
     @UploadedFiles() files: Array<Express.Multer.File>,
   ) {
-    if (files) {
-      const imageFile = files.find((file) => file.fieldname === 'image');
-      const bigImageFile = files.find((file) => file.fieldname === 'bigImage');
-      if (imageFile) {
-        updateBlogDto.image = this.uploadService.uploadFile(imageFile).filename;
+    try {
+      if (files) {
+        const imageFile = files.find((file) => file.fieldname === 'image');
+        const bigImageFile = files.find(
+          (file) => file.fieldname === 'bigImage',
+        );
+        if (imageFile) {
+          updateBlogDto.image =
+            this.uploadService.uploadFile(imageFile).filename;
+        }
+        if (bigImageFile) {
+          updateBlogDto.bigImage =
+            this.uploadService.uploadFile(bigImageFile).filename;
+        }
       }
-      if (bigImageFile) {
-        updateBlogDto.bigImage =
-          this.uploadService.uploadFile(bigImageFile).filename;
-      }
+      return this.blogService.update(+id, updateBlogDto);
+    } catch (error) {
+      console.error(error);
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
-    return this.blogService.update(+id, updateBlogDto);
   }
 
   @Delete(':id')
@@ -92,6 +129,14 @@ export class BlogController {
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Delete a blog' })
   remove(@Param('id') id: string) {
-    return this.blogService.remove(+id);
+    try {
+      return this.blogService.remove(+id);
+    } catch (error) {
+      console.error(error);
+      throw new HttpException(
+        'something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 }

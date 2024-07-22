@@ -1,4 +1,4 @@
-import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CreateStudentsReviewDto } from './dto/create-students-review.dto';
 import { UpdateStudentsReviewDto } from './dto/update-students-review.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -6,7 +6,10 @@ import { UploadService } from 'src/upload/upload.service';
 
 @Injectable()
 export class StudentsReviewService {
-  constructor(private prisma: PrismaService, private uploadService: UploadService) {}
+  constructor(
+    private prisma: PrismaService,
+    private uploadService: UploadService,
+  ) {}
 
   myPrisma(language?: string) {
     language ? language : (language = 'en');
@@ -36,98 +39,62 @@ export class StudentsReviewService {
     });
   }
   async create(createStudentsReviewDto: CreateStudentsReviewDto) {
-    try {
-      const newStudentsReview = await this.myPrisma().studentsReview.create({
-        data: createStudentsReviewDto,
-      });
-      return newStudentsReview;
-    } catch (error) {
-      console.error(error);
-      throw new HttpException(
-        'something went wrong',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+    const newStudentsReview = await this.myPrisma().studentsReview.create({
+      data: createStudentsReviewDto,
+    });
+    return newStudentsReview;
   }
 
   async findAll(language: string) {
-    try {
-      const studentsReview = await this.myPrisma(language).studentsReview.findMany({
-        select: {
-          id: true,
-          fullName: true,
-          info: true,
-          review: true,
-          image: true,
-        },
-      });
-      return studentsReview;
-    } catch (error) {
-      console.error(error);
-      throw new HttpException(
-        'something went wrong',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+    const studentsReview = await this.myPrisma(
+      language,
+    ).studentsReview.findMany({
+      select: {
+        id: true,
+        fullName: true,
+        info: true,
+        review: true,
+        image: true,
+      },
+    });
+    return studentsReview;
   }
 
   async findOne(id: number, language: string) {
-    try {
-      const studentsReview = await this.myPrisma(language).studentsReview.findUnique({
-        where: {
-          id,
-        },
-        select: {
-          id: true,
-          fullName: true,
-          info: true,
-          review: true,
-          image: true,
-        },
-      });
-      return studentsReview;
-    } catch (error) {
-      console.error(error);
-      throw new HttpException(
-        'something went wrong',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+    const studentsReview = await this.myPrisma(
+      language,
+    ).studentsReview.findUnique({
+      where: {
+        id,
+      },
+      select: {
+        id: true,
+        fullName: true,
+        info: true,
+        review: true,
+        image: true,
+      },
+    });
+    return studentsReview;
   }
 
   async update(id: number, updateStudentsReviewDto: UpdateStudentsReviewDto) {
-    try {
-      const updateStudentsReview = await this.myPrisma().studentsReview.update({
-        where: {
-          id,
-        },
-        data: updateStudentsReviewDto,
-      });
-      return updateStudentsReview;
-    } catch (error) {
-      console.error(error);
-      throw new HttpException(
-        'something went wrong',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+    const updateStudentsReview = await this.myPrisma().studentsReview.update({
+      where: {
+        id,
+      },
+      data: updateStudentsReviewDto,
+    });
+    return updateStudentsReview;
   }
 
   async remove(id: number) {
-    try {
-      const deleteStudentsReview = await this.myPrisma().studentsReview.delete({
-        where: {
-          id,
-        },
-      });
-      this.uploadService.deleteFile(deleteStudentsReview.image)
-      return deleteStudentsReview;
-    } catch (error) {
-      console.error(error);
-      throw new HttpException(
-        'something went wrong',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+    const deleteStudentsReview = await this.myPrisma().studentsReview.delete({
+      where: {
+        id,
+      },
+    });
+    this.uploadService.deleteFile(deleteStudentsReview.image);
+    return deleteStudentsReview;
   }
 }

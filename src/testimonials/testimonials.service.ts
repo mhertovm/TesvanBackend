@@ -1,4 +1,4 @@
-import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CreateTestimonialDto } from './dto/create-testimonial.dto';
 import { UpdateTestimonialDto } from './dto/update-testimonial.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -6,7 +6,10 @@ import { UploadService } from 'src/upload/upload.service';
 
 @Injectable()
 export class TestimonialsService {
-  constructor(private prisma: PrismaService, private uploadService: UploadService) {}
+  constructor(
+    private prisma: PrismaService,
+    private uploadService: UploadService,
+  ) {}
 
   myPrisma(language?: string) {
     language ? language : (language = 'en');
@@ -36,98 +39,58 @@ export class TestimonialsService {
     });
   }
   async create(createTestimonialDto: CreateTestimonialDto) {
-    try {
-      const newTestimonials = await this.myPrisma().testimonials.create({
-        data: createTestimonialDto,
-      });
-      return newTestimonials;
-    } catch (error) {
-      console.error(error);
-      throw new HttpException(
-        'something went wrong',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+    const newTestimonials = await this.myPrisma().testimonials.create({
+      data: createTestimonialDto,
+    });
+    return newTestimonials;
   }
 
   async findAll(language: string) {
-    try {
-      const testimonials = await this.myPrisma(language).testimonials.findMany({
-        select: {
-          id: true,
-          fullName: true,
-          info: true,
-          review: true,
-          image: true,
-        },
-      });
-      return testimonials;
-    } catch (error) {
-      console.error(error);
-      throw new HttpException(
-        'something went wrong',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+    const testimonials = await this.myPrisma(language).testimonials.findMany({
+      select: {
+        id: true,
+        fullName: true,
+        info: true,
+        review: true,
+        image: true,
+      },
+    });
+    return testimonials;
   }
 
   async findOne(id: number, language: string) {
-    try {
-      const testimonial = await this.myPrisma(language).testimonials.findUnique({
-        where: {
-          id,
-        },
-        select: {
-          id: true,
-          fullName: true,
-          info: true,
-          review: true,
-          image: true,
-        },
-      });
-      return testimonial;
-    } catch (error) {
-      console.error(error);
-      throw new HttpException(
-        'something went wrong',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+    const testimonial = await this.myPrisma(language).testimonials.findUnique({
+      where: {
+        id,
+      },
+      select: {
+        id: true,
+        fullName: true,
+        info: true,
+        review: true,
+        image: true,
+      },
+    });
+    return testimonial;
   }
 
   async update(id: number, updateTestimonialDto: UpdateTestimonialDto) {
-    try {
-      const updateTestimonials = await this.myPrisma().testimonials.update({
-        where: {
-          id,
-        },
-        data: updateTestimonialDto,
-      });
-      return updateTestimonials;
-    } catch (error) {
-      console.error(error);
-      throw new HttpException(
-        'something went wrong',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+    const updateTestimonials = await this.myPrisma().testimonials.update({
+      where: {
+        id,
+      },
+      data: updateTestimonialDto,
+    });
+    return updateTestimonials;
   }
 
   async remove(id: number) {
-    try {
-      const deleteTestimonials = await this.myPrisma().testimonials.delete({
-        where: {
-          id,
-        },
-      });
-      this.uploadService.deleteFile(deleteTestimonials.image)
-      return deleteTestimonials;
-    } catch (error) {
-      console.error(error);
-      throw new HttpException(
-        'something went wrong',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+    const deleteTestimonials = await this.myPrisma().testimonials.delete({
+      where: {
+        id,
+      },
+    });
+    this.uploadService.deleteFile(deleteTestimonials.image);
+    return deleteTestimonials;
   }
 }
