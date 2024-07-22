@@ -3,7 +3,6 @@ import {
   Get,
   Body,
   Patch,
-  Param,
   UseGuards,
   Query,
   HttpException,
@@ -37,9 +36,7 @@ export class PrivacyPolicyController {
   @ApiBearerAuth('access-token')
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Update a privacyPolicy' })
-  update(
-    @Body() updatePrivacyPolicyDto: UpdatePrivacyPolicyDto,
-  ) {
+  update(@Body() updatePrivacyPolicyDto: UpdatePrivacyPolicyDto) {
     try {
       return this.privacyPolicyService.update(updatePrivacyPolicyDto);
     } catch (error) {

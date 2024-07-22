@@ -70,7 +70,7 @@ export class AboutUsService {
   async update(updateAboutUsDto: UpdateAboutUsDto) {
     const updateAboutUs = await this.myPrisma().aboutUs.update({
       where: {
-        id: 1
+        id: 1,
       },
       data: updateAboutUsDto,
     });
