@@ -63,10 +63,10 @@ export class PrivacyPolicyService {
     return privacyPolicy;
   }
 
-  async update(id: number, updatePrivacyPolicyDto: UpdatePrivacyPolicyDto) {
+  async update(updatePrivacyPolicyDto: UpdatePrivacyPolicyDto) {
     const updatePrivacyPolicy = await this.myPrisma().privacyPolicy.update({
       where: {
-        id,
+        id: 1
       },
       data: updatePrivacyPolicyDto,
     });

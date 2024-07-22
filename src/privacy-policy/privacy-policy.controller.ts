@@ -33,16 +33,15 @@ export class PrivacyPolicyController {
     }
   }
 
-  @Patch(':id')
+  @Patch()
   @ApiBearerAuth('access-token')
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Update a privacyPolicy' })
   update(
-    @Param('id') id: string,
     @Body() updatePrivacyPolicyDto: UpdatePrivacyPolicyDto,
   ) {
     try {
-      return this.privacyPolicyService.update(+id, updatePrivacyPolicyDto);
+      return this.privacyPolicyService.update(updatePrivacyPolicyDto);
     } catch (error) {
       console.error(error);
       throw new HttpException(

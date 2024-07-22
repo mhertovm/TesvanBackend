@@ -67,10 +67,10 @@ export class AboutUsService {
     return aboutUs;
   }
 
-  async update(id: number, updateAboutUsDto: UpdateAboutUsDto) {
+  async update(updateAboutUsDto: UpdateAboutUsDto) {
     const updateAboutUs = await this.myPrisma().aboutUs.update({
       where: {
-        id,
+        id: 1
       },
       data: updateAboutUsDto,
     });

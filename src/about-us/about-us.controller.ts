@@ -33,13 +33,13 @@ export class AboutUsController {
     }
   }
 
-  @Patch(':id')
+  @Patch()
   @ApiBearerAuth('access-token')
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Update a aboutUs' })
-  update(@Param('id') id: string, @Body() updateAboutUsDto: UpdateAboutUsDto) {
+  update(@Body() updateAboutUsDto: UpdateAboutUsDto) {
     try {
-      return this.aboutUsService.update(+id, updateAboutUsDto);
+      return this.aboutUsService.update(updateAboutUsDto);
     } catch (error) {
       console.error(error);
       throw new HttpException(
