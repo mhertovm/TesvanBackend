@@ -6,8 +6,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   const config = new DocumentBuilder()
-    .setTitle('Prisma Examples')
-    .setDescription('The prisma-examples REST API definition')
+    .setTitle('REST API definition')
     .addServer('https://tesvan.com/service', 'public development server')
     .addServer('http://localhost:4000', 'local development server')
     .addBearerAuth(
